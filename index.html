@@ -34,7 +34,7 @@
     .leaflet-container { background: var(--bg-base); }
     .leaflet-tile-pane { filter: grayscale(100%) contrast(1.1) brightness(1.05); mix-blend-mode: multiply; opacity: 0.65; }
 
-    /* PINES AESTHETIC (Sin bordes, limpios) */
+    /* PINES AESTHETIC (Sin contenedor, imagen limpia sin bordes) */
     .custom-photo-pin { background: transparent; border: none; outline: none; }
     .photo-pin-img { 
       width: 52px; height: 52px; border-radius: 16px; box-shadow: 0 8px 20px rgba(15,52,115,0.3); 
@@ -43,17 +43,20 @@
     }
     .photo-pin-img:active { transform: scale(0.9); }
 
-    /* HEADER SUPERIOR INVISIBLE */
+    /* HEADER INVISIBLE */
     .top-header { position: absolute; top: 40px; left: 0; right: 0; z-index: 1000; display: flex; justify-content: center; align-items: center; pointer-events: none; }
     .header-center-img { height: 40px; width: auto; object-fit: contain; pointer-events: auto; filter: drop-shadow(0 4px 10px rgba(15,52,115,0.15)); }
 
     /* BARRA VERTICAL RETRÁCTIL */
     .toolbar-wrapper { position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding-right: 16px; z-index: 1000; display: flex; align-items: center; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
     .toolbar-wrapper.hidden { transform: translate(100%, -50%); }
-    .toggle-toolbar-btn { background: var(--white); border: 1px solid rgba(15,52,115,0.1); color: var(--primary); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); z-index: 1001; position: absolute; left: -26px; font-size: 0.9rem; transition: var(--transition); }
+    
+    /* FLECHA SEPARADA (No se esconde en el borde) */
+    .toggle-toolbar-btn { background: var(--white); border: 1px solid rgba(15,52,115,0.1); color: var(--primary); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); z-index: 1001; position: absolute; left: -54px; font-size: 1.1rem; transition: var(--transition); }
     .toggle-toolbar-btn:active { transform: scale(0.9); }
-    .vertical-toolbar { display: flex; flex-direction: column; gap: 20px; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(15,52,115,0.08); padding: 20px 12px; border-radius: 30px; box-shadow: var(--shadow); }
-    .tool-btn { background: transparent; border: none; color: var(--primary); font-size: 1.3rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+    
+    .vertical-toolbar { display: flex; flex-direction: column; gap: 20px; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(15,52,115,0.08); padding: 20px 14px; border-radius: 30px; box-shadow: var(--shadow); }
+    .tool-btn { background: transparent; border: none; color: var(--primary); font-size: 1.4rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
     .tool-btn:active { transform: scale(0.8); }
 
     /* Botones Generales */
@@ -84,7 +87,7 @@
     .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary); box-shadow: 0 4px 16px rgba(15,52,115,0.1); }
 
     /* Ficha del Local */
-    .biz-hero-img { width: 100%; height: 240px; background-size: cover; background-position: center; border-radius: 28px; box-shadow: var(--shadow-sm); background-color: var(--white); border: 2px solid var(--white); }
+    .biz-hero-img { width: 100%; height: 240px; background-size: cover; background-position: center; border-radius: 28px; box-shadow: var(--shadow-sm); background-color: var(--white); border: none; }
     .biz-meta { background: var(--white); padding: 24px; border-radius: 28px; font-size: 1rem; font-weight: 600; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid rgba(15,52,115,0.05); }
     .biz-meta div { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; line-height: 1.4; }
     .biz-meta i { color: var(--primary); width: 20px; font-size: 1.2rem; margin-top: 2px; }
@@ -124,13 +127,14 @@
 
   <!-- HEADER TOTALMENTE INVISIBLE (Solo Logo Flotando) -->
   <header class="top-header">
-    <img src="https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO+AQUI" alt="Logo Proof" class="header-center-img">
+    <!-- Reemplazar con el logo final -->
+    <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='50'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='26' fill='%230F3473'%3EPROOF%3C/text%3E%3C/svg%3E" alt="Logo Proof" class="header-center-img">
   </header>
 
   <!-- MAPA PRINCIPAL -->
   <div id="map"></div>
 
-  <!-- BARRA VERTICAL RETRÁCTIL -->
+  <!-- BARRA VERTICAL RETRÁCTIL (Flecha no se esconde) -->
   <div class="toolbar-wrapper" id="toolbar-wrapper">
     <button class="toggle-toolbar-btn" onclick="window.toggleToolbar()"><i class="fa-solid fa-chevron-right" id="toolbar-icon"></i></button>
     <div class="vertical-toolbar">
@@ -316,6 +320,9 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
+    // Fallback Universal (SVG Data URI) por si falla una imagen. Evita el "Icono roto".
+    const defaultSvg = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' style='background:%23F6f4F1;'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='20' fill='%230F3473'%3EProof%3C/text%3E%3C/svg%3E";
+
     let currentUser = null; 
     let userCoords = { lat: -38.0055, lng: -57.5426 }; 
     let map, userMarker;
@@ -348,10 +355,25 @@
       });
     });
 
-    /* MAPA Y GPS SAFARI/iOS FIX (Pide permiso de forma legal tras hacer click) */
+    /* MAPA Y GPS SAFARI/iOS FIX */
     function initMap() {
       map = L.map('map', { zoomControl: false }).setView([userCoords.lat, userCoords.lng], 14);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '' }).addTo(map);
+
+      // Usar API de Leaflet para saltar bloqueos de iOS
+      map.on('locationfound', function(e) {
+        userCoords.lat = e.latlng.lat; userCoords.lng = e.latlng.lng;
+        if (!userMarker) {
+          const icon = L.divIcon({ className: '', html: "<div style='background:var(--primary); width:20px; height:20px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 10px rgba(15,52,115,0.4);'></div>", iconSize: [20,20] });
+          userMarker = L.marker(e.latlng, { icon, zIndexOffset: 1000 }).addTo(map);
+        } else {
+          userMarker.setLatLng(e.latlng);
+        }
+        map.setView(e.latlng, 16);
+        showToast("¡Ubicación encontrada!");
+      });
+      
+      map.on('locationerror', function(e) { showToast("Error GPS: Asegúrate de dar permisos."); });
 
       map.on('dragstart', () => { 
         const tw = document.getElementById('toolbar-wrapper');
@@ -360,37 +382,8 @@
     }
 
     window.centerToUser = function() {
-      showToast("Buscando señal GPS...");
-      
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition((pos) => {
-          userCoords.lat = pos.coords.latitude; 
-          userCoords.lng = pos.coords.longitude;
-          
-          if (!userMarker) {
-            const icon = L.divIcon({ className: '', html: "<div style='background:var(--primary); width:20px; height:20px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 10px rgba(15,52,115,0.4);'></div>", iconSize: [20,20] });
-            userMarker = L.marker([userCoords.lat, userCoords.lng], { icon, zIndexOffset: 1000 }).addTo(map);
-          } else {
-            userMarker.setLatLng([userCoords.lat, userCoords.lng]);
-          }
-          
-          map.setView([userCoords.lat, userCoords.lng], 16);
-          showToast("¡Ubicación encontrada!");
-
-          if (!gpsWatcherId) {
-            gpsWatcherId = navigator.geolocation.watchPosition((p) => {
-              userCoords.lat = p.coords.latitude; userCoords.lng = p.coords.longitude;
-              if (userMarker) userMarker.setLatLng([userCoords.lat, userCoords.lng]);
-            }, (e) => console.log(e), { enableHighAccuracy: true });
-          }
-        }, (err) => {
-          if (err.code === 1) showToast("GPS Denegado por tu navegador. Actívalo en Ajustes.");
-          else if (err.code === 2) showToast("Error de señal. Intenta en exteriores.");
-          else showToast("Error GPS: " + err.message);
-        }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
-      } else {
-        showToast("Tu navegador no soporta GPS");
-      }
+      showToast("Localizando...");
+      map.locate({setView: true, maxZoom: 16, enableHighAccuracy: true});
     };
 
     window.toggleToolbar = function() {
@@ -401,24 +394,30 @@
       else icon.classList.replace('fa-chevron-left', 'fa-chevron-right');
     };
 
-    /* RENDIMIENTO FOTOS */
-    function fileToBase64(file) {
-      return new Promise((res, rej) => {
+    /* RENDIMIENTO FOTOS (COMPRESOR ROBUSTO) */
+    function fileToBase64Compress(file) {
+      return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => {
           const img = new Image();
           img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 600; 
-            const scaleSize = MAX_WIDTH / img.width;
-            canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            res(canvas.toDataURL('image/jpeg', 0.7)); 
+            try {
+              const canvas = document.createElement('canvas');
+              const MAX_WIDTH = 600; 
+              let scaleSize = 1;
+              if (img.width > MAX_WIDTH) scaleSize = MAX_WIDTH / img.width;
+              canvas.width = img.width * scaleSize; canvas.height = img.height * scaleSize;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+            } catch(err) {
+              resolve(e.target.result); // Si falla (ej. iOS memory limits), devuelve original
+            }
           };
+          img.onerror = () => resolve(e.target.result); // Si no puede procesar, no se traba
           img.src = e.target.result;
         };
-        reader.onerror = rej;
+        reader.onerror = reject;
         reader.readAsDataURL(file);
       });
     }
@@ -435,12 +434,11 @@
           const lng = parseFloat(b.lng);
           const nameStr = b.name ? b.name.toLowerCase() : "";
 
-          // Solo dibuja pines que tengan datos correctos
           if (!isNaN(lat) && !isNaN(lng) && (catFilter === 'ALL' || b.category === catFilter) && nameStr.includes(textFilter)) {
-            
             let imgUrl = b.photoBase64;
-            if (!imgUrl || imgUrl.trim() === "") imgUrl = "https://via.placeholder.com/150/0F3473/F6f4F1?text=Proof";
+            if (!imgUrl || imgUrl.trim() === "") imgUrl = defaultSvg;
             
+            // PINES SOLO FOTO, SIN BORDES
             const iconHtml = `<div class="photo-pin-img" style="background-image: url('${imgUrl}');"></div>`;
             const icon = L.divIcon({ className: 'custom-photo-pin', html: iconHtml, iconSize: [52, 52], iconAnchor: [26, 26] });
             
@@ -457,7 +455,7 @@
       selectedBizId = id; const biz = allBusinesses[id];
       document.getElementById('biz-title').innerText = biz.name;
       
-      let headerImg = biz.photoBase64 || "https://via.placeholder.com/600x300/F6f4F1/0F3473?text=Proof";
+      let headerImg = biz.photoBase64 || defaultSvg;
       document.getElementById('biz-header-img').style.backgroundImage = `url('${headerImg}')`;
       
       document.getElementById('biz-desc').innerText = biz.desc || "Sin descripción";
@@ -499,7 +497,7 @@
     };
     function setupStarPicker() { document.querySelectorAll('#star-picker i').forEach(s => s.addEventListener('click', e => { wizRating = parseInt(e.target.getAttribute('data-val')); document.querySelectorAll('#star-picker i').forEach((st, idx) => { if(idx < wizRating) st.classList.add('active'); else st.classList.remove('active'); }); })); }
     window.nextWizardStep = function(s) { if(s===2 && wizRating===0) return showToast("Califica con estrellas primero"); document.querySelectorAll('.wizard-step').forEach(e => e.classList.remove('active')); document.getElementById('wiz-step-'+s).classList.add('active'); };
-    window.previewWizPhoto = function(e) { if(e.target.files.length>0){ fileToBase64(e.target.files[0]).then(b64 => { document.getElementById('wiz-photo-preview').src = b64; document.getElementById('wiz-photo-preview').style.display = 'block'; }); } };
+    window.previewWizPhoto = function(e) { if(e.target.files.length>0){ fileToBase64Compress(e.target.files[0]).then(b64 => { document.getElementById('wiz-photo-preview').src = b64; document.getElementById('wiz-photo-preview').style.display = 'block'; }); } };
     window.toggleWizAudio = async function() {
       const btn = document.getElementById('btn-wiz-audio'); const preview = document.getElementById('wiz-audio-preview');
       if(!isRecording) {
@@ -510,7 +508,7 @@
       const text = document.getElementById('wiz-text').value.trim(); const photoInput = document.getElementById('wiz-photo');
       const btn = document.getElementById('btn-wiz-submit'); btn.disabled = true;
       try {
-        let photoB64 = null; if (photoInput.files.length > 0) photoB64 = await fileToBase64(photoInput.files[0]);
+        let photoB64 = null; if (photoInput.files.length > 0) photoB64 = await fileToBase64Compress(photoInput.files[0]);
         await push(ref(db, `businesses/${selectedBizId}/reviews`), { authorUid: currentUser.uid, authorName: currentUser.name, authorPhoto: currentUser.photo, rating: wizRating, text, audioBase64: recordedAudioBase64, photoBase64: photoB64, timestamp: Date.now() });
         window.closeModal('modal-wizard'); window.openBusinessModal(selectedBizId); showToast("¡Proof guardado!");
       } catch(err) { showToast("Error al publicar"); } finally { btn.disabled = false; }
@@ -525,12 +523,13 @@
       const n = document.getElementById('regName').value, e = document.getElementById('regEmail').value, p = document.getElementById('regPassword').value, f = document.getElementById('regPhoto').files[0];
       if(!n || !e || !p) return showToast("Faltan datos");
       try {
-        let b64 = "https://via.placeholder.com/150/0F3473/FFFFFF?text="+n.charAt(0).toUpperCase(); if(f) b64 = await fileToBase64(f);
+        let b64 = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' style='background:%230F3473;'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='50' fill='%23FFFFFF'%3E"+n.charAt(0).toUpperCase()+"%3C/text%3E%3C/svg%3E"; 
+        if(f) b64 = await fileToBase64Compress(f);
         const c = await createUserWithEmailAndPassword(auth, e, p);
         await set(ref(db, 'users/'+c.user.uid), {name:n, photo:b64, createdAt:Date.now()}); window.closeModal('modal-auth'); showToast("¡Cuenta habilitada!");
       } catch(err){ showToast("Error al registrar: " + err.message); }
     };
-    window.loginUser = async function() { try{ await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value); window.closeModal('modal-auth'); showToast("¡Hola de nuevo!"); } catch(e){ showToast("Datos incorrectos"); } };
+    window.loginUser = async function() { try{ await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value); window.closeModal('modal-auth'); showToast("¡Bienvenido!"); } catch(e){ showToast("Datos incorrectos"); } };
     window.logoutUser = async function() { await signOut(auth); window.closeDrawer(); showToast("Sesión cerrada"); };
     function updateAuthUI() {
       if(currentUser) { document.getElementById('drawer-user-profile').style.display='block'; document.getElementById('drawer-avatar').src=currentUser.photo; document.getElementById('drawer-username').innerText=currentUser.name; document.getElementById('menu-text-auth').innerText="Cambiar Perfil"; document.getElementById('menu-btn-logout').style.display='flex'; }
