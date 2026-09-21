@@ -34,45 +34,45 @@
   <div id="toast">Notificación</div>
 
   <div class="container">
-    <h2><i class="fa-solid fa-link"></i> Configuración de Códigos QR</h2>
+    <h2><i class="fa-solid fa-link"></i> Enlace Seguro de QR</h2>
     <div class="domain-box">
-      <label>Tu Dominio Público de Netlify (URL Exacta)</label>
+      <label>URL de Netlify (App Pública)</label>
       <input type="text" id="app-domain" placeholder="https://proofok.netlify.app" oninput="window.renderAdminList()">
-      <p style="font-size:0.85rem; color:#666; margin-top:8px;">Asegúrate de poner <b>https://...</b> aquí. Esto garantiza que todos los QR funcionen como un enlace en cualquier celular.</p>
+      <p style="font-size:0.85rem; color:#666; margin-top:8px;">Asegúrate de poner tu enlace con <b>https://</b> aquí. Esto fuerza a los códigos QR de abajo a convertirse en enlaces de internet.</p>
     </div>
 
-    <h2><i class="fa-solid fa-plus-circle"></i> Registrar Nuevo Local</h2>
+    <h2><i class="fa-solid fa-plus-circle"></i> Crear Local</h2>
     
     <div class="form-group"><label>Nombre del Local</label><input type="text" id="name" placeholder="Ej: Café Central"></div>
-    <div class="form-group"><label>Foto Principal (La que se verá CUADRADA en el Pin del Mapa)</label><input type="file" id="photo" accept="image/*"></div>
-    <div class="form-group"><label>Descripción / Qué hacen</label><textarea id="desc" rows="3" placeholder="Restaurante de comida..."></textarea></div>
+    <div class="form-group"><label>Foto Principal (El Pin del Mapa)</label><input type="file" id="photo" accept="image/*"></div>
+    <div class="form-group"><label>Descripción</label><textarea id="desc" rows="3" placeholder="Restaurante de..."></textarea></div>
     
     <div style="display:flex; gap:16px;">
       <div class="form-group" style="flex:1;"><label>Categoría</label><select id="cat"><option>Gastronomía</option><option>Servicios</option><option>Comercio</option></select></div>
       <div class="form-group" style="flex:1;"><label>Horarios</label><input type="text" id="hours" placeholder="Ej: L a V 09:00 - 18:00"></div>
     </div>
     
-    <div class="form-group"><label>Link del Menú / Catálogo (Si tiene)</label><input type="text" id="menu" placeholder="https://..."></div>
+    <div class="form-group"><label>Menú / Web</label><input type="text" id="menu" placeholder="https://..."></div>
     
     <div class="form-group" style="margin-top:20px;">
-      <label>1. Buscar Dirección por Calle</label>
+      <label>1. Dirección</label>
       <div style="display:flex; gap:10px;">
-        <input type="text" id="address" placeholder="Ej: Güemes 1234, Mar del Plata">
+        <input type="text" id="address" placeholder="Ej: Güemes 1234">
         <button onclick="searchAddress()" class="btn-secondary">Buscar Mapa</button>
       </div>
     </div>
     
     <div class="form-group" style="margin-bottom:20px;">
-      <label>2. O Usar GPS del Dispositivo (Si estás en el local ahora mismo)</label>
-      <button onclick="useAdminGPS()" class="btn-secondary" style="width:100%;">📍 Capturar mi GPS Exacto</button>
+      <label>2. O usar ubicación exacta (Si estás físicamente ahí)</label>
+      <button onclick="useAdminGPS()" class="btn-secondary" style="width:100%;">📍 Capturar mi GPS</button>
     </div>
     
     <div id="admin-map"></div>
     <input type="hidden" id="lat"><input type="hidden" id="lng">
     
-    <button onclick="saveBusiness()" style="width:100%; margin-top:30px; font-size:1.2rem;">Guardar Local y Generar QR</button>
+    <button onclick="saveBusiness()" style="width:100%; margin-top:30px; font-size:1.2rem;">Guardar y Crear Código QR</button>
 
-    <h2 style="margin-top:60px;">Locales Creados y Códigos QR</h2>
+    <h2 style="margin-top:60px;">Locales Registrados y QRs</h2>
     <div id="biz-list"></div>
   </div>
 
@@ -87,9 +87,8 @@
     });
     const db = getDatabase(app);
 
-    // Auto-detectar dominio o poner el de prueba
     const currentOrigin = window.location.origin;
-    if (currentOrigin.startsWith("http") && !currentOrigin.includes("localhost") && !currentOrigin.includes("127.0.0.1")) {
+    if (currentOrigin.startsWith("http") && !currentOrigin.includes("localhost")) {
       document.getElementById('app-domain').value = currentOrigin;
     } else {
       document.getElementById('app-domain').value = "https://proofok.netlify.app";
@@ -113,17 +112,17 @@
       const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}`);
       const data = await res.json();
       if(data.length > 0) { setMarker(parseFloat(data[0].lat), parseFloat(data[0].lon)); showToast("Ubicación encontrada"); }
-      else showToast("No se encontró. Usa el GPS o marca en el mapa.");
+      else showToast("No se encontró. Usa el GPS.");
     };
 
     window.useAdminGPS = function() {
       if ("geolocation" in navigator) {
-        showToast("Conectando con Satélite...");
+        showToast("Conectando con GPS...");
         navigator.geolocation.getCurrentPosition((pos) => {
           setMarker(pos.coords.latitude, pos.coords.longitude);
           document.getElementById('address').value = "Ubicación GPS exacta";
           showToast("¡Ubicación GPS guardada!");
-        }, (err) => { showToast("Error GPS. Asegúrate de dar permisos."); }, { enableHighAccuracy: true });
+        }, (err) => { showToast("Error GPS."); }, { enableHighAccuracy: true });
       }
     };
 
@@ -140,7 +139,7 @@
       if(photoFile) photoBase64 = await fileToBase64(photoFile);
 
       await push(ref(db, 'businesses'), { name, desc, category: cat, hours, address, menu, lat, lng, photoBase64, timestamp: Date.now() });
-      showToast("Local guardado en Firebase");
+      showToast("Local guardado");
       document.querySelectorAll('input:not([type=hidden]), textarea').forEach(i => i.value='');
     };
 
@@ -150,18 +149,17 @@
       window.renderAdminList();
     });
 
-    // Función de renderizado reactiva al texto del dominio
     window.renderAdminList = function() {
       const list = document.getElementById('biz-list'); list.innerHTML = "";
       
       let baseUrl = document.getElementById('app-domain').value.trim();
       if (baseUrl.endsWith('/')) baseUrl = baseUrl.slice(0, -1);
-      if (!baseUrl.startsWith('http')) baseUrl = 'https://' + baseUrl; // Forzar HTTP para que funcione el QR
+      if (!baseUrl.startsWith('http')) baseUrl = 'https://' + baseUrl; 
 
       const sortedBiz = Object.entries(globalBizData).sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
 
       sortedBiz.forEach(([id, b]) => {
-        // Enlace 100% seguro y funcional
+        // ENLACE 100% FUNCIONAL Y SEGURO (Deep Link)
         const qrUrl = `${baseUrl}/?biz=${id}`;
         const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrUrl)}&margin=10`;
 
@@ -169,10 +167,8 @@
           <div class="biz-item">
             <div style="flex:1;">
               <h3 style="margin-bottom:8px; font-weight:900;">${b.name}</h3>
-              <p style="margin-bottom:5px; font-weight:600;">Categoría: ${b.category}</p>
               <p style="margin-bottom:15px; font-size:0.9rem;">Dir: ${b.address}</p>
-              <p style="font-size:0.75rem; color:#999;">URL Linkeada: ${qrUrl}</p>
-              <button class="btn-danger" onclick="window.deleteBiz('${id}')" style="margin-top:10px;">Eliminar Local</button>
+              <button class="btn-danger" onclick="window.deleteBiz('${id}')">Eliminar Local</button>
             </div>
             <div class="qr-box">
               <img src="${qrSrc}">

@@ -17,8 +17,8 @@
 
   <style>
     :root {
-      --bg-base: #F6f4F1; /* Beige aesthetic */
-      --primary: #0F3473; /* Azul profundo */
+      --bg-base: #F6f4F1; 
+      --primary: #0F3473; 
       --glass-bg: rgba(246, 244, 241, 0.65);
       --white: #FFFFFF;
       --shadow: 0 16px 40px rgba(15, 52, 115, 0.12);
@@ -29,70 +29,31 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
     body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-base); color: var(--primary); }
 
-    /* MAPA AESTHETIC 100% GRATIS Y SIN MARCAS DE AGUA */
+    /* MAPA AESTHETIC */
     #map { width: 100%; height: 100vh; z-index: 1; background-color: var(--bg-base); }
     .leaflet-container { background: var(--bg-base); }
-    .leaflet-tile-pane { 
-      filter: grayscale(100%) contrast(1.1) brightness(1.05); 
-      mix-blend-mode: multiply; 
-      opacity: 0.65; 
-    }
+    .leaflet-tile-pane { filter: grayscale(100%) contrast(1.1) brightness(1.05); mix-blend-mode: multiply; opacity: 0.65; }
 
-    /* PINES AESTHETIC LIMPIOS (SOLO FOTO, SIN BORDES) */
+    /* PINES AESTHETIC (Sin bordes, limpios) */
     .custom-photo-pin { background: transparent; border: none; outline: none; }
     .photo-pin-img { 
-      width: 52px; height: 52px; 
-      border-radius: 16px; /* Cuadrado con bordes suaves */
-      box-shadow: 0 8px 20px rgba(15,52,115,0.3); 
-      background-size: cover;
-      background-position: center;
-      background-color: var(--white);
-      border: none; 
-      transition: transform 0.2s ease;
+      width: 52px; height: 52px; border-radius: 16px; box-shadow: 0 8px 20px rgba(15,52,115,0.3); 
+      background-size: cover; background-position: center; background-color: var(--white);
+      border: none; transition: transform 0.2s ease;
     }
     .photo-pin-img:active { transform: scale(0.9); }
 
-    /* HEADER SUPERIOR INVISIBLE (Solo el Logo flotando al centro) */
-    .top-header { 
-      position: absolute; top: 40px; left: 0; right: 0; z-index: 1000; 
-      display: flex; justify-content: center; align-items: center; 
-      pointer-events: none; 
-    }
-    .header-center-img { 
-      height: 40px; width: auto; object-fit: contain; 
-      pointer-events: auto; 
-      filter: drop-shadow(0 4px 10px rgba(15,52,115,0.15));
-    }
+    /* HEADER SUPERIOR INVISIBLE */
+    .top-header { position: absolute; top: 40px; left: 0; right: 0; z-index: 1000; display: flex; justify-content: center; align-items: center; pointer-events: none; }
+    .header-center-img { height: 40px; width: auto; object-fit: contain; pointer-events: auto; filter: drop-shadow(0 4px 10px rgba(15,52,115,0.15)); }
 
     /* BARRA VERTICAL RETRÁCTIL */
-    .toolbar-wrapper {
-      position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-      padding-right: 16px; 
-      z-index: 1000; display: flex; align-items: center;
-      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    }
+    .toolbar-wrapper { position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding-right: 16px; z-index: 1000; display: flex; align-items: center; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
     .toolbar-wrapper.hidden { transform: translate(100%, -50%); }
-    
-    .toggle-toolbar-btn {
-      background: var(--white); border: 1px solid rgba(15,52,115,0.1); color: var(--primary);
-      width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; box-shadow: var(--shadow-sm); z-index: 1001; 
-      position: absolute; left: -26px; 
-      font-size: 0.9rem; transition: var(--transition);
-    }
+    .toggle-toolbar-btn { background: var(--white); border: 1px solid rgba(15,52,115,0.1); color: var(--primary); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); z-index: 1001; position: absolute; left: -26px; font-size: 0.9rem; transition: var(--transition); }
     .toggle-toolbar-btn:active { transform: scale(0.9); }
-    
-    .vertical-toolbar {
-      display: flex; flex-direction: column; gap: 20px;
-      background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(15,52,115,0.08); padding: 20px 12px; border-radius: 30px;
-      box-shadow: var(--shadow);
-    }
-    .tool-btn {
-      background: transparent; border: none; color: var(--primary);
-      font-size: 1.3rem; cursor: pointer; transition: var(--transition);
-      display: flex; align-items: center; justify-content: center;
-    }
+    .vertical-toolbar { display: flex; flex-direction: column; gap: 20px; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(15,52,115,0.08); padding: 20px 12px; border-radius: 30px; box-shadow: var(--shadow); }
+    .tool-btn { background: transparent; border: none; color: var(--primary); font-size: 1.3rem; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
     .tool-btn:active { transform: scale(0.8); }
 
     /* Botones Generales */
@@ -113,7 +74,6 @@
     .modal-overlay.active { opacity: 1; pointer-events: all; }
     .modal-card { width: 100%; max-height: 90vh; border-radius: 40px 40px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); background: var(--bg-base); box-shadow: 0 -10px 40px rgba(0,0,0,0.15); }
     .modal-overlay.active .modal-card { transform: translateY(0); }
-    
     .modal-header { padding: 28px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(15,52,115,0.08); }
     .modal-header h3 { font-size: 1.5rem; font-weight: 900; color: var(--primary); }
     .btn-close { background: var(--bg-base); border: none; color: var(--primary); font-size: 1.6rem; cursor: pointer; }
@@ -164,13 +124,13 @@
 
   <!-- HEADER TOTALMENTE INVISIBLE (Solo Logo Flotando) -->
   <header class="top-header">
-    <img src="https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO" alt="Logo Proof" class="header-center-img">
+    <img src="https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO+AQUI" alt="Logo Proof" class="header-center-img">
   </header>
 
   <!-- MAPA PRINCIPAL -->
   <div id="map"></div>
 
-  <!-- BARRA VERTICAL RETRÁCTIL (Flecha no se oculta) -->
+  <!-- BARRA VERTICAL RETRÁCTIL -->
   <div class="toolbar-wrapper" id="toolbar-wrapper">
     <button class="toggle-toolbar-btn" onclick="window.toggleToolbar()"><i class="fa-solid fa-chevron-right" id="toolbar-icon"></i></button>
     <div class="vertical-toolbar">
@@ -375,7 +335,7 @@
         allBusinesses = snapshot.val() || {};
         window.renderMapPins();
         
-        // DEEP LINKING (QR Scan App Externa y limpieza de URL)
+        // DEEP LINKING (Reconocer QR URL y limpiar el link automáticamente)
         const urlParams = new URLSearchParams(window.location.search);
         const bizParam = urlParams.get('biz');
         if (bizParam && allBusinesses[bizParam] && !window.deepLinkOpened) {
@@ -388,7 +348,7 @@
       });
     });
 
-    /* MAPA Y GPS SAFARI/iOS FIX (Permiso Explícito) */
+    /* MAPA Y GPS SAFARI/iOS FIX (Pide permiso de forma legal tras hacer click) */
     function initMap() {
       map = L.map('map', { zoomControl: false }).setView([userCoords.lat, userCoords.lng], 14);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '' }).addTo(map);
@@ -399,7 +359,6 @@
       });
     }
 
-    // ACCIÓN DIRECTA AL TOCAR LA MIRA (Resuelve Safari/iOS)
     window.centerToUser = function() {
       showToast("Buscando señal GPS...");
       
@@ -464,24 +423,32 @@
       });
     }
 
+    // PROTECCIÓN DE RENDERIZADO: Si un local está mal subido, no rompe el mapa
     window.renderMapPins = function() {
       currentMarkers.forEach(m => map.removeLayer(m)); currentMarkers = [];
       const catFilter = document.getElementById('filter-cat').value;
       const textFilter = document.getElementById('filter-text').value.toLowerCase();
 
       Object.entries(allBusinesses).forEach(([id, b]) => {
-        if ((catFilter === 'ALL' || b.category === catFilter) && b.name.toLowerCase().includes(textFilter)) {
-          // PINES SOLO FOTO
-          let imgUrl = b.photoBase64;
-          if (!imgUrl || imgUrl.trim() === "") imgUrl = "https://via.placeholder.com/150/0F3473/F6f4F1?text=Proof";
-          
-          const iconHtml = `<div class="photo-pin-img" style="background-image: url('${imgUrl}');"></div>`;
-          const icon = L.divIcon({ className: 'custom-photo-pin', html: iconHtml, iconSize: [52, 52], iconAnchor: [26, 26] });
-          
-          const m = L.marker([b.lat, b.lng], { icon }).addTo(map);
-          m.on('click', () => window.openBusinessModal(id));
-          currentMarkers.push(m);
-        }
+        try {
+          const lat = parseFloat(b.lat);
+          const lng = parseFloat(b.lng);
+          const nameStr = b.name ? b.name.toLowerCase() : "";
+
+          // Solo dibuja pines que tengan datos correctos
+          if (!isNaN(lat) && !isNaN(lng) && (catFilter === 'ALL' || b.category === catFilter) && nameStr.includes(textFilter)) {
+            
+            let imgUrl = b.photoBase64;
+            if (!imgUrl || imgUrl.trim() === "") imgUrl = "https://via.placeholder.com/150/0F3473/F6f4F1?text=Proof";
+            
+            const iconHtml = `<div class="photo-pin-img" style="background-image: url('${imgUrl}');"></div>`;
+            const icon = L.divIcon({ className: 'custom-photo-pin', html: iconHtml, iconSize: [52, 52], iconAnchor: [26, 26] });
+            
+            const m = L.marker([lat, lng], { icon }).addTo(map);
+            m.on('click', () => window.openBusinessModal(id));
+            currentMarkers.push(m);
+          }
+        } catch(e) { console.error("Error cargando local: ", e); }
       });
     };
 
