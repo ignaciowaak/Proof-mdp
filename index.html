@@ -21,6 +21,8 @@
       --primary: #0F3473; 
       --glass-bg: rgba(246, 244, 241, 0.65);
       --white: #FFFFFF;
+      --success: #4CAF50; /* Verde abierto */
+      --danger: #F44336;  /* Rojo cerrado */
       --shadow: 0 16px 40px rgba(15, 52, 115, 0.12);
       --shadow-sm: 0 8px 24px rgba(15, 52, 115, 0.08);
       --transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
@@ -34,25 +36,34 @@
     .leaflet-container { background: var(--bg-base); }
     .leaflet-tile-pane { filter: grayscale(100%) contrast(1.1) brightness(1.05); mix-blend-mode: multiply; opacity: 0.65; }
 
-    /* PINES AESTHETIC (Sin contenedor, imagen limpia sin bordes) */
+    /* PINES AESTHETIC CON INDICADOR DE ESTADO (Abierto/Cerrado) */
     .custom-photo-pin { background: transparent; border: none; outline: none; }
+    .pin-container { position: relative; width: 52px; height: 52px; }
     .photo-pin-img { 
-      width: 52px; height: 52px; border-radius: 16px; box-shadow: 0 8px 20px rgba(15,52,115,0.3); 
+      width: 100%; height: 100%; border-radius: 16px; box-shadow: 0 8px 20px rgba(15,52,115,0.3); 
       background-size: cover; background-position: center; background-color: var(--white);
       border: none; transition: transform 0.2s ease;
     }
     .photo-pin-img:active { transform: scale(0.9); }
+    
+    /* El puntito de estado */
+    .status-dot {
+      position: absolute; top: -6px; right: -6px; width: 18px; height: 18px;
+      border-radius: 50%; border: 3px solid var(--white); z-index: 10;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .status-open { background: var(--success); }
+    .status-closed { background: var(--danger); }
 
-    /* HEADER INVISIBLE */
+    /* HEADER SUPERIOR INVISIBLE */
     .top-header { position: absolute; top: 40px; left: 0; right: 0; z-index: 1000; display: flex; justify-content: center; align-items: center; pointer-events: none; }
     .header-center-img { height: 40px; width: auto; object-fit: contain; pointer-events: auto; filter: drop-shadow(0 4px 10px rgba(15,52,115,0.15)); }
 
-    /* BARRA VERTICAL RETRÁCTIL */
+    /* BARRA VERTICAL RETRÁCTIL CON FLECHITA */
     .toolbar-wrapper { position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding-right: 16px; z-index: 1000; display: flex; align-items: center; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
     .toolbar-wrapper.hidden { transform: translate(100%, -50%); }
     
-    /* FLECHA SEPARADA (No se esconde en el borde) */
-    .toggle-toolbar-btn { background: var(--white); border: 1px solid rgba(15,52,115,0.1); color: var(--primary); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); z-index: 1001; position: absolute; left: -54px; font-size: 1.1rem; transition: var(--transition); }
+    .toggle-toolbar-btn { background: var(--white); border: 1px solid rgba(15,52,115,0.1); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-sm); z-index: 1001; position: absolute; left: -50px; font-size: 1.1rem; transition: var(--transition); }
     .toggle-toolbar-btn:active { transform: scale(0.9); }
     
     .vertical-toolbar { display: flex; flex-direction: column; gap: 20px; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(15,52,115,0.08); padding: 20px 14px; border-radius: 30px; box-shadow: var(--shadow); }
@@ -65,7 +76,7 @@
     .btn-primary { background: var(--primary); color: var(--white); }
     .btn-secondary { background: var(--bg-base); color: var(--primary); border: 2px solid var(--primary); box-shadow: none; }
 
-    /* Drawer Menú Hamburguesa */
+    /* Drawer Menú */
     .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,52,115,0.4); z-index: 2000; opacity: 0; pointer-events: none; transition: var(--transition); }
     .drawer-overlay.active { opacity: 1; pointer-events: all; }
     .drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: var(--bg-base); z-index: 2001; transition: var(--transition); display: flex; flex-direction: column; padding: 40px 24px; border-radius: 40px 0 0 40px; box-shadow: -10px 0 40px rgba(0,0,0,0.1); }
@@ -82,15 +93,34 @@
     .btn-close { background: var(--bg-base); border: none; color: var(--primary); font-size: 1.6rem; cursor: pointer; }
     .modal-body { padding: 24px 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
 
-    /* Formularios y Inputs */
-    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 18px 24px; border: 2px solid rgba(15,52,115,0.1); border-radius: 24px; background: var(--white); font-weight: 600; margin-bottom: 16px; font-size: 1rem; color: var(--primary); outline: none; transition: var(--transition); appearance: none; }
-    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary); box-shadow: 0 4px 16px rgba(15,52,115,0.1); }
-
     /* Ficha del Local */
-    .biz-hero-img { width: 100%; height: 240px; background-size: cover; background-position: center; border-radius: 28px; box-shadow: var(--shadow-sm); background-color: var(--white); border: none; }
+    
+    /* Carrusel de Varias Fotos Estilo Google Maps */
+    .biz-photos-carousel {
+      display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; 
+      padding-bottom: 10px; scrollbar-width: none; /* Ocultar scrollbar */
+    }
+    .biz-photos-carousel::-webkit-scrollbar { display: none; }
+    .biz-photo-item {
+      flex: 0 0 85%; /* Se ve un 85% de la foto y asoma la siguiente */
+      height: 240px; border-radius: 28px; box-shadow: var(--shadow-sm); 
+      background-size: cover; background-position: center; background-color: var(--white);
+      scroll-snap-align: center; cursor: zoom-in;
+    }
+
     .biz-meta { background: var(--white); padding: 24px; border-radius: 28px; font-size: 1rem; font-weight: 600; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid rgba(15,52,115,0.05); }
     .biz-meta div { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; line-height: 1.4; }
     .biz-meta i { color: var(--primary); width: 20px; font-size: 1.2rem; margin-top: 2px; }
+
+    /* Zoom de Fotos (Lightbox) */
+    #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; cursor: zoom-out; }
+    #lightbox.active { display: flex; opacity: 1; }
+    #lightbox img { max-width: 95%; max-height: 90vh; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1); }
+    #lightbox.active img { transform: scale(1); }
+
+    /* Formularios y Inputs */
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 18px 24px; border: 2px solid rgba(15,52,115,0.1); border-radius: 24px; background: var(--white); font-weight: 600; margin-bottom: 16px; font-size: 1rem; color: var(--primary); outline: none; transition: var(--transition); appearance: none; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary); box-shadow: 0 4px 16px rgba(15,52,115,0.1); }
 
     /* Reseñas */
     .review-card { background: var(--white); border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid rgba(15,52,115,0.05); }
@@ -105,7 +135,7 @@
     .wizard-step.active { display: flex; }
     .star-rating-picker { font-size: 3.2rem; color: rgba(15,52,115,0.15); display: flex; gap: 12px; margin: 24px 0; }
     .star-rating-picker i { cursor: pointer; transition: var(--transition); }
-    .star-rating-picker i.active { color: #F5A623; transform: scale(1.15); }
+    .star-rating-picker i.active { color: #F5A623; transform: scale(1.15); filter: drop-shadow(0 4px 10px rgba(245, 166, 35, 0.3)); }
     
     /* Tabs Login */
     .tabs { display: flex; gap: 8px; margin-bottom: 24px; background: rgba(15,52,115,0.06); padding: 8px; border-radius: 40px; }
@@ -125,16 +155,20 @@
 
   <div class="toast" id="toast"></div>
 
-  <!-- HEADER TOTALMENTE INVISIBLE (Solo Logo Flotando) -->
+  <!-- ZOOM DE FOTO (Lightbox) -->
+  <div id="lightbox" onclick="window.closeLightbox()">
+    <img id="lightbox-img" src="" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- HEADER -->
   <header class="top-header">
-    <!-- Reemplazar con el logo final -->
-    <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='50'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='26' fill='%230F3473'%3EPROOF%3C/text%3E%3C/svg%3E" alt="Logo Proof" class="header-center-img">
+    <img src="https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO+AQUI" alt="Logo Proof" class="header-center-img">
   </header>
 
-  <!-- MAPA PRINCIPAL -->
+  <!-- MAPA -->
   <div id="map"></div>
 
-  <!-- BARRA VERTICAL RETRÁCTIL (Flecha no se esconde) -->
+  <!-- BARRA VERTICAL RETRÁCTIL -->
   <div class="toolbar-wrapper" id="toolbar-wrapper">
     <button class="toggle-toolbar-btn" onclick="window.toggleToolbar()"><i class="fa-solid fa-chevron-right" id="toolbar-icon"></i></button>
     <div class="vertical-toolbar">
@@ -145,7 +179,7 @@
     </div>
   </div>
 
-  <!-- MENÚ HAMBURGUESA (Drawer Izquierdo) -->
+  <!-- MENÚ -->
   <div class="drawer-overlay" id="drawer-overlay" onclick="window.closeDrawer()"></div>
   <div class="drawer" id="drawer">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
@@ -166,7 +200,7 @@
     </div>
   </div>
 
-  <!-- MODAL: BÚSQUEDA Y FILTROS -->
+  <!-- MODAL: BÚSQUEDA -->
   <div class="modal-overlay" id="modal-search">
     <div class="modal-card">
       <div class="modal-header">
@@ -198,7 +232,9 @@
         <button class="btn-close" onclick="window.closeModal('modal-biz')"><i class="fa-solid fa-chevron-down"></i></button>
       </div>
       <div class="modal-body">
-        <div id="biz-header-img" class="biz-hero-img"></div>
+        
+        <!-- Carrusel Deslizable Google Maps Style -->
+        <div id="biz-photos-carousel" class="biz-photos-carousel"></div>
         
         <div class="biz-meta">
           <div><i class="fa-solid fa-quote-left"></i> <span id="biz-desc"></span></div>
@@ -230,13 +266,13 @@
           <div id="tab-register" class="tab" onclick="window.switchAuthTab('register')">Crear Cuenta</div>
         </div>
 
-        <div id="loginForm">
+        <div id="loginForm" class="form-section active">
           <div class="form-group"><input type="email" id="loginEmail" placeholder="Correo electrónico"></div>
           <div class="form-group"><input type="password" id="loginPassword" placeholder="Contraseña"></div>
           <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="window.loginUser()">Entrar</button>
         </div>
 
-        <div id="registerForm" style="display:none;">
+        <div id="registerForm" class="form-section">
           <div class="form-group"><input type="text" id="regName" placeholder="Nombre completo"></div>
           <div class="form-group"><input type="email" id="regEmail" placeholder="Correo electrónico"></div>
           <div class="form-group"><input type="password" id="regPassword" placeholder="Contraseña (mín 6)"></div>
@@ -320,8 +356,7 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // Fallback Universal (SVG Data URI) por si falla una imagen. Evita el "Icono roto".
-    const defaultSvg = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' style='background:%23F6f4F1;'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='20' fill='%230F3473'%3EProof%3C/text%3E%3C/svg%3E";
+    const defaultSvg = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22 style=%22background:%23F6f4F1;%22%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-weight=%22bold%22 font-size=%2226%22 fill=%22%230F3473%22%3ELocal%3C/text%3E%3C/svg%3E";
 
     let currentUser = null; 
     let userCoords = { lat: -38.0055, lng: -57.5426 }; 
@@ -342,7 +377,6 @@
         allBusinesses = snapshot.val() || {};
         window.renderMapPins();
         
-        // DEEP LINKING (Reconocer QR URL y limpiar el link automáticamente)
         const urlParams = new URLSearchParams(window.location.search);
         const bizParam = urlParams.get('biz');
         if (bizParam && allBusinesses[bizParam] && !window.deepLinkOpened) {
@@ -355,25 +389,10 @@
       });
     });
 
-    /* MAPA Y GPS SAFARI/iOS FIX */
+    /* MAPA Y GPS SAFARI/iOS */
     function initMap() {
       map = L.map('map', { zoomControl: false }).setView([userCoords.lat, userCoords.lng], 14);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '' }).addTo(map);
-
-      // Usar API de Leaflet para saltar bloqueos de iOS
-      map.on('locationfound', function(e) {
-        userCoords.lat = e.latlng.lat; userCoords.lng = e.latlng.lng;
-        if (!userMarker) {
-          const icon = L.divIcon({ className: '', html: "<div style='background:var(--primary); width:20px; height:20px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 10px rgba(15,52,115,0.4);'></div>", iconSize: [20,20] });
-          userMarker = L.marker(e.latlng, { icon, zIndexOffset: 1000 }).addTo(map);
-        } else {
-          userMarker.setLatLng(e.latlng);
-        }
-        map.setView(e.latlng, 16);
-        showToast("¡Ubicación encontrada!");
-      });
-      
-      map.on('locationerror', function(e) { showToast("Error GPS: Asegúrate de dar permisos."); });
 
       map.on('dragstart', () => { 
         const tw = document.getElementById('toolbar-wrapper');
@@ -382,8 +401,26 @@
     }
 
     window.centerToUser = function() {
-      showToast("Localizando...");
-      map.locate({setView: true, maxZoom: 16, enableHighAccuracy: true});
+      showToast("Buscando señal GPS...");
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+          userCoords.lat = pos.coords.latitude; 
+          userCoords.lng = pos.coords.longitude;
+          if (!userMarker) {
+            const icon = L.divIcon({ className: '', html: "<div style='background:var(--primary); width:20px; height:20px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 10px rgba(15,52,115,0.4);'></div>", iconSize: [20,20] });
+            userMarker = L.marker([userCoords.lat, userCoords.lng], { icon, zIndexOffset: 1000 }).addTo(map);
+          } else { userMarker.setLatLng([userCoords.lat, userCoords.lng]); }
+          map.setView([userCoords.lat, userCoords.lng], 16);
+          showToast("¡Ubicación encontrada!");
+
+          if (!gpsWatcherId) {
+            gpsWatcherId = navigator.geolocation.watchPosition((p) => {
+              userCoords.lat = p.coords.latitude; userCoords.lng = p.coords.longitude;
+              if (userMarker) userMarker.setLatLng([userCoords.lat, userCoords.lng]);
+            }, (e) => console.log(e), { enableHighAccuracy: true });
+          }
+        }, (err) => { showToast("Error GPS: Activa los permisos en Ajustes."); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+      } else { showToast("Tu navegador no soporta GPS"); }
     };
 
     window.toggleToolbar = function() {
@@ -394,7 +431,7 @@
       else icon.classList.replace('fa-chevron-left', 'fa-chevron-right');
     };
 
-    /* RENDIMIENTO FOTOS (COMPRESOR ROBUSTO) */
+    /* COMPRESOR IMÁGENES */
     function fileToBase64Compress(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -402,27 +439,34 @@
           const img = new Image();
           img.onload = () => {
             try {
-              const canvas = document.createElement('canvas');
-              const MAX_WIDTH = 600; 
-              let scaleSize = 1;
-              if (img.width > MAX_WIDTH) scaleSize = MAX_WIDTH / img.width;
+              const canvas = document.createElement('canvas'); const MAX_WIDTH = 600; 
+              let scaleSize = 1; if (img.width > MAX_WIDTH) scaleSize = MAX_WIDTH / img.width;
               canvas.width = img.width * scaleSize; canvas.height = img.height * scaleSize;
-              const ctx = canvas.getContext('2d');
-              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
               resolve(canvas.toDataURL('image/jpeg', 0.7)); 
-            } catch(err) {
-              resolve(e.target.result); // Si falla (ej. iOS memory limits), devuelve original
-            }
+            } catch(err) { resolve(e.target.result); }
           };
-          img.onerror = () => resolve(e.target.result); // Si no puede procesar, no se traba
-          img.src = e.target.result;
+          img.onerror = () => resolve(e.target.result); img.src = e.target.result;
         };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
+        reader.onerror = reject; reader.readAsDataURL(file);
       });
     }
 
-    // PROTECCIÓN DE RENDERIZADO: Si un local está mal subido, no rompe el mapa
+    /* LOGICA DE ABIERTO/CERRADO EN TIEMPO REAL */
+    function checkIsOpen(openTime, closeTime) {
+      if (!openTime || !closeTime) return null;
+      const now = new Date();
+      const currentMin = now.getHours() * 60 + now.getMinutes();
+      const [oH, oM] = openTime.split(':').map(Number);
+      const [cH, cM] = closeTime.split(':').map(Number);
+      const startMin = oH * 60 + oM;
+      const endMin = cH * 60 + cM;
+
+      if (startMin < endMin) return currentMin >= startMin && currentMin <= endMin;
+      else return currentMin >= startMin || currentMin <= endMin; // Pasa la medianoche
+    }
+
+    /* RENDER DE PINES */
     window.renderMapPins = function() {
       currentMarkers.forEach(m => map.removeLayer(m)); currentMarkers = [];
       const catFilter = document.getElementById('filter-cat').value;
@@ -430,36 +474,66 @@
 
       Object.entries(allBusinesses).forEach(([id, b]) => {
         try {
-          const lat = parseFloat(b.lat);
-          const lng = parseFloat(b.lng);
+          const lat = parseFloat(b.lat); const lng = parseFloat(b.lng);
           const nameStr = b.name ? b.name.toLowerCase() : "";
 
           if (!isNaN(lat) && !isNaN(lng) && (catFilter === 'ALL' || b.category === catFilter) && nameStr.includes(textFilter)) {
-            let imgUrl = b.photoBase64;
-            if (!imgUrl || imgUrl.trim() === "") imgUrl = defaultSvg;
+            // Chequear si está abierto (Punto Verde/Rojo)
+            let openBadge = "";
+            if (b.openTime && b.closeTime) {
+              const isOpenNow = checkIsOpen(b.openTime, b.closeTime);
+              const color = isOpenNow ? 'var(--success)' : 'var(--danger)';
+              openBadge = `<div class="status-dot" style="background: ${color};"></div>`;
+            }
+
+            // Múltiples fotos o foto simple (Aesthetic)
+            let imgUrl = b.photoBase64; // Fallback a antigua foto
+            if (b.photos && b.photos.length > 0) imgUrl = b.photos[0]; // Toma la 1era del array
+            if (!imgUrl || imgUrl.trim() === "") imgUrl = defaultImg;
             
-            // PINES SOLO FOTO, SIN BORDES
-            const iconHtml = `<div class="photo-pin-img" style="background-image: url('${imgUrl}');"></div>`;
+            const iconHtml = `<div class="pin-container">${openBadge}<div class="photo-pin-img" style="background-image: url('${imgUrl}');"></div></div>`;
             const icon = L.divIcon({ className: 'custom-photo-pin', html: iconHtml, iconSize: [52, 52], iconAnchor: [26, 26] });
             
             const m = L.marker([lat, lng], { icon }).addTo(map);
             m.on('click', () => window.openBusinessModal(id));
             currentMarkers.push(m);
           }
-        } catch(e) { console.error("Error cargando local: ", e); }
+        } catch(e) {}
       });
     };
 
-    /* FICHA Y RESEÑAS */
+    /* FICHA Y RESEÑAS CON CARRUSEL DE FOTOS Y LIGHTBOX ZOOM */
+    window.openLightbox = function(url) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = url; lb.classList.add('active');
+    };
+    window.closeLightbox = function() { document.getElementById('lightbox').classList.remove('active'); };
+
     window.openBusinessModal = function(id) {
       selectedBizId = id; const biz = allBusinesses[id];
       document.getElementById('biz-title').innerText = biz.name;
       
-      let headerImg = biz.photoBase64 || defaultSvg;
-      document.getElementById('biz-header-img').style.backgroundImage = `url('${headerImg}')`;
+      // Carrusel Multipe Photos
+      const photosContainer = document.getElementById('biz-photos-carousel');
+      photosContainer.innerHTML = "";
+      const photosList = biz.photos && biz.photos.length > 0 ? biz.photos : [biz.photoBase64 || defaultImg];
+      
+      photosList.forEach(img => {
+        photosContainer.innerHTML += `<div class="biz-photo-item" style="background-image: url('${img}');" onclick="window.openLightbox('${img}')"></div>`;
+      });
       
       document.getElementById('biz-desc').innerText = biz.desc || "Sin descripción";
-      document.getElementById('biz-hours').innerText = biz.hours || "Horarios a consultar";
+      
+      // Estado Abierto o Cerrado en texto
+      let statusText = "";
+      if (biz.openTime && biz.closeTime) {
+        const isOpenNow = checkIsOpen(biz.openTime, biz.closeTime);
+        if (isOpenNow) statusText = "<span style='color:var(--success); font-weight:900;'>Abierto ahora</span> • ";
+        else statusText = "<span style='color:var(--danger); font-weight:900;'>Cerrado</span> • ";
+      }
+      document.getElementById('biz-hours').innerHTML = `${statusText} ${biz.hoursDesc || 'Horarios a consultar'}`;
+      
       document.getElementById('biz-address').innerText = biz.address || "Ubicación en mapa";
       
       const menuBtn = document.getElementById('biz-menu-container');
@@ -472,14 +546,14 @@
       else {
         reviewsArr.forEach(r => {
           let media = "";
-          if (r.photoBase64) media += `<img src="${r.photoBase64}">`;
+          if (r.photoBase64) media += `<img src="${r.photoBase64}" onclick="window.openLightbox('${r.photoBase64}')" style="cursor:zoom-in;">`;
           if (r.audioBase64) media += `<audio controls src="${r.audioBase64}"></audio>`;
           let stars = `<div style="color:#F5A623;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.rating || 5) + `</div>`;
 
           container.innerHTML += `
             <div class="review-card">
               <div class="review-header"><img src="${r.authorPhoto}"><div><div style="font-weight:900; font-size:1.1rem;">${escapeHtml(r.authorName)}</div>${stars}</div></div>
-              ${r.text ? `<div style="font-weight:600; font-size:1.05rem;">${escapeHtml(r.text)}</div>` : ''}
+              ${r.text ? `<div style="font-weight:600; font-size:1.05rem; color:#555;">${escapeHtml(r.text)}</div>` : ''}
               <div class="review-media">${media}</div>
             </div>`;
         });
@@ -523,7 +597,7 @@
       const n = document.getElementById('regName').value, e = document.getElementById('regEmail').value, p = document.getElementById('regPassword').value, f = document.getElementById('regPhoto').files[0];
       if(!n || !e || !p) return showToast("Faltan datos");
       try {
-        let b64 = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' style='background:%230F3473;'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='50' fill='%23FFFFFF'%3E"+n.charAt(0).toUpperCase()+"%3C/text%3E%3C/svg%3E"; 
+        let b64 = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22 style=%22background:%230F3473;%22%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22%23FFFFFF%22%3E"+n.charAt(0).toUpperCase()+"%3C/text%3E%3C/svg%3E"; 
         if(f) b64 = await fileToBase64Compress(f);
         const c = await createUserWithEmailAndPassword(auth, e, p);
         await set(ref(db, 'users/'+c.user.uid), {name:n, photo:b64, createdAt:Date.now()}); window.closeModal('modal-auth'); showToast("¡Cuenta habilitada!");
