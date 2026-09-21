@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Proof - Descubre y Califica</title>
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- FontAwesome Iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Html5-QRCode Lector -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <!-- Google Fonts (Outfit) -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-base: #F6f4F1; /* Beige del fondo */
+      --primary: #0F3473; /* Azul oscuro profundo */
+      --primary-light: #1a4b9e;
+      --glass-bg: rgba(246, 244, 241, 0.85);
+      --white: #FFFFFF;
+      --shadow: 0 12px 32px rgba(15, 52, 115, 0.15);
+      --transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-base); color: var(--primary); }
+
+    /* Estilo de Mapa Minimalista, Gratuito y Aesthetic */
+    #map { width: 100%; height: 100vh; z-index: 1; background-color: var(--bg-base); }
+    .leaflet-container { background: var(--bg-base); }
+    .leaflet-tile-pane { 
+      filter: grayscale(100%) opacity(0.65) contrast(1.1); 
+      /* Esto lo hace blanco/negro/transparente, adoptando el color beige del fondo sin verse borroso */
+    }
+    
+    /* Botón GPS estilo Google Maps (MOVIDO MÁS ARRIBA) */
+    .btn-my-location { 
+      position: absolute; 
+      bottom: 180px; /* Movido arriba para que no lo tape la barra inferior */
+      right: 16px; 
+      z-index: 1000; 
+      background: var(--white); 
+      border: 2px solid var(--primary); 
+      width: 50px; 
+      height: 50px; 
+      border-radius: 50%; 
+      box-shadow: var(--shadow); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-size: 1.3rem; 
+      color: var(--primary); 
+      cursor: pointer; 
+      transition: var(--transition); 
+    }
+    .btn-my-location:active { transform: scale(0.9); background: var(--primary); color: var(--white); }
+
+    /* PINES CUADRADOS PERFECTOS (Sin deformarse) */
+    .custom-photo-pin { background: transparent; border: none; }
+    .pin-wrapper { position: relative; width: 60px; height: 75px; display: flex; flex-direction: column; align-items: center; }
+    .photo-pin-img { 
+      width: 55px; height: 55px; 
+      border-radius: 12px; /* Cuadrado con bordes suaves */
+      border: 3px solid var(--primary); 
+      box-shadow: 0 6px 14px rgba(15,52,115,0.35); 
+      object-fit: cover; /* Evita que la foto se estire o deforme */
+      background: var(--white); z-index: 2; 
+    }
+    .pin-tail { width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 10px solid var(--primary); margin-top: -3px; z-index: 1; }
+
+    /* UI Flotante Inferior */
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(15,52,115,0.1); box-shadow: var(--shadow); }
+
+    /* HEADER SUPERIOR (Totalmente limpio, sin glass, con logo centrado) */
+    .top-header { 
+      position: absolute; top: 30px; left: 0; right: 0; z-index: 1000; 
+      display: flex; justify-content: center; align-items: center; 
+      pointer-events: none; /* Permite tocar el mapa detrás de la barra */
+    }
+    .header-center-img { 
+      height: 45px; width: auto; object-fit: contain; 
+      pointer-events: auto; /* El logo sí se puede tocar */
+      filter: drop-shadow(0 4px 6px rgba(15,52,115,0.2));
+    }
+    .btn-icon { 
+      background: var(--white); border: 2px solid var(--primary); color: var(--primary); 
+      width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+      cursor: pointer; transition: var(--transition); font-size: 1.2rem; pointer-events: auto; 
+      position: absolute; right: 16px; box-shadow: 0 4px 10px rgba(15,52,115,0.1); 
+    }
+    .btn-icon:hover { transform: scale(1.05); background: var(--primary); color: var(--white); }
+
+    /* Barra Inferior */
+    .bottom-bar { position: absolute; bottom: 24px; left: 16px; right: 16px; z-index: 1000; display: flex; flex-direction: column; gap: 12px; }
+    .search-box { display: flex; gap: 8px; padding: 8px 16px; border-radius: 40px; align-items: center; border: 2px solid rgba(15,52,115,0.1); }
+    .search-box select, .search-box input { border: none; outline: none; background: transparent; font-weight: 600; color: var(--primary); font-size: 1rem; }
+    .search-box select { border-right: 2px solid rgba(15,52,115,0.2); padding-right: 8px; width: 40%; }
+    .search-box input { flex: 1; }
+    .search-box input::placeholder { color: rgba(15,52,115,0.5); }
+
+    /* Botones Globales */
+    .btn { padding: 16px 24px; border: none; border-radius: 30px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 1rem; transition: var(--transition); box-shadow: 0 4px 14px rgba(15,52,115,0.15); font-family: 'Outfit', sans-serif; }
+    .btn:active { transform: scale(0.96); }
+    .btn-primary { background: var(--primary); color: var(--white); }
+    .btn-secondary { background: var(--bg-base); color: var(--primary); border: 2px solid var(--primary); }
+
+    /* Drawer Menú */
+    .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,52,115,0.4); z-index: 2000; opacity: 0; pointer-events: none; transition: var(--transition); }
+    .drawer-overlay.active { opacity: 1; pointer-events: all; }
+    .drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; background: var(--bg-base); z-index: 2001; transition: var(--transition); display: flex; flex-direction: column; padding: 30px 24px; border-radius: 40px 0 0 40px; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+    .drawer.active { right: 0; }
+    
+    .drawer-item { padding: 16px; background: var(--white); border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 14px; margin-bottom: 14px; color: var(--primary); cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 2px solid rgba(15,52,115,0.05); }
+
+    /* Modales Flotantes */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,52,115,0.5); backdrop-filter: blur(4px); z-index: 3000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: var(--transition); }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal-card { width: 100%; max-height: 90vh; border-radius: 36px 36px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1); background: var(--bg-base); box-shadow: 0 -10px 40px rgba(0,0,0,0.1); }
+    .modal-overlay.active .modal-card { transform: translateY(0); }
+    .modal-header { padding: 24px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(15,52,115,0.1); }
+    .modal-header h3 { font-size: 1.4rem; font-weight: 900; color: var(--primary); }
+    .modal-body { padding: 24px 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+
+    /* Ficha del Local */
+    .biz-hero-img { width: 100%; height: 220px; object-fit: cover; border-radius: 24px; box-shadow: 0 4px 16px rgba(15,52,115,0.15); border: 3px solid var(--white); }
+    .biz-meta { background: var(--white); padding: 20px; border-radius: 24px; font-size: 0.95rem; font-weight: 600; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 2px solid rgba(15,52,115,0.05); }
+    .biz-meta div { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; line-height: 1.4; }
+
+    /* Reseñas */
+    .review-card { background: var(--white); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 2px solid rgba(15,52,115,0.05); }
+    .review-header { display: flex; align-items: center; gap: 14px; }
+    .review-header img { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; border: 2px solid var(--bg-base); }
+    .review-author { font-weight: 900; font-size: 1.1rem; }
+    .review-media img { width: 100%; border-radius: 16px; margin-top: 8px; object-fit: cover; border: 1px solid rgba(15,52,115,0.1); }
+    .review-media audio { width: 100%; height: 44px; margin-top: 8px; }
+    
+    /* Wizard (Paso a Paso) */
+    .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 16px; animation: fadeIn 0.4s ease; }
+    .wizard-step.active { display: flex; }
+    .star-rating-picker { font-size: 2.8rem; color: rgba(15,52,115,0.15); display: flex; gap: 12px; margin: 24px 0; }
+    .star-rating-picker i { cursor: pointer; transition: var(--transition); }
+    .star-rating-picker i.active { color: #F5A623; transform: scale(1.15); }
+    
+    /* Formularios y Inputs */
+    .form-group input, .form-group textarea { width: 100%; padding: 16px 20px; border: 2px solid rgba(15,52,115,0.1); border-radius: 24px; background: var(--white); font-weight: 600; margin-bottom: 12px; font-size: 1rem; color: var(--primary); outline: none; transition: var(--transition); font-family: 'Outfit', sans-serif; }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(15,52,115,0.1); }
+
+    /* Tabs Login */
+    .tabs { display: flex; gap: 8px; margin-bottom: 20px; background: rgba(15,52,115,0.05); padding: 8px; border-radius: 40px; }
+    .tab { flex: 1; text-align: center; padding: 14px; border-radius: 30px; cursor: pointer; font-weight: 800; color: rgba(15,52,115,0.5); transition: var(--transition); }
+    .tab.active { background: var(--white); color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .form-section { display: none; animation: fadeIn 0.3s ease; }
+    .form-section.active { display: block; }
+
+    /* Toast */
+    .toast { position: fixed; top: 20px; left: 50%; transform: translate(-50%, -100px); background: var(--primary); color: var(--white); padding: 14px 28px; border-radius: 40px; z-index: 10000; font-weight: 800; transition: var(--transition); box-shadow: 0 8px 24px rgba(15,52,115,0.3); font-size: 0.95rem; white-space: nowrap; }
+    .toast.show { transform: translate(-50%, 0); }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Header Superior Limpio con Logo Centrado -->
+  <header class="top-header">
+    <img src="https://via.placeholder.com/200x50/F6f4F1/0F3473?text=TU+LOGO+AQUI" alt="Logo Proof" class="header-center-img">
+    <button class="btn-icon" onclick="window.openDrawer()"><i class="fa-solid fa-bars"></i></button>
+  </header>
+
+  <!-- Botón GPS estilo Google Maps -->
+  <button class="btn-my-location" onclick="window.centerToUser()"><i class="fa-solid fa-location-crosshairs"></i></button>
+
+  <div id="map"></div>
+
+  <!-- Barra Flotante Inferior -->
+  <div class="bottom-bar">
+    <button class="btn btn-primary glass-panel" style="width:100%; border:none; backdrop-filter:blur(10px);" onclick="window.startQrScanner()">
+      <i class="fa-solid fa-qrcode"></i> Escanear QR del Local
+    </button>
+    <div class="search-box glass-panel">
+      <select id="filter-cat" onchange="window.renderMapPins()">
+        <option value="ALL">Categorías</option>
+        <option value="Gastronomía">Gastronomía 🍔</option>
+        <option value="Servicios">Servicios 🛠️</option>
+        <option value="Comercio">Tiendas 🛍️</option>
+      </select>
+      <input type="text" id="filter-text" placeholder="Buscar local..." oninput="window.renderMapPins()">
+    </div>
+  </div>
+
+  <!-- Menú Drawer -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="window.closeDrawer()"></div>
+  <div class="drawer" id="drawer">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+      <h3 style="color:var(--primary); font-weight:900; font-size:1.4rem;">MENÚ</h3>
+      <button class="btn-icon" onclick="window.closeDrawer()" style="position:static;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div id="drawer-user-profile" style="background:var(--white); padding:20px; border-radius:24px; text-align:center; margin-bottom:20px; border:2px solid rgba(15,52,115,0.05); display:none;">
+      <img id="drawer-avatar" src="" style="width:70px; height:70px; border-radius:16px; margin:0 auto 12px; object-fit:cover; border:3px solid var(--primary);">
+      <div id="drawer-username" style="font-weight:900; font-size:1.2rem;"></div>
+    </div>
+
+    <div class="drawer-item" onclick="window.handleMenuAuth()">
+      <i class="fa-solid fa-user-circle" style="font-size:1.2rem;"></i> <span id="menu-text-auth">Iniciar Sesión / Registro</span>
+    </div>
+    <div class="drawer-item" id="menu-btn-logout" style="display:none; color:#D9534F;" onclick="window.logoutUser()">
+      <i class="fa-solid fa-right-from-bracket" style="font-size:1.2rem;"></i> Cerrar Sesión
+    </div>
+  </div>
+
+  <!-- Modal Ficha de Local -->
+  <div class="modal-overlay" id="modal-biz">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="biz-title">Local</h3>
+        <button class="btn-icon" onclick="window.closeModal('modal-biz')" style="position:static; box-shadow:none; border-color:transparent;"><i class="fa-solid fa-chevron-down"></i></button>
+      </div>
+      <div class="modal-body">
+        <img id="biz-header-img" class="biz-hero-img" src="">
+        
+        <div class="biz-meta">
+          <div><i class="fa-solid fa-quote-left"></i> <span id="biz-desc"></span></div>
+          <div><i class="fa-solid fa-clock"></i> <span id="biz-hours"></span></div>
+          <div><i class="fa-solid fa-location-dot"></i> <span id="biz-address"></span></div>
+          <div id="biz-menu-container"><i class="fa-solid fa-link"></i> <a id="biz-menu" href="#" target="_blank" style="color:var(--primary); font-weight:800;">Ver Menú / Web</a></div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="window.startReviewWizard()">
+          <i class="fa-solid fa-star"></i> Escribir una Reseña
+        </button>
+
+        <h4 style="margin-top:20px; font-weight:900; font-size:1.3rem;">Evidencias (Proofs)</h4>
+        <div id="biz-reviews-list" style="display:flex; flex-direction:column; padding-bottom:50px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Login/Registro -->
+  <div class="modal-overlay" id="modal-auth">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Identificación</h3>
+        <button class="btn-icon" onclick="window.closeModal('modal-auth')" style="position:static; box-shadow:none; border-color:transparent;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="tabs">
+          <div id="tab-login" class="tab active" onclick="window.switchAuthTab('login')">Ingresar</div>
+          <div id="tab-register" class="tab" onclick="window.switchAuthTab('register')">Crear Cuenta</div>
+        </div>
+
+        <div id="loginForm">
+          <div class="form-group"><input type="email" id="loginEmail" placeholder="Correo electrónico"></div>
+          <div class="form-group"><input type="password" id="loginPassword" placeholder="Contraseña"></div>
+          <button class="btn btn-primary" style="width:100%; margin-top:10px;" onclick="window.loginUser()">Entrar</button>
+        </div>
+
+        <div id="registerForm" style="display:none;">
+          <div class="form-group"><input type="text" id="regName" placeholder="Nombre completo"></div>
+          <div class="form-group"><input type="email" id="regEmail" placeholder="Correo electrónico"></div>
+          <div class="form-group"><input type="password" id="regPassword" placeholder="Contraseña (mín 6)"></div>
+          <label class="btn btn-secondary" style="width:100%; margin-bottom:16px;">
+            <i class="fa-solid fa-camera"></i> Subir Foto de Perfil
+            <input type="file" id="regPhoto" accept="image/*" style="display:none;">
+          </label>
+          <button class="btn btn-primary" style="width:100%;" onclick="window.registerUser()">Comenzar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Wizard Reseñas (Flujo por pasos) -->
+  <div class="modal-overlay" id="modal-wizard">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Tu Experiencia</h3>
+        <button class="btn-icon" onclick="window.closeModal('modal-wizard')" style="position:static; box-shadow:none; border-color:transparent;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="padding-bottom:50px;">
+        
+        <div id="wiz-step-1" class="wizard-step active">
+          <h4 style="font-size:1.2rem; font-weight:800;">¿Cómo calificarías este local?</h4>
+          <div class="star-rating-picker" id="star-picker">
+            <i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i>
+            <i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i>
+            <i class="fa-solid fa-star" data-val="5"></i>
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="window.nextWizardStep(2)">Continuar</button>
+        </div>
+
+        <div id="wiz-step-2" class="wizard-step">
+          <h4 style="font-size:1.2rem; font-weight:800;">Escribe tu opinión</h4>
+          <textarea id="wiz-text" rows="4" placeholder="¿Qué fue lo mejor?"></textarea>
+          <div style="display:flex; gap:12px; width:100%;"><button class="btn btn-secondary" style="flex:1;" onclick="window.nextWizardStep(3)">Saltar</button><button class="btn btn-primary" style="flex:1;" onclick="window.nextWizardStep(3)">Siguiente</button></div>
+        </div>
+
+        <div id="wiz-step-3" class="wizard-step">
+          <h4 style="font-size:1.2rem; font-weight:800;">Sube una foto (Proof)</h4>
+          <img id="wiz-photo-preview" style="width:100%; max-height:200px; border-radius:16px; display:none; margin-bottom:16px; object-fit:cover;">
+          <label class="btn btn-secondary" style="width:100%; margin-bottom:16px;"><i class="fa-solid fa-image"></i> Abrir Galería<input type="file" id="wiz-photo" accept="image/*" onchange="window.previewWizPhoto(event)" style="display:none;"></label>
+          <div style="display:flex; gap:12px; width:100%;"><button class="btn btn-secondary" style="flex:1;" onclick="window.nextWizardStep(4)">Saltar</button><button class="btn btn-primary" style="flex:1;" onclick="window.nextWizardStep(4)">Siguiente</button></div>
+        </div>
+
+        <div id="wiz-step-4" class="wizard-step">
+          <h4 style="font-size:1.2rem; font-weight:800;">Graba un audio rápido</h4>
+          <button class="btn btn-secondary" id="btn-wiz-audio" style="width:100%; padding:20px;" onclick="window.toggleWizAudio()"><i class="fa-solid fa-microphone"></i> Iniciar Grabación</button>
+          <audio id="wiz-audio-preview" controls style="width:100%; display:none; margin-top:16px;"></audio>
+          <button class="btn btn-primary" style="width:100%; margin-top:30px; font-size:1.2rem; padding:18px;" id="btn-wiz-submit" onclick="window.submitWizardReview()">Publicar Proof <i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal QR Lector Integrado -->
+  <div class="modal-overlay" id="modal-qr">
+    <div class="modal-card">
+      <div class="modal-header"><h3>Escanear Código</h3><button class="btn-icon" onclick="window.closeModal('modal-qr')" style="position:static; box-shadow:none; border-color:transparent;"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="modal-body"><div id="qr-reader" style="border-radius:24px; overflow:hidden;"></div></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+    import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhz1XHoprhhrHyYfuAdIYGMJxm5UsDO-4",
+      authDomain: "the-pic-c437e.firebaseapp.com",
+      databaseURL: "https://the-pic-c437e-default-rtdb.firebaseio.com",
+      projectId: "the-pic-c437e",
+      storageBucket: "the-pic-c437e.appspot.com",
+      messagingSenderId: "750954597180",
+      appId: "1:750954597180:web:fc586d73d852ed5e17ec39"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    let currentUser = null; 
+    let userCoords = { lat: -38.0055, lng: -57.5426 }; 
+    let map, userMarker;
+    let currentMarkers = [];
+    let allBusinesses = {}; 
+    let selectedBizId = null;
+    let html5QrCodeScanner = null;
+
+    let wizRating = 0; let mediaRecorder = null; let audioChunks = []; let recordedAudioBase64 = null; let isRecording = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initMap();
+      setupStarPicker();
+      
+      // Mostrar info al instante sin login
+      onValue(ref(db, 'businesses'), (snapshot) => {
+        allBusinesses = snapshot.val() || {};
+        window.renderMapPins();
+        
+        // Deep Linking QR Scan
+        const urlParams = new URLSearchParams(window.location.search);
+        const bizParam = urlParams.get('biz');
+        if (bizParam && allBusinesses[bizParam] && !window.deepLinkOpened) {
+          window.deepLinkOpened = true; window.openBusinessModal(bizParam);
+        }
+      });
+    });
+
+    /* MAPA Y GPS EN TIEMPO REAL */
+    function initMap() {
+      map = L.map('map', { zoomControl: false }).setView([userCoords.lat, userCoords.lng], 14);
+      // Mapa gratuito y estándar, estilizado en el CSS para verse Beige/Oscuro
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '' }).addTo(map);
+
+      if ("geolocation" in navigator) {
+        navigator.geolocation.watchPosition((pos) => {
+          userCoords.lat = pos.coords.latitude; userCoords.lng = pos.coords.longitude;
+          if (!userMarker) {
+            const icon = L.divIcon({ className: '', html: "<div style='background:var(--primary); width:20px; height:20px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 10px rgba(15,52,115,0.4);'></div>", iconSize: [20,20] });
+            userMarker = L.marker([userCoords.lat, userCoords.lng], { icon, zIndexOffset: 1000 }).addTo(map);
+          } else {
+            userMarker.setLatLng([userCoords.lat, userCoords.lng]);
+          }
+        }, () => {}, { enableHighAccuracy: true });
+      }
+    }
+
+    window.centerToUser = function() {
+      if(userMarker) { map.setView(userMarker.getLatLng(), 16); showToast("Ubicación actualizada"); }
+      else showToast("Buscando señal GPS...");
+    };
+
+    window.renderMapPins = function() {
+      currentMarkers.forEach(m => map.removeLayer(m)); currentMarkers = [];
+      const catFilter = document.getElementById('filter-cat').value;
+      const textFilter = document.getElementById('filter-text').value.toLowerCase();
+
+      Object.entries(allBusinesses).forEach(([id, b]) => {
+        if ((catFilter === 'ALL' || b.category === catFilter) && b.name.toLowerCase().includes(textFilter)) {
+          // PINES CUADRADOS
+          const img = b.photoBase64 || "https://via.placeholder.com/150/0F3473/FFFFFF?text=Proof";
+          const iconHtml = `<div class="pin-wrapper"><img src="${img}" class="photo-pin-img"><div class="pin-tail"></div></div>`;
+          const icon = L.divIcon({ className: 'custom-photo-pin', html: iconHtml, iconSize: [60, 75], iconAnchor: [30, 75] });
+          
+          const m = L.marker([b.lat, b.lng], { icon }).addTo(map);
+          m.on('click', () => window.openBusinessModal(id));
+          currentMarkers.push(m);
+        }
+      });
+    };
+
+    /* FICHA Y RESEÑAS */
+    window.openBusinessModal = function(id) {
+      selectedBizId = id; const biz = allBusinesses[id];
+      document.getElementById('biz-title').innerText = biz.name;
+      document.getElementById('biz-header-img').src = biz.photoBase64 || "https://via.placeholder.com/600x300/F6f4F1/0F3473?text=Proof";
+      document.getElementById('biz-desc').innerText = biz.desc || "Sin descripción";
+      document.getElementById('biz-hours').innerText = biz.hours || "Horarios a consultar";
+      document.getElementById('biz-address').innerText = biz.address || "Ubicación en mapa";
+      
+      const menuBtn = document.getElementById('biz-menu-container');
+      if (biz.menu) { menuBtn.style.display = "flex"; document.getElementById('biz-menu').href = biz.menu; } else { menuBtn.style.display = "none"; }
+
+      const container = document.getElementById('biz-reviews-list'); container.innerHTML = "";
+      const reviewsArr = biz.reviews ? Object.values(biz.reviews).sort((a,b) => b.timestamp - a.timestamp) : [];
+      
+      if (reviewsArr.length === 0) container.innerHTML = "<p style='color:var(--text-muted); font-weight:600; text-align:center; margin-top:20px;'>Aún no hay pruebas de este local.</p>";
+      else {
+        reviewsArr.forEach(r => {
+          let media = "";
+          if (r.photoBase64) media += `<img src="${r.photoBase64}">`;
+          if (r.audioBase64) media += `<audio controls src="${r.audioBase64}"></audio>`;
+          let stars = `<div style="color:#F5A623;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.rating || 5) + `</div>`;
+
+          container.innerHTML += `
+            <div class="review-card">
+              <div class="review-header"><img src="${r.authorPhoto}"><div><div style="font-weight:900; font-size:1.1rem;">${escapeHtml(r.authorName)}</div>${stars}</div></div>
+              ${r.text ? `<div style="font-weight:600; font-size:1rem;">${escapeHtml(r.text)}</div>` : ''}
+              <div class="review-media">${media}</div>
+            </div>`;
+        });
+      }
+      window.openModal('modal-biz');
+    };
+
+    /* WIZARD DE RESEÑAS */
+    window.startReviewWizard = function() {
+      if (!currentUser) return window.openModal('modal-auth');
+      wizRating = 0; document.querySelectorAll('#star-picker i').forEach(s => s.classList.remove('active'));
+      document.getElementById('wiz-text').value = ''; document.getElementById('wiz-photo').value = ''; document.getElementById('wiz-photo-preview').style.display = 'none';
+      recordedAudioBase64 = null; document.getElementById('wiz-audio-preview').style.display = 'none';
+      window.nextWizardStep(1); window.openModal('modal-wizard');
+    };
+    function setupStarPicker() { document.querySelectorAll('#star-picker i').forEach(s => s.addEventListener('click', e => { wizRating = parseInt(e.target.getAttribute('data-val')); document.querySelectorAll('#star-picker i').forEach((st, idx) => { if(idx < wizRating) st.classList.add('active'); else st.classList.remove('active'); }); })); }
+    window.nextWizardStep = function(s) { if(s===2 && wizRating===0) return showToast("Califica con estrellas primero"); document.querySelectorAll('.wizard-step').forEach(e => e.classList.remove('active')); document.getElementById('wiz-step-'+s).classList.add('active'); };
+    window.previewWizPhoto = function(e) { if(e.target.files.length>0){ const r = new FileReader(); r.onload = ev => { document.getElementById('wiz-photo-preview').src = ev.target.result; document.getElementById('wiz-photo-preview').style.display = 'block'; }; r.readAsDataURL(e.target.files[0]); } };
+    window.toggleWizAudio = async function() {
+      const btn = document.getElementById('btn-wiz-audio'); const preview = document.getElementById('wiz-audio-preview');
+      if(!isRecording) {
+        try { const stream = await navigator.mediaDevices.getUserMedia({audio:true}); mediaRecorder = new MediaRecorder(stream); audioChunks = []; mediaRecorder.ondataavailable = e => audioChunks.push(e.data); mediaRecorder.onstop = () => { const blob = new Blob(audioChunks, {type:'audio/webm'}); fileToBase64(blob).then(b64 => { recordedAudioBase64 = b64; preview.src = b64; preview.style.display = "block"; }); }; mediaRecorder.start(); isRecording = true; btn.innerHTML = `<i class="fa-solid fa-stop" style="color:#D9534F;"></i> Detener Grabación`; } catch(e) { showToast("Sin micrófono"); }
+      } else { mediaRecorder.stop(); isRecording = false; btn.innerHTML = `<i class="fa-solid fa-microphone"></i> Regrabar Audio`; }
+    };
+    window.submitWizardReview = async function() {
+      const text = document.getElementById('wiz-text').value.trim(); const photoInput = document.getElementById('wiz-photo');
+      const btn = document.getElementById('btn-wiz-submit'); btn.disabled = true;
+      try {
+        let photoB64 = null; if (photoInput.files.length > 0) photoB64 = await fileToBase64(photoInput.files[0]);
+        await push(ref(db, `businesses/${selectedBizId}/reviews`), { authorUid: currentUser.uid, authorName: currentUser.name, authorPhoto: currentUser.photo, rating: wizRating, text, audioBase64: recordedAudioBase64, photoBase64: photoB64, timestamp: Date.now() });
+        window.closeModal('modal-wizard'); window.openBusinessModal(selectedBizId); showToast("¡Proof guardado!");
+      } catch(err) { showToast("Error al publicar"); } finally { btn.disabled = false; }
+    };
+
+    /* AUTH Y USUARIOS */
+    onAuthStateChanged(auth, user => {
+      if (user) { onValue(ref(db, 'users/' + user.uid), s => { if(s.exists()){ currentUser = {uid:user.uid, email:user.email, ...s.val()}; updateAuthUI(); } }); } 
+      else { currentUser = null; updateAuthUI(); }
+    });
+    window.registerUser = async function() {
+      const n = document.getElementById('regName').value, e = document.getElementById('regEmail').value, p = document.getElementById('regPassword').value, f = document.getElementById('regPhoto').files[0];
+      if(!n || !e || !p) return showToast("Faltan datos");
+      try {
+        let b64 = "https://via.placeholder.com/150/0F3473/FFFFFF?text="+n.charAt(0).toUpperCase(); if(f) b64 = await fileToBase64(f);
+        const c = await createUserWithEmailAndPassword(auth, e, p);
+        await set(ref(db, 'users/'+c.user.uid), {name:n, photo:b64, createdAt:Date.now()}); window.closeModal('modal-auth'); showToast("¡Cuenta habilitada!");
+      } catch(err){ showToast("Error al registrar: " + err.message); }
+    };
+    window.loginUser = async function() { try{ await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value); window.closeModal('modal-auth'); showToast("¡Hola de nuevo!"); } catch(e){ showToast("Datos incorrectos"); } };
+    window.logoutUser = async function() { await signOut(auth); window.closeDrawer(); showToast("Sesión cerrada"); };
+    function updateAuthUI() {
+      if(currentUser) { document.getElementById('drawer-user-profile').style.display='block'; document.getElementById('drawer-avatar').src=currentUser.photo; document.getElementById('drawer-username').innerText=currentUser.name; document.getElementById('menu-text-auth').innerText="Cambiar Perfil"; document.getElementById('menu-btn-logout').style.display='flex'; }
+      else { document.getElementById('drawer-user-profile').style.display='none'; document.getElementById('menu-text-auth').innerText="Iniciar Sesión / Registro"; document.getElementById('menu-btn-logout').style.display='none'; }
+    }
+    
+    /* UTILS & QR */
+    window.switchAuthTab = function(tab) { document.getElementById('loginForm').style.display = tab==='login'?'block':'none'; document.getElementById('registerForm').style.display = tab==='register'?'block':'none'; document.getElementById('tab-login').classList.toggle('active', tab==='login'); document.getElementById('tab-register').classList.toggle('active', tab==='register'); };
+    window.startQrScanner = function() { window.openModal('modal-qr'); if(!html5QrCodeScanner){ html5QrCodeScanner = new Html5QrcodeScanner("qr-reader", {fps:10, qrbox:250}); html5QrCodeScanner.render(text => { window.closeModal('modal-qr'); html5QrCodeScanner.clear(); html5QrCodeScanner=null; try{ const u=new URL(text); const id=u.searchParams.get('biz'); if(id && allBusinesses[id]) window.openBusinessModal(id); else showToast("QR no válido para esta app"); }catch(e){ if(allBusinesses[text]) window.openBusinessModal(text); else showToast("Código no válido"); } }, ()=>{}); } };
+    window.openModal = id => document.getElementById(id).classList.add('active');
+    window.closeModal = id => document.getElementById(id).classList.remove('active');
+    window.openDrawer = () => { document.getElementById('drawer').classList.add('active'); document.getElementById('drawer-overlay').classList.add('active'); };
+    window.closeDrawer = () => { document.getElementById('drawer').classList.remove('active'); document.getElementById('drawer-overlay').classList.remove('active'); };
+    window.handleMenuAuth = () => { window.closeDrawer(); window.openModal('modal-auth'); };
+    function showToast(msg) { const t=document.getElementById('toast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3000); }
+    function escapeHtml(s) { return s?s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"):""; }
+    function fileToBase64(file) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); }); }
+  </script>
+</body>
+</html>
