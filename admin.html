@@ -18,13 +18,13 @@
     input, select, textarea { width: 100%; padding: 14px; border: 2px solid rgba(15,52,115,0.1); border-radius: 16px; font-size: 1rem; color: var(--primary); font-family: 'Outfit'; outline: none; transition: 0.3s; }
     input:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 4px 12px rgba(15,52,115,0.08); }
     #admin-map { height: 350px; border-radius: 16px; margin-top: 10px; border: 2px solid rgba(15,52,115,0.1); z-index: 1; }
-    button { padding: 16px 24px; border: none; border-radius: 30px; background: var(--primary); color: var(--white); font-weight: 800; cursor: pointer; font-size: 1rem; transition: 0.3s; font-family: 'Outfit'; }
+    button { padding: 16px 24px; border: none; border-radius: 30px; background: var(--primary); color: var(--white); font-weight: 800; cursor: pointer; font-size: 1rem; transition: 0.3s; font-family: 'Outfit'; display: inline-block; }
     button:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(15,52,115,0.2); }
     .btn-secondary { background: var(--bg-base); color: var(--primary); border: 2px solid var(--primary); }
     .btn-danger { background: #D9534F; color: white; padding: 10px 16px; font-size: 0.9rem; }
     .biz-item { display: flex; justify-content: space-between; align-items: center; padding: 20px; border: 2px solid rgba(15,52,115,0.1); border-radius: 20px; margin-bottom: 16px; background: #fafafa; }
     .qr-box { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
-    .qr-box img { width: 150px; height: 150px; border-radius: 12px; border: 2px solid var(--primary); padding: 4px; background: white; }
+    .qr-box img { width: 120px; height: 120px; border-radius: 12px; border: 2px solid var(--primary); padding: 4px; background: white; }
     #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px; font-weight: 800; display: none; z-index: 9999; }
     .domain-box { background: rgba(15,52,115,0.05); padding: 20px; border-radius: 16px; margin-bottom: 30px; border: 2px dashed var(--primary); }
   </style>
@@ -36,9 +36,9 @@
   <div class="container">
     <h2><i class="fa-solid fa-link"></i> Enlace Seguro de QR</h2>
     <div class="domain-box">
-      <label>URL de Netlify (App Pública)</label>
+      <label>Tu Dominio Público de Netlify (URL Exacta)</label>
       <input type="text" id="app-domain" placeholder="https://proofok.netlify.app" oninput="window.renderAdminList()">
-      <p style="font-size:0.85rem; color:#666; margin-top:8px;">Asegúrate de poner tu enlace con <b>https://</b> aquí. Esto fuerza a los códigos QR de abajo a convertirse en enlaces de internet.</p>
+      <p style="font-size:0.85rem; color:#666; margin-top:8px;">Asegúrate de que empiece con <b>https://</b>. Así garantizamos que las cámaras de los celulares lo abran directamente en internet.</p>
     </div>
 
     <h2><i class="fa-solid fa-plus-circle"></i> Crear Local</h2>
@@ -70,7 +70,7 @@
     <div id="admin-map"></div>
     <input type="hidden" id="lat"><input type="hidden" id="lng">
     
-    <button onclick="saveBusiness()" style="width:100%; margin-top:30px; font-size:1.2rem;">Guardar y Crear Código QR</button>
+    <button onclick="saveBusiness()" style="width:100%; margin-top:30px; font-size:1.2rem;" id="btn-save">Guardar y Crear Código QR</button>
 
     <h2 style="margin-top:60px;">Locales Registrados y QRs</h2>
     <div id="biz-list"></div>
@@ -87,6 +87,7 @@
     });
     const db = getDatabase(app);
 
+    // Auto-completar dominio
     const currentOrigin = window.location.origin;
     if (currentOrigin.startsWith("http") && !currentOrigin.includes("localhost")) {
       document.getElementById('app-domain').value = currentOrigin;
@@ -94,25 +95,32 @@
       document.getElementById('app-domain').value = "https://proofok.netlify.app";
     }
 
+    // Mapa usando iconos estáticos SVG en lugar de default Leaflet
     let adminMap = L.map('admin-map').setView([-38.0055, -57.5426], 13);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(adminMap);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(adminMap);
     let adminMarker = null;
 
     adminMap.on('click', (e) => { setMarker(e.latlng.lat, e.latlng.lng); document.getElementById('address').value = "Punto en el mapa"; });
 
     function setMarker(lat, lng) {
       document.getElementById('lat').value = lat; document.getElementById('lng').value = lng;
-      if(adminMarker) adminMarker.setLatLng([lat, lng]); else adminMarker = L.marker([lat, lng]).addTo(adminMap);
+      const icon = L.divIcon({ className: '', html: "<div style='background:var(--primary); width:20px; height:20px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 10px rgba(15,52,115,0.4);'></div>", iconSize: [20,20] });
+      
+      if(adminMarker) adminMarker.setLatLng([lat, lng]); 
+      else adminMarker = L.marker([lat, lng], {icon}).addTo(adminMap);
+      
       adminMap.setView([lat, lng], 16);
     }
 
     window.searchAddress = async function() {
       const q = document.getElementById('address').value; if(!q) return;
       showToast("Buscando...");
-      const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}`);
-      const data = await res.json();
-      if(data.length > 0) { setMarker(parseFloat(data[0].lat), parseFloat(data[0].lon)); showToast("Ubicación encontrada"); }
-      else showToast("No se encontró. Usa el GPS.");
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}`);
+        const data = await res.json();
+        if(data.length > 0) { setMarker(parseFloat(data[0].lat), parseFloat(data[0].lon)); showToast("Ubicación encontrada"); }
+        else showToast("No se encontró. Usa el GPS.");
+      } catch(e) { showToast("Error de conexión"); }
     };
 
     window.useAdminGPS = function() {
@@ -126,6 +134,34 @@
       }
     };
 
+    // COMPRESOR ROBUSTO
+    function fileToBase64Compress(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            try {
+              const canvas = document.createElement('canvas');
+              const MAX_WIDTH = 800; 
+              let scaleSize = 1;
+              if (img.width > MAX_WIDTH) scaleSize = MAX_WIDTH / img.width;
+              canvas.width = img.width * scaleSize; canvas.height = img.height * scaleSize;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              resolve(canvas.toDataURL('image/jpeg', 0.8));
+            } catch(err) {
+              resolve(e.target.result); // Fallback
+            }
+          };
+          img.onerror = () => resolve(e.target.result);
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
     window.saveBusiness = async function() {
       const name = document.getElementById('name').value; const desc = document.getElementById('desc').value;
       const cat = document.getElementById('cat').value; const hours = document.getElementById('hours').value;
@@ -135,12 +171,20 @@
 
       if(!name || isNaN(lat)) return showToast("Falta el nombre o marcar en el mapa");
       
-      let photoBase64 = null;
-      if(photoFile) photoBase64 = await fileToBase64(photoFile);
+      const btn = document.getElementById('btn-save'); btn.disabled = true; btn.innerText = "Subiendo...";
 
-      await push(ref(db, 'businesses'), { name, desc, category: cat, hours, address, menu, lat, lng, photoBase64, timestamp: Date.now() });
-      showToast("Local guardado");
-      document.querySelectorAll('input:not([type=hidden]), textarea').forEach(i => i.value='');
+      try {
+        let photoBase64 = null;
+        if(photoFile) photoBase64 = await fileToBase64Compress(photoFile);
+
+        await push(ref(db, 'businesses'), { name, desc, category: cat, hours, address, menu, lat, lng, photoBase64, timestamp: Date.now() });
+        showToast("Local guardado con éxito");
+        document.querySelectorAll('input:not([type=hidden]), textarea').forEach(i => i.value='');
+      } catch(err) {
+        showToast("Error: " + err.message);
+      } finally {
+        btn.disabled = false; btn.innerText = "Guardar y Crear Código QR";
+      }
     };
 
     let globalBizData = {};
@@ -180,14 +224,6 @@
 
     window.deleteBiz = async function(id) { if(confirm("¿Eliminar este local de forma permanente?")) await remove(ref(db, 'businesses/'+id)); };
     function showToast(msg) { const t=document.getElementById('toast'); t.innerText=msg; t.style.display='block'; setTimeout(()=>t.style.display='none', 3000); }
-    function fileToBase64(f) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => {
-      const img = new Image(); img.onload = () => {
-        const canvas = document.createElement('canvas'); const MAX = 600; const scale = img.width > MAX ? MAX / img.width : 1;
-        canvas.width = img.width * scale; canvas.height = img.height * scale;
-        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        res(canvas.toDataURL('image/jpeg', 0.8));
-      }; img.src = r.result;
-    }; r.onerror = rej; r.readAsDataURL(f); }); }
   </script>
 </body>
 </html>
