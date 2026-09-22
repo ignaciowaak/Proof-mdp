@@ -144,12 +144,7 @@
     .star-rating-picker i:active { transform: scale(0.8); }
     .star-rating-picker i.active { color: #F5A623; transform: scale(1.15); filter: drop-shadow(0 4px 8px rgba(245, 166, 35, 0.3)); }
     
-    /* ETIQUETA VERDE RECOMPENSAS (ESTILO MERCADO LIBRE) */
-    .reward-tag {
-      background: rgba(76, 175, 80, 0.15); color: #2E7D32;
-      padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 900;
-      display: inline-block; vertical-align: middle; margin-left: 6px;
-    }
+    .reward-tag { background: rgba(76, 175, 80, 0.15); color: #2E7D32; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 900; display: inline-block; vertical-align: middle; margin-left: 6px; }
     
     /* === RANKING STYLES === */
     .ranking-card { display: flex; align-items: center; gap: 14px; background: var(--white); padding: 14px 18px; border-radius: 20px; margin-bottom: 12px; box-shadow: var(--shadow-soft); transition: transform 0.2s ease; cursor: pointer; border: 1px solid rgba(15,52,115,0.02); }
@@ -194,7 +189,7 @@
   <!-- HEADER -->
   <header class="top-header fade-in">
     <!-- PON AQUÍ TU LOGO -->
-    <img src="tu_logo.png" onerror="this.src='https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO'" alt="Logo" class="header-center-img">
+    <img src="1.png" onerror="this.src='https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO'" alt="Logo" class="header-center-img">
   </header>
 
   <!-- MAPA PRINCIPAL -->
@@ -205,7 +200,7 @@
     <i class="fa-solid fa-trophy" style="color:#F5A623;"></i> <span id="map-points-text">0 Pts</span>
   </div>
 
-  <!-- BARRA VERTICAL RETRÁCTIL (TUS MEDIDAS) -->
+  <!-- BARRA VERTICAL RETRÁCTIL -->
   <div class="toolbar-wrapper slide-up" id="toolbar-wrapper" style="animation-delay: 0.3s;">
     <button class="toggle-toolbar-btn float" onclick="window.toggleToolbar()"><i class="fa-solid fa-chevron-right" id="toolbar-icon"></i></button>
     <div class="vertical-toolbar">
@@ -262,7 +257,7 @@
     </div>
   </div>
 
-  <!-- MODAL: RANKING / LEADERBOARD (NUEVO CÁLCULO) -->
+  <!-- MODAL: RANKING / LEADERBOARD -->
   <div class="modal-overlay" id="modal-ranking">
     <div class="modal-card">
       <div class="modal-header">
@@ -281,7 +276,7 @@
     </div>
   </div>
 
-  <!-- MODAL: MI PERFIL (SISTEMA DE PUNTOS REAL) -->
+  <!-- MODAL: MI PERFIL -->
   <div class="modal-overlay" id="modal-profile">
     <div class="modal-card">
       <div class="modal-header">
@@ -402,7 +397,7 @@
           <h4 style="font-size:1.3rem; font-weight:900;">2. Tu opinión <span class="reward-tag">+20 Pts</span></h4>
           <textarea id="wiz-text" rows="4" placeholder="¿Qué fue lo mejor del servicio?" style="width:100%; border:2px solid rgba(15,52,115,0.1); border-radius:20px; padding:16px; font-size:1rem;"></textarea>
           <div style="display:flex; gap:12px; width:100%;">
-            <button class="btn btn-secondary" style="flex:1;" onclick="window.skipWizardStep(3, 20, 'una opinión escrita')">Saltar</button>
+            <button class="btn btn-secondary" style="flex:1;" onclick="window.trySkipWizard(3)">Saltar</button>
             <button class="btn btn-primary" style="flex:1;" onclick="window.tryNextStepText()">Siguiente</button>
           </div>
         </div>
@@ -413,7 +408,7 @@
           <img id="wiz-photo-preview" style="width:100%; max-height:200px; border-radius:20px; display:none; margin-bottom:12px; object-fit:cover; box-shadow: var(--shadow-sm);">
           <label class="btn btn-secondary" style="width:100%; margin-bottom:12px;"><i class="fa-solid fa-image"></i> Abrir Galería<input type="file" id="wiz-photo" accept="image/*" onchange="window.previewWizPhoto(event)" style="display:none;"></label>
           <div style="display:flex; gap:12px; width:100%;">
-            <button class="btn btn-secondary" style="flex:1;" onclick="window.skipWizardStep(4, 30, 'una foto')">Saltar</button>
+            <button class="btn btn-secondary" style="flex:1;" onclick="window.trySkipWizard(4)">Saltar</button>
             <button class="btn btn-primary" style="flex:1;" onclick="window.tryNextStepPhoto()">Siguiente</button>
           </div>
         </div>
@@ -424,6 +419,28 @@
           <button class="btn btn-secondary" id="btn-wiz-audio" style="width:100%; padding:20px; border:2px dashed var(--primary);" onclick="window.toggleWizAudio()"><i class="fa-solid fa-microphone"></i> Iniciar Grabación</button>
           <audio id="wiz-audio-preview" controls style="width:100%; display:none; margin-top:16px;"></audio>
           <button class="btn btn-primary" style="width:100%; margin-top:30px; padding:16px;" id="btn-wiz-submit" onclick="window.submitWizardReview()">Publicar y Sumar Puntos <i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ALERTA DE CULPA CON IMAGEN (FLOTANTE SIN CONTENEDOR) -->
+  <div class="modal-overlay" id="modal-guilt" style="z-index: 4000; align-items: center;">
+    <div class="modal-card" style="max-width: 360px; background: transparent; box-shadow: none; overflow: visible;">
+      <div class="modal-body" style="padding: 20px; text-align: center; overflow: visible; display: flex; flex-direction: column; align-items: center; gap: 24px;">
+        
+        <!-- Imagen flotante (sin fondo blanco, sin bordes) -->
+        <img src="2.png" alt="¿Te vas sin dejar reseña?" style="width: 100%; max-width: 320px; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.3));">
+        
+        <!-- Botones -->
+        <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
+          <button class="btn btn-primary" style="width: 100%; font-size: 1.15rem; padding: 18px; border-radius: 30px; display: flex; justify-content: center; gap: 10px; box-shadow: 0 10px 30px rgba(15, 52, 115, 0.5);" onclick="window.cancelSkip()">
+            <i class="fa-solid fa-star"></i> Dale, calificar
+          </button>
+          <button class="btn" style="width: 100%; background: transparent; color: #FFFFFF; text-shadow: 0 2px 4px rgba(0,0,0,0.4); box-shadow: none; border: none; font-weight: 800; font-size: 1.05rem; text-decoration: underline;" onclick="window.confirmSkip()">
+            Saltar igual
+          </button>
         </div>
 
       </div>
@@ -469,6 +486,7 @@
     let gpsWatcherId = null;
 
     let wizRating = 0; let mediaRecorder = null; let audioChunks = []; let recordedAudioBase64 = null; let isRecording = false;
+    let pendingSkipStep = null;
 
     window.addEventListener('DOMContentLoaded', () => {
       initMap();
@@ -477,9 +495,8 @@
       onValue(ref(db, 'businesses'), (snapshot) => {
         allBusinesses = snapshot.val() || {};
         window.renderMapPins();
-        if(currentUser) window.updateUserPointsDisplay(); // Refrescar puntos si entraron reseñas
+        if(currentUser) window.updateUserPointsDisplay(); 
         
-        // DEEP LINKING
         const urlParams = new URLSearchParams(window.location.search);
         const bizParam = urlParams.get('biz');
         if (bizParam && allBusinesses[bizParam] && !window.deepLinkOpened) {
@@ -602,7 +619,6 @@
       });
       let usersArr = Object.values(userCounts).sort((a, b) => b.pts - a.pts);
 
-      // Si el perfil está abierto, le pongo su rank
       if(currentUser && document.getElementById('prof-rank')) {
         let myRank = usersArr.findIndex(u => u.uid === currentUser.uid) + 1;
         document.getElementById('prof-rank').innerText = myRank > 0 ? `#${myRank}` : '-';
@@ -799,7 +815,6 @@
     };
 
     window.openMyProfile = function() {
-      // Forzar calculo de puntos y ranking
       renderRankings(); 
       
       const container = document.getElementById('my-reviews-list'); container.innerHTML = ""; let count = 0;
@@ -825,7 +840,7 @@
       window.openModal('modal-profile');
     };
 
-    /* === WIZARD Y SISTEMA DE SALTOS === */
+    /* === WIZARD Y SISTEMA DE ALERTA DE CULPA === */
     window.startReviewWizard = function() {
       if (!currentUser) return window.openModal('modal-auth');
       wizRating = 0; document.querySelectorAll('#star-picker i').forEach(s => s.classList.remove('active'));
@@ -843,20 +858,33 @@
       document.getElementById('wiz-step-'+s).classList.add('active'); 
     };
 
-    // ALERTA DE CULPA AL SALTAR (MERCADO LIBRE STYLE)
-    window.skipWizardStep = function(nextStep, ptsToLose, typeName) {
-      if (confirm(`¿Te vas sin dejar ${typeName}? 😢\n¡Estás a punto de perder +${ptsToLose} Puntos de recompensa!\n\n¿Seguro que quieres omitirlo y no sumar?`)) {
-        window.nextWizardStep(nextStep);
+    window.trySkipWizard = function(nextStep) {
+      pendingSkipStep = nextStep; 
+      window.openModal('modal-guilt'); 
+    };
+
+    window.cancelSkip = function() {
+      window.closeModal('modal-guilt');
+      pendingSkipStep = null; 
+    };
+
+    window.confirmSkip = function() {
+      window.closeModal('modal-guilt');
+      if (pendingSkipStep === 'submit') {
+        window.processSubmitReview(); 
+      } else if (pendingSkipStep !== null) {
+        window.nextWizardStep(pendingSkipStep); 
       }
+      pendingSkipStep = null;
     };
 
     window.tryNextStepText = function() {
-      if (document.getElementById('wiz-text').value.trim() === '') window.skipWizardStep(3, 20, 'una opinión escrita');
+      if (document.getElementById('wiz-text').value.trim() === '') window.trySkipWizard(3);
       else window.nextWizardStep(3);
     };
 
     window.tryNextStepPhoto = function() {
-      if (document.getElementById('wiz-photo').files.length === 0) window.skipWizardStep(4, 30, 'una foto');
+      if (document.getElementById('wiz-photo').files.length === 0) window.trySkipWizard(4);
       else window.nextWizardStep(4);
     };
 
@@ -870,9 +898,14 @@
     
     window.submitWizardReview = async function() {
       if (!recordedAudioBase64) {
-        if (!confirm("¿Te vas sin dejar un audio? 🎙️\n¡Estás dejando de ganar +40 Puntos extra en el ranking!\n\n¿Quieres publicar de todas formas?")) return;
+        pendingSkipStep = 'submit';
+        window.openModal('modal-guilt');
+        return;
       }
+      await window.processSubmitReview();
+    };
 
+    window.processSubmitReview = async function() {
       const text = document.getElementById('wiz-text').value.trim(); const photoInput = document.getElementById('wiz-photo');
       const btn = document.getElementById('btn-wiz-submit'); btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando...`;
       try {
@@ -880,7 +913,7 @@
         await push(ref(db, `businesses/${selectedBizId}/reviews`), { authorUid: currentUser.uid, authorName: currentUser.name, authorPhoto: currentUser.photo, rating: wizRating, text, audioBase64: recordedAudioBase64, photoBase64: photoB64, timestamp: Date.now() });
         window.closeModal('modal-wizard'); window.openBusinessModal(selectedBizId); 
         showToast("¡Proof guardado y Puntos Sumados! 🏆");
-        window.updateUserPointsDisplay(); // Refrescar puntos
+        window.updateUserPointsDisplay(); 
       } catch(err) { showToast("Error al publicar"); } finally { btn.disabled = false; btn.innerHTML = `Publicar y Sumar Puntos <i class="fa-solid fa-paper-plane"></i>`; }
     };
 
