@@ -69,29 +69,20 @@
     .header-center-img { height: 48px; width: auto; max-width: 60%; object-fit: contain; pointer-events: auto; filter: drop-shadow(0 6px 12px rgba(15,52,115,0.15)); transition: transform 0.3s ease; }
     .header-center-img:active { transform: scale(0.95); }
 
-    /* === BARRA VERTICAL RETRÁCTIL (MATEMÁTICA PERFECTA) === */
+    /* === BARRA VERTICAL RETRÁCTIL === */
     .toolbar-wrapper { 
-      position: absolute; 
-      right: 16px; /* Posición visible */
-      top: 50%; 
-      margin-top: -120px; /* Centrado absoluto infalible */
+      position: absolute; right: 12px; top: 50%; margin-top: -110px; 
       z-index: 1000; display: flex; align-items: center; 
       transition: right 0.4s ease-in-out; 
     }
-    .toolbar-wrapper.hidden { 
-      right: -70px; /* Esconde toda la barra (60px) + la sombra (10px) = 70px fuera de la pantalla */
-    }
-    
+    .toolbar-wrapper.hidden { right: -55px; }
     .toggle-toolbar-btn { 
       background: var(--white); border: 1px solid rgba(15,52,115,0.05); color: var(--primary); 
-      width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+      width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
       cursor: pointer; box-shadow: var(--shadow-soft); z-index: 1001; 
-      position: absolute; 
-      left: -32px; /* Al esconderse -70px, estos -32px garantizan que la flecha asome exactamente por la mitad en cualquier celular */
-      font-size: 1.1rem; transition: var(--transition-smooth); 
+      position: absolute; left: -52px; font-size: 0.8rem; transition: var(--transition-smooth); 
     }
     .toggle-toolbar-btn:active { transform: scale(0.85); }
-    
     .vertical-toolbar { display: flex; flex-direction: column; align-items: center; gap: 20px; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.4); padding: 22px 14px; border-radius: 35px; box-shadow: var(--shadow-soft); width: 60px; }
     .tool-btn { background: transparent; border: none; color: var(--primary); font-size: 1.5rem; cursor: pointer; transition: var(--transition-fast); display: flex; align-items: center; justify-content: center; opacity: 0.8; }
     .tool-btn:hover { opacity: 1; transform: scale(1.1); }
@@ -125,28 +116,16 @@
     .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 18px 24px; border: 2px solid transparent; border-radius: 24px; background: var(--white); font-weight: 600; margin-bottom: 16px; font-size: 1.05rem; color: var(--primary); outline: none; transition: var(--transition-smooth); box-shadow: 0 4px 12px rgba(15,52,115,0.03); appearance: none; }
     .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary); box-shadow: var(--shadow-soft); }
 
-    /* === FICHA DEL LOCAL: MINIATURAS (THUMBNAILS) CON BLOQUEO === */
-    .biz-carousel-container { 
-      display: flex; overflow-x: auto; gap: 14px; padding-bottom: 12px; 
-      scrollbar-width: none; -webkit-overflow-scrolling: touch; margin-top: 5px; 
-      min-height: 90px; flex-shrink: 0; width: 100%;
-    }
+    /* === FICHA DEL LOCAL: MINIATURAS ANTI-COLAPSO === */
+    .biz-carousel-container { display: flex; overflow-x: auto; gap: 14px; padding-bottom: 12px; scrollbar-width: none; -webkit-overflow-scrolling: touch; margin-top: 5px; min-height: 90px; flex-shrink: 0; width: 100%; }
     .biz-carousel-container::-webkit-scrollbar { display: none; }
-    .biz-carousel-item { 
-      flex: 0 0 85px; height: 85px; border-radius: 22px; 
-      box-shadow: 0 6px 16px rgba(15,52,115,0.15); cursor: zoom-in; overflow: hidden; 
-      background-color: var(--white); background-size: cover; background-position: center; 
-      border: 2px solid var(--white); flex-shrink: 0; /* Esto bloquea el CSS para que la tarjeta de abajo no se superponga jamás */
-    }
+    .biz-carousel-item { flex: 0 0 85px; height: 85px; border-radius: 22px; box-shadow: 0 6px 16px rgba(15,52,115,0.15); cursor: zoom-in; overflow: hidden; background-color: var(--white); background-size: cover; background-position: center; border: 2px solid var(--white); flex-shrink: 0; }
 
     /* REDES SOCIALES */
     .social-links-container { display: flex; gap: 12px; margin-bottom: 16px; padding: 0 4px; flex-wrap: wrap; flex-shrink: 0; }
     .social-link { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; color: var(--white); font-size: 1.4rem; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.2s; }
     .social-link:active { transform: scale(0.85); }
-    .social-wa { background: #25D366; } 
-    .social-ig { background: #E1306C; } 
-    .social-fb { background: #1877F2; } 
-    .social-web { background: var(--primary); } 
+    .social-wa { background: #25D366; } .social-ig { background: #E1306C; } .social-fb { background: #1877F2; } .social-web { background: var(--primary); } 
 
     /* LIGHTBOX ZOOM */
     #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,52,115,0.95); z-index: 9999; backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; cursor: zoom-out; }
@@ -172,15 +151,27 @@
     .wizard-step.active { display: flex; animation: slideUpFade 0.4s ease forwards; }
     .star-rating-picker { font-size: 3.5rem; color: rgba(15,52,115,0.1); display: flex; gap: 14px; margin: 30px 0; }
     .star-rating-picker i { cursor: pointer; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease; }
-    .star-rating-picker i:active { transform: scale(0.8); }
     .star-rating-picker i.active { color: #F5A623; transform: scale(1.15); filter: drop-shadow(0 4px 8px rgba(245, 166, 35, 0.3)); }
     
-    /* Tabs Login */
+    /* Tabs Compartidos (Login & Ranking) */
     .tabs { display: flex; gap: 8px; margin-bottom: 24px; background: rgba(15,52,115,0.05); padding: 8px; border-radius: 40px; }
     .tab { flex: 1; text-align: center; padding: 16px; border-radius: 30px; cursor: pointer; font-weight: 800; color: rgba(15,52,115,0.4); transition: var(--transition-smooth); font-size: 1.05rem; }
     .tab.active { background: var(--white); color: var(--primary); box-shadow: var(--shadow-soft); }
     .form-section { display: none; }
     .form-section.active { display: block; animation: slideUpFade 0.4s ease forwards; }
+
+    /* === RANKINGS STYLES === */
+    .ranking-card { display: flex; align-items: center; gap: 16px; background: var(--white); padding: 16px 20px; border-radius: 24px; margin-bottom: 12px; box-shadow: var(--shadow-soft); transition: transform 0.2s ease; cursor: pointer; }
+    .ranking-card:active { transform: scale(0.96); }
+    .rank-medal { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.3rem; color: var(--white); flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .rank-1 { background: linear-gradient(135deg, #FFD700, #FFAA00); box-shadow: 0 4px 12px rgba(255,215,0,0.4); }
+    .rank-2 { background: linear-gradient(135deg, #E0E0E0, #9E9E9E); box-shadow: 0 4px 12px rgba(158,158,158,0.4); }
+    .rank-3 { background: linear-gradient(135deg, #FF9966, #CD7F32); box-shadow: 0 4px 12px rgba(205,127,50,0.4); }
+    .rank-other { background: rgba(15,52,115,0.05); color: var(--primary); box-shadow: none; border: 2px solid rgba(15,52,115,0.1); font-size: 1.1rem; }
+    .rank-img { width: 56px; height: 56px; border-radius: 18px; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(15,52,115,0.1); }
+    .rank-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .rank-name { font-weight: 900; font-size: 1.15rem; color: var(--primary); line-height: 1.2; margin-bottom: 4px; }
+    .rank-stat { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
 
     /* Toast */
     .toast { position: fixed; top: 40px; left: 50%; transform: translate(-50%, -150px); background: var(--primary); color: var(--white); padding: 18px 36px; border-radius: 40px; z-index: 10000; font-weight: 800; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: var(--shadow-btn); font-size: 1.05rem; white-space: nowrap; }
@@ -198,19 +189,20 @@
 
   <!-- HEADER -->
   <header class="top-header fade-in">
-    <!-- REEMPLAZA EL SRC CON TU LOGO OFICIAL -->
-    <img src="tu_logo.png" onerror="this.src='https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO'" alt="Logo" class="header-center-img">
+    <img src="1.png" onerror="this.src='https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO'" alt="Logo" class="header-center-img">
   </header>
 
   <!-- MAPA PRINCIPAL -->
   <div id="map" class="fade-in"></div>
 
-  <!-- BARRA VERTICAL RETRÁCTIL (CORREGIDA LA MATEMÁTICA) -->
-  <div class="toolbar-wrapper slide-up" id="toolbar-wrapper" style="animation-delay: 0.3s;">
+  <!-- BARRA VERTICAL RETRÁCTIL -->
+  <div class="toolbar-wrapper slide-up" id="toolbar-wrapper" style="animation-delay: 0.9s;">
     <button class="toggle-toolbar-btn" onclick="window.toggleToolbar()"><i class="fa-solid fa-chevron-right" id="toolbar-icon"></i></button>
     <div class="vertical-toolbar">
       <button class="tool-btn" onclick="window.openDrawer()"><i class="fa-solid fa-bars"></i></button>
       <button class="tool-btn" onclick="window.openModal('modal-search')"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <!-- NUEVO BOTÓN DE RANKING -->
+      <button class="tool-btn" onclick="window.openRankingModal()"><i class="fa-solid fa-trophy" style="color:#F5A623; filter:drop-shadow(0 2px 4px rgba(245,166,35,0.4));"></i></button>
       <button class="tool-btn" onclick="window.startQrScanner()"><i class="fa-solid fa-qrcode"></i></button>
       <button class="tool-btn" onclick="window.centerToUser()"><i class="fa-solid fa-location-crosshairs"></i></button>
     </div>
@@ -234,20 +226,6 @@
     </div>
     <div class="drawer-item" id="menu-btn-logout" style="display:none; color:#D9534F;" onclick="window.logoutUser()">
       <i class="fa-solid fa-right-from-bracket" style="font-size:1.4rem;"></i> Cerrar Sesión
-    </div>
-  </div>
-
-  <!-- MODAL: MI PERFIL -->
-  <div class="modal-overlay" id="modal-profile">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3>Mi Perfil</h3>
-        <button class="btn-close" onclick="window.closeModal('modal-profile')"><i class="fa-solid fa-chevron-down"></i></button>
-      </div>
-      <div class="modal-body" style="padding-bottom: 50px;">
-        <h4 style="font-weight:900; margin-bottom:10px;">Mis Proofs Guardados</h4>
-        <div id="my-reviews-list" style="display:flex; flex-direction:column; gap:16px;"></div>
-      </div>
     </div>
   </div>
 
@@ -275,6 +253,44 @@
     </div>
   </div>
 
+  <!-- MODAL: RANKING / LEADERBOARD -->
+  <div class="modal-overlay" id="modal-ranking">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Ranking Proof</h3>
+        <button class="btn-close" onclick="window.closeModal('modal-ranking')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="padding-bottom: 50px;">
+        <div class="tabs slide-up">
+          <div id="tab-ranking-biz" class="tab active" onclick="window.switchRankingTab('biz')">Top Locales</div>
+          <div id="tab-ranking-users" class="tab" onclick="window.switchRankingTab('users')">Top Usuarios</div>
+        </div>
+
+        <div id="rankingBizSection" class="form-section active">
+          <!-- Aquí se inyectan los locales con mejores estrellas -->
+        </div>
+
+        <div id="rankingUsersSection" class="form-section">
+          <!-- Aquí se inyectan los usuarios con más proofs -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: MI PERFIL -->
+  <div class="modal-overlay" id="modal-profile">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Mi Perfil</h3>
+        <button class="btn-close" onclick="window.closeModal('modal-profile')"><i class="fa-solid fa-chevron-down"></i></button>
+      </div>
+      <div class="modal-body" style="padding-bottom: 50px;">
+        <h4 style="font-weight:900; margin-bottom:10px;">Mis Proofs Guardados</h4>
+        <div id="my-reviews-list" style="display:flex; flex-direction:column; gap:16px;"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: FICHA DEL LOCAL -->
   <div class="modal-overlay" id="modal-biz">
     <div class="modal-card">
@@ -283,14 +299,9 @@
         <button class="btn-close" onclick="window.closeModal('modal-biz')"><i class="fa-solid fa-chevron-down"></i></button>
       </div>
       <div class="modal-body">
-        
-        <!-- CARRUSEL DE MINIATURAS (THUMBNAILS) -->
         <div id="biz-photos-carousel" class="biz-carousel-container slide-up"></div>
-        
-        <!-- REDES SOCIALES A COLOR -->
         <div id="biz-social-links" class="social-links-container slide-up" style="animation-delay: 0.05s;"></div>
         
-        <!-- METADATA -->
         <div class="biz-meta slide-up" style="animation-delay: 0.1s;">
           <div><i class="fa-solid fa-quote-left"></i> <span id="biz-desc"></span></div>
           <div><i class="fa-solid fa-clock"></i> <span id="biz-hours"></span></div>
@@ -410,7 +421,6 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // IMAGEN SEGURA DE REEMPLAZO (ELIMINADO EL SVG ROTO)
     const defaultImg = "https://via.placeholder.com/150/F6f4F1/0F3473?text=Proof";
 
     let currentUser = null; 
@@ -432,7 +442,6 @@
         allBusinesses = snapshot.val() || {};
         window.renderMapPins();
         
-        // DEEP LINKING
         const urlParams = new URLSearchParams(window.location.search);
         const bizParam = urlParams.get('biz');
         if (bizParam && allBusinesses[bizParam] && !window.deepLinkOpened) {
@@ -458,22 +467,15 @@
 
     window.centerToUser = function() {
       showToast("Buscando señal GPS...");
-      
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition((pos) => {
-          userCoords.lat = pos.coords.latitude; 
-          userCoords.lng = pos.coords.longitude;
-          
+          userCoords.lat = pos.coords.latitude; userCoords.lng = pos.coords.longitude;
           if (!userMarker) {
             const icon = L.divIcon({ className: '', html: "<div style='background:var(--primary); width:20px; height:20px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 10px rgba(15,52,115,0.4);'></div>", iconSize: [20,20] });
             userMarker = L.marker([userCoords.lat, userCoords.lng], { icon, zIndexOffset: 1000 }).addTo(map);
-          } else {
-            userMarker.setLatLng([userCoords.lat, userCoords.lng]);
-          }
-          
+          } else { userMarker.setLatLng([userCoords.lat, userCoords.lng]); }
           map.setView([userCoords.lat, userCoords.lng], 16, {animate: true, duration: 1});
           showToast("¡Ubicación encontrada!");
-
           if (!gpsWatcherId) {
             gpsWatcherId = navigator.geolocation.watchPosition((p) => {
               userCoords.lat = p.coords.latitude; userCoords.lng = p.coords.longitude;
@@ -485,9 +487,7 @@
           else if (err.code === 2) showToast("Error de señal. Intenta en exteriores.");
           else showToast("Error GPS: " + err.message);
         }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
-      } else {
-        showToast("Tu navegador no soporta GPS");
-      }
+      } else { showToast("Tu navegador no soporta GPS"); }
     };
 
     window.toggleToolbar = function() {
@@ -506,35 +506,116 @@
           img.onload = () => {
             try {
               const canvas = document.createElement('canvas');
-              const MAX_WIDTH = 600; 
-              let scaleSize = 1;
+              const MAX_WIDTH = 600; let scaleSize = 1;
               if (img.width > MAX_WIDTH) scaleSize = MAX_WIDTH / img.width;
               canvas.width = img.width * scaleSize; canvas.height = img.height * scaleSize;
-              const ctx = canvas.getContext('2d');
-              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
               resolve(canvas.toDataURL('image/jpeg', 0.7)); 
-            } catch(err) {
-              resolve(e.target.result); 
-            }
+            } catch(err) { resolve(e.target.result); }
           };
           img.onerror = () => resolve(e.target.result); 
           img.src = e.target.result;
         };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
+        reader.onerror = reject; reader.readAsDataURL(file);
       });
     }
 
     function checkIsOpen(openTime, closeTime) {
       if (!openTime || !closeTime) return null;
-      const now = new Date();
-      const currentMin = now.getHours() * 60 + now.getMinutes();
-      const [oH, oM] = openTime.split(':').map(Number);
-      const [cH, cM] = closeTime.split(':').map(Number);
-      const startMin = oH * 60 + oM;
-      const endMin = cH * 60 + cM;
+      const now = new Date(); const currentMin = now.getHours() * 60 + now.getMinutes();
+      const [oH, oM] = openTime.split(':').map(Number); const [cH, cM] = closeTime.split(':').map(Number);
+      const startMin = oH * 60 + oM; const endMin = cH * 60 + cM;
       if (startMin < endMin) return currentMin >= startMin && currentMin <= endMin;
       else return currentMin >= startMin || currentMin <= endMin; 
+    }
+
+    /* === RANKINGS LÓGICA Y RENDER === */
+    window.openRankingModal = function() {
+      renderRankings();
+      window.openModal('modal-ranking');
+    };
+
+    window.switchRankingTab = function(tab) {
+      document.getElementById('tab-ranking-biz').classList.toggle('active', tab === 'biz');
+      document.getElementById('tab-ranking-users').classList.toggle('active', tab === 'users');
+      document.getElementById('rankingBizSection').classList.toggle('active', tab === 'biz');
+      document.getElementById('rankingUsersSection').classList.toggle('active', tab === 'users');
+    };
+
+    function getMedalClass(index) {
+      if (index === 0) return "rank-1";
+      if (index === 1) return "rank-2";
+      if (index === 2) return "rank-3";
+      return "rank-other";
+    }
+
+    function renderRankings() {
+      // 1. Calcular Top Locales (Promedio Estrellas)
+      let placesArr = [];
+      Object.entries(allBusinesses).forEach(([id, biz]) => {
+        let revs = biz.reviews ? Object.values(biz.reviews) : [];
+        if (revs.length > 0) {
+          let sum = revs.reduce((acc, r) => acc + (r.rating || 5), 0);
+          let avg = sum / revs.length;
+          let photo = (biz.photos && biz.photos.length > 0) ? biz.photos[0] : (biz.photoBase64 || defaultImg);
+          if (!photo.startsWith('http') && !photo.startsWith('data:image')) photo = defaultImg;
+          placesArr.push({ id, name: biz.name, avg: avg, count: revs.length, photo: photo });
+        }
+      });
+      // Ordenar: primero por promedio, luego por cantidad de reseñas
+      placesArr.sort((a, b) => b.avg !== a.avg ? b.avg - a.avg : b.count - a.count);
+
+      const bizContainer = document.getElementById('rankingBizSection');
+      bizContainer.innerHTML = "";
+      if (placesArr.length === 0) {
+        bizContainer.innerHTML = "<p style='text-align:center; color:#888; margin-top:20px;'>No hay locales calificados aún.</p>";
+      } else {
+        placesArr.slice(0, 10).forEach((p, i) => {
+          bizContainer.innerHTML += `
+            <div class="ranking-card slide-up" style="animation-delay: ${i * 0.05}s;" onclick="window.openBusinessModal('${p.id}'); window.closeModal('modal-ranking');">
+              <div class="rank-medal ${getMedalClass(i)}">${i + 1}</div>
+              <img src="${p.photo}" class="rank-img">
+              <div class="rank-info">
+                <div class="rank-name">${escapeHtml(p.name)}</div>
+                <div class="rank-stat"><i class="fa-solid fa-star" style="color:#F5A623;"></i> ${p.avg.toFixed(1)} <span style="font-size:0.8rem;">(${p.count} proofs)</span></div>
+              </div>
+            </div>`;
+        });
+      }
+
+      // 2. Calcular Top Usuarios (Cantidad de Proofs)
+      let userCounts = {};
+      Object.values(allBusinesses).forEach(biz => {
+        if(biz.reviews) {
+          Object.values(biz.reviews).forEach(r => {
+            if(!userCounts[r.authorUid]) {
+              let safePhoto = r.authorPhoto;
+              if (!safePhoto || (!safePhoto.startsWith('http') && !safePhoto.startsWith('data:image'))) safePhoto = defaultImg;
+              userCounts[r.authorUid] = { uid: r.authorUid, name: r.authorName, photo: safePhoto, count: 0 };
+            }
+            userCounts[r.authorUid].count++;
+          });
+        }
+      });
+      let usersArr = Object.values(userCounts).sort((a, b) => b.count - a.count);
+
+      const userContainer = document.getElementById('rankingUsersSection');
+      userContainer.innerHTML = "";
+      if (usersArr.length === 0) {
+        userContainer.innerHTML = "<p style='text-align:center; color:#888; margin-top:20px;'>No hay usuarios activos aún.</p>";
+      } else {
+        usersArr.slice(0, 10).forEach((u, i) => {
+          userContainer.innerHTML += `
+            <div class="ranking-card slide-up" style="animation-delay: ${i * 0.05}s;">
+              <div class="rank-medal ${getMedalClass(i)}">${i + 1}</div>
+              <img src="${u.photo}" class="rank-img" style="border-radius:50%;">
+              <div class="rank-info">
+                <div class="rank-name">${escapeHtml(u.name)}</div>
+                <div class="rank-stat"><i class="fa-solid fa-camera-retro" style="color:var(--primary);"></i> ${u.count} proofs subidos</div>
+              </div>
+            </div>`;
+        });
+      }
     }
 
     /* RENDER DE PINES BLINDADO */
@@ -545,106 +626,63 @@
 
       Object.entries(allBusinesses).forEach(([id, b]) => {
         try {
-          const lat = parseFloat(b.lat);
-          const lng = parseFloat(b.lng);
-          const nameStr = b.name ? b.name.toLowerCase() : "";
-
+          const lat = parseFloat(b.lat); const lng = parseFloat(b.lng); const nameStr = b.name ? b.name.toLowerCase() : "";
           if (!isNaN(lat) && !isNaN(lng) && (catFilter === 'ALL' || b.category === catFilter) && nameStr.includes(textFilter)) {
-            
             let openBadge = "";
             if (b.openTime && b.closeTime) {
               const isOpenNow = checkIsOpen(b.openTime, b.closeTime);
-              const color = isOpenNow ? 'var(--success)' : 'var(--danger)';
-              openBadge = `<div class="status-dot" style="background: ${color};"></div>`;
+              openBadge = `<div class="status-dot" style="background: ${isOpenNow ? 'var(--success)' : 'var(--danger)'};"></div>`;
             }
-
             let imgUrl = defaultImg;
             if (b.photos && b.photos.length > 0) imgUrl = b.photos[0];
             else if (b.photoBase64 && b.photoBase64.trim() !== "") imgUrl = b.photoBase64;
-            
-            // FILTRO DE SEGURIDAD (Evita iconos rotos [?])
             if (!imgUrl.startsWith('http') && !imgUrl.startsWith('data:image')) imgUrl = defaultImg;
             
             const iconHtml = `
               <div style="display: flex; flex-direction: column; align-items: center;">
-                <div class="pin-container">
-                  ${openBadge}
-                  <div class="photo-pin-img pop-in" style="background-image: url('${imgUrl}');"></div>
-                </div>
+                <div class="pin-container">${openBadge}<div class="photo-pin-img pop-in" style="background-image: url('${imgUrl}');"></div></div>
                 <div class="pop-in" style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%; margin-top: 8px; border: 2px solid var(--white); box-shadow: 0 4px 8px rgba(15,52,115,0.4); animation-delay: 0.1s;"></div>
-              </div>
-            `;
+              </div>`;
             const icon = L.divIcon({ className: 'custom-photo-pin', html: iconHtml, iconSize: [56, 76], iconAnchor: [28, 76] });
-            
             const m = L.marker([lat, lng], { icon }).addTo(map);
             m.on('click', () => window.openBusinessModal(id));
             currentMarkers.push(m);
           }
-        } catch(e) { console.error("Local ignorado", e); }
+        } catch(e) {}
       });
     };
 
     window.openLightbox = function(url) {
-      const lb = document.getElementById('lightbox');
-      document.getElementById('lightbox-img').src = url;
-      lb.style.display = 'flex';
-      setTimeout(() => lb.classList.add('active'), 10);
+      const lb = document.getElementById('lightbox'); document.getElementById('lightbox-img').src = url;
+      lb.style.display = 'flex'; setTimeout(() => lb.classList.add('active'), 10);
     };
     window.closeLightbox = function() {
-      const lb = document.getElementById('lightbox');
-      lb.classList.remove('active');
+      const lb = document.getElementById('lightbox'); lb.classList.remove('active');
       setTimeout(() => lb.style.display = 'none', 300);
     };
 
-    /* === FICHA DEL LOCAL CON REDES SOCIALES === */
+    /* === FICHA DEL LOCAL === */
     window.openBusinessModal = function(id) {
       selectedBizId = id; const biz = allBusinesses[id];
       document.getElementById('biz-title').innerText = biz.name;
       
-      const carouselContainer = document.getElementById('biz-photos-carousel');
-      carouselContainer.innerHTML = "";
-      
-      let photosArray = [];
-      if (biz.photos && biz.photos.length > 0) photosArray = biz.photos;
-      else if (biz.photoBase64) photosArray = [biz.photoBase64];
-      else photosArray = [defaultImg];
+      const carouselContainer = document.getElementById('biz-photos-carousel'); carouselContainer.innerHTML = "";
+      let photosArray = (biz.photos && biz.photos.length > 0) ? biz.photos : (biz.photoBase64 ? [biz.photoBase64] : [defaultImg]);
 
       photosArray.forEach(imgStr => {
-        let safeUrl = imgStr;
-        if (!safeUrl.startsWith('http') && !safeUrl.startsWith('data:image')) safeUrl = defaultImg;
-        
-        const item = document.createElement('div');
-        item.className = 'biz-carousel-item';
-        item.style.backgroundImage = `url('${safeUrl}')`;
-        item.onclick = () => window.openLightbox(safeUrl);
-        carouselContainer.appendChild(item);
+        let safeUrl = imgStr; if (!safeUrl.startsWith('http') && !safeUrl.startsWith('data:image')) safeUrl = defaultImg;
+        const item = document.createElement('div'); item.className = 'biz-carousel-item'; item.style.backgroundImage = `url('${safeUrl}')`;
+        item.onclick = () => window.openLightbox(safeUrl); carouselContainer.appendChild(item);
       });
       
-      // INYECTAR REDES SOCIALES A COLOR
-      const socialContainer = document.getElementById('biz-social-links');
-      socialContainer.innerHTML = "";
-      let socialHtml = "";
-      
-      if (biz.whatsapp) {
-        let waLink = biz.whatsapp.replace(/[^0-9]/g, '');
-        if(waLink) socialHtml += `<a href="https://wa.me/${waLink}" target="_blank" class="social-link social-wa"><i class="fa-brands fa-whatsapp"></i></a>`;
-      }
-      if (biz.instagram) {
-        let igLink = biz.instagram.startsWith('http') ? biz.instagram : 'https://' + biz.instagram;
-        socialHtml += `<a href="${igLink}" target="_blank" class="social-link social-ig"><i class="fa-brands fa-instagram"></i></a>`;
-      }
-      if (biz.facebook) {
-        let fbLink = biz.facebook.startsWith('http') ? biz.facebook : 'https://' + biz.facebook;
-        socialHtml += `<a href="${fbLink}" target="_blank" class="social-link social-fb"><i class="fa-brands fa-facebook"></i></a>`;
-      }
-      if (biz.menu) {
-        let webLink = biz.menu.startsWith('http') ? biz.menu : 'https://' + biz.menu;
-        socialHtml += `<a href="${webLink}" target="_blank" class="social-link social-web"><i class="fa-solid fa-globe"></i></a>`;
-      }
+      const socialContainer = document.getElementById('biz-social-links'); socialContainer.innerHTML = ""; let socialHtml = "";
+      if (biz.whatsapp) { let wa = biz.whatsapp.replace(/[^0-9]/g, ''); if(wa) socialHtml += `<a href="https://wa.me/${wa}" target="_blank" class="social-link social-wa"><i class="fa-brands fa-whatsapp"></i></a>`; }
+      if (biz.instagram) { let ig = biz.instagram.startsWith('http') ? biz.instagram : 'https://' + biz.instagram; socialHtml += `<a href="${ig}" target="_blank" class="social-link social-ig"><i class="fa-brands fa-instagram"></i></a>`; }
+      if (biz.facebook) { let fb = biz.facebook.startsWith('http') ? biz.facebook : 'https://' + biz.facebook; socialHtml += `<a href="${fb}" target="_blank" class="social-link social-fb"><i class="fa-brands fa-facebook"></i></a>`; }
+      if (biz.menu) { let mw = biz.menu.startsWith('http') ? biz.menu : 'https://' + biz.menu; socialHtml += `<a href="${mw}" target="_blank" class="social-link social-web"><i class="fa-solid fa-globe"></i></a>`; }
       socialContainer.innerHTML = socialHtml;
 
       document.getElementById('biz-desc').innerText = biz.desc || "Sin descripción";
-      
       let statusText = "";
       if (biz.openTime && biz.closeTime) {
         const isOpenNow = checkIsOpen(biz.openTime, biz.closeTime);
@@ -652,7 +690,6 @@
         else statusText = "<span style='color:var(--danger); font-weight:900;'>Cerrado</span> • ";
       }
       document.getElementById('biz-hours').innerHTML = `${statusText} ${biz.hoursDesc || 'Horarios a consultar'}`;
-      
       document.getElementById('biz-address').innerText = biz.address || "Ubicación en mapa";
 
       const container = document.getElementById('biz-reviews-list'); container.innerHTML = "";
@@ -666,17 +703,13 @@
           if (r.audioBase64) media += `<audio controls src="${r.audioBase64}"></audio>`;
           let stars = `<div style="color:#F5A623; font-size:1.1rem;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.rating || 5) + `</div>`;
 
-          let safeAuthorPhoto = r.authorPhoto;
-          if (!safeAuthorPhoto || (!safeAuthorPhoto.startsWith('http') && !safeAuthorPhoto.startsWith('data:image'))) safeAuthorPhoto = defaultImg;
+          let safePhoto = r.authorPhoto; if (!safePhoto || (!safePhoto.startsWith('http') && !safePhoto.startsWith('data:image'))) safePhoto = defaultImg;
 
-          const div = document.createElement('div');
-          div.className = 'review-card slide-up';
-          div.style.animationDelay = `${index * 0.1}s`;
+          const div = document.createElement('div'); div.className = 'review-card slide-up'; div.style.animationDelay = `${index * 0.1}s`;
           div.innerHTML = `
-            <div class="review-header"><img src="${safeAuthorPhoto}"><div><div class="review-author">${escapeHtml(r.authorName)}</div>${stars}</div></div>
+            <div class="review-header"><img src="${safePhoto}"><div><div class="review-author">${escapeHtml(r.authorName)}</div>${stars}</div></div>
             ${r.text ? `<div style="font-weight:600; font-size:1.05rem; color:#555;">${escapeHtml(r.text)}</div>` : ''}
-            <div class="review-media">${media}</div>
-          `;
+            <div class="review-media">${media}</div>`;
           container.appendChild(div);
         });
       }
@@ -684,33 +717,25 @@
     };
 
     window.openMyProfile = function() {
-      const container = document.getElementById('my-reviews-list');
-      container.innerHTML = "";
-      let count = 0;
-
+      const container = document.getElementById('my-reviews-list'); container.innerHTML = ""; let count = 0;
       Object.entries(allBusinesses).forEach(([id, b]) => {
         if (b.reviews) {
           Object.values(b.reviews).forEach((r, index) => {
             if (r.authorUid === currentUser.uid) {
-              count++;
-              let media = "";
+              count++; let media = "";
               if (r.photoBase64) media += `<img src="${r.photoBase64}" style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in;" onclick="window.openLightbox('${r.photoBase64}')">`;
               
-              const div = document.createElement('div');
-              div.className = 'review-card slide-up';
-              div.style.animationDelay = `${index * 0.1}s`;
+              const div = document.createElement('div'); div.className = 'review-card slide-up'; div.style.animationDelay = `${index * 0.1}s`;
               div.innerHTML = `
                 <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:8px;">${escapeHtml(b.name)}</div>
                 <div style="color:#F5A623; margin-bottom:8px; font-size:1.1rem;"><i class="fa-solid fa-star"></i>`.repeat(r.rating || 5) + `</div>
                 ${r.text ? `<div style="font-weight:600; color:#555;">${escapeHtml(r.text)}</div>` : ''}
-                ${media}
-              `;
+                ${media}`;
               container.appendChild(div);
             }
           });
         }
       });
-
       if (count === 0) container.innerHTML = "<p style='color:#888; text-align:center;'>No has publicado ningún Proof aún.</p>";
       window.openModal('modal-profile');
     };
