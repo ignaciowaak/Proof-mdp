@@ -23,10 +23,10 @@
       --white: #FFFFFF;
       --success: #4CAF50;
       --danger: #F44336;
-      --shadow-soft: 0 10px 30px rgba(15, 52, 115, 0.08);
-      --shadow-hover: 0 16px 40px rgba(15, 52, 115, 0.15);
-      --shadow-btn: 0 6px 20px rgba(15, 52, 115, 0.2);
-      --transition-smooth: all 0.4s ease-in-out;
+      --shadow-soft: 0 8px 24px rgba(15, 52, 115, 0.08);
+      --shadow-hover: 0 12px 30px rgba(15, 52, 115, 0.15);
+      --shadow-btn: 0 6px 16px rgba(15, 52, 115, 0.2);
+      --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
       --transition-fast: all 0.2s ease-out;
     }
 
@@ -34,13 +34,15 @@
     body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-base); color: var(--primary); }
 
     /* === ANIMACIONES GLOBALES === */
-    @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
     @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
-    @keyframes popIn { 0% { opacity: 0; transform: scale(0.6) translateY(15px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes popIn { 0% { opacity: 0; transform: scale(0.7) translateY(10px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes floatSoft { 0% { transform: translateY(0px); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0px); } }
     
-    .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-    .slide-up { animation: slideUpFade 0.5s ease-out forwards; opacity: 0; }
-    .pop-in { animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    .slide-up { animation: slideUpFade 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
+    .pop-in { animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    .float { animation: floatSoft 3s ease-in-out infinite; }
 
     /* === MAPA === */
     #map { width: 100%; height: 100vh; z-index: 1; background-color: var(--bg-base); }
@@ -50,131 +52,113 @@
 
     /* === PINES BLINDADOS === */
     .custom-photo-pin { background: transparent; border: none; outline: none; }
-    .photo-pin-img {
-      width: 56px; height: 56px; border-radius: 18px; 
-      box-shadow: 0 8px 24px rgba(15,52,115,0.3); 
-      background-size: cover; background-position: center; 
-      background-color: var(--white);
-      transition: transform 0.2s ease;
-    }
+    .photo-pin-img { width: 48px; height: 48px; border-radius: 16px; box-shadow: 0 6px 16px rgba(15,52,115,0.3); background-size: cover; background-position: center; background-color: var(--white); transition: transform 0.2s ease; }
     .photo-pin-img:active { transform: scale(0.85); }
-    .status-dot {
-      position: absolute; top: -6px; right: -6px; width: 18px; height: 18px;
-      border-radius: 50%; border: 3px solid var(--bg-base); z-index: 10;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
+    .status-dot { position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; border-radius: 50%; border: 3px solid var(--bg-base); z-index: 10; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
 
     /* === HEADER SUPERIOR === */
-    .top-header { position: absolute; top: 40px; left: 0; right: 0; z-index: 1000; display: flex; justify-content: center; align-items: center; pointer-events: none; }
-    .header-center-img { height: 48px; width: auto; max-width: 60%; object-fit: contain; pointer-events: auto; filter: drop-shadow(0 6px 12px rgba(15,52,115,0.15)); transition: transform 0.3s ease; }
+    .top-header { position: absolute; top: 30px; left: 0; right: 0; z-index: 1000; display: flex; justify-content: center; align-items: center; pointer-events: none; }
+    .header-center-img { height: 40px; width: auto; max-width: 60%; object-fit: contain; pointer-events: auto; filter: drop-shadow(0 6px 12px rgba(15,52,115,0.15)); transition: transform 0.3s ease; }
     .header-center-img:active { transform: scale(0.95); }
 
-    /* === BARRA VERTICAL RETRÁCTIL === */
-    .toolbar-wrapper { 
-      position: absolute; right: 12px; top: 50%; margin-top: -110px; 
-      z-index: 1000; display: flex; align-items: center; 
-      transition: right 0.4s ease-in-out; 
-    }
+    /* === BARRA VERTICAL RETRÁCTIL (TUS MEDIDAS EXACTAS) === */
+    .toolbar-wrapper { position: absolute; right: 12px; top: 50%; margin-top: -110px; z-index: 1000; display: flex; align-items: center; transition: right 0.4s ease-in-out; }
     .toolbar-wrapper.hidden { right: -55px; }
-    .toggle-toolbar-btn { 
-      background: var(--white); border: 1px solid rgba(15,52,115,0.05); color: var(--primary); 
-      width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-      cursor: pointer; box-shadow: var(--shadow-soft); z-index: 1001; 
-      position: absolute; left: -52px; font-size: 0.8rem; transition: var(--transition-smooth); 
-    }
+    .toggle-toolbar-btn { background: var(--white); border: 1px solid rgba(15,52,115,0.05); color: var(--primary); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-soft); z-index: 1001; position: absolute; left: -52px; font-size: 0.8rem; transition: var(--transition-smooth); }
     .toggle-toolbar-btn:active { transform: scale(0.85); }
-    .vertical-toolbar { display: flex; flex-direction: column; align-items: center; gap: 20px; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.4); padding: 22px 14px; border-radius: 35px; box-shadow: var(--shadow-soft); width: 60px; }
-    .tool-btn { background: transparent; border: none; color: var(--primary); font-size: 1.5rem; cursor: pointer; transition: var(--transition-fast); display: flex; align-items: center; justify-content: center; opacity: 0.8; }
+    
+    .vertical-toolbar { display: flex; flex-direction: column; align-items: center; gap: 16px; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.4); padding: 18px 12px; border-radius: 30px; box-shadow: var(--shadow-soft); width: 54px; }
+    .tool-btn { background: transparent; border: none; color: var(--primary); font-size: 1.3rem; cursor: pointer; transition: var(--transition-fast); display: flex; align-items: center; justify-content: center; opacity: 0.8; }
     .tool-btn:hover { opacity: 1; transform: scale(1.1); }
     .tool-btn:active { transform: scale(0.8); }
 
-    /* Botones Generales */
-    .btn { padding: 18px 26px; border: none; border-radius: 30px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.05rem; transition: var(--transition-smooth); box-shadow: var(--shadow-soft); }
+    /* === BOTONES GENERALES (MÁS COMPACTOS) === */
+    .btn { padding: 14px 20px; border: none; border-radius: 24px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; transition: var(--transition-smooth); box-shadow: var(--shadow-soft); }
     .btn:active { transform: scale(0.94); box-shadow: none; }
     .btn-primary { background: var(--primary); color: var(--white); box-shadow: var(--shadow-btn); }
     .btn-secondary { background: var(--bg-base); color: var(--primary); border: 2px solid var(--primary); box-shadow: none; }
 
-    /* Drawer Menú */
+    /* === DRAWER MENÚ === */
     .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,52,115,0.3); backdrop-filter: blur(4px); z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
     .drawer-overlay.active { opacity: 1; pointer-events: all; }
-    .drawer { position: fixed; top: 0; left: -350px; width: 320px; height: 100%; background: var(--bg-base); z-index: 2001; transition: left 0.5s ease; display: flex; flex-direction: column; padding: 40px 24px; border-radius: 0 40px 40px 0; box-shadow: 15px 0 40px rgba(15,52,115,0.1); }
+    .drawer { position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: var(--bg-base); z-index: 2001; transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1); display: flex; flex-direction: column; padding: 30px 20px; border-radius: 0 30px 30px 0; box-shadow: 10px 0 30px rgba(15,52,115,0.1); }
     .drawer.active { left: 0; } 
-    .drawer-item { padding: 18px; background: var(--white); border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 14px; margin-bottom: 14px; color: var(--primary); cursor: pointer; box-shadow: 0 4px 12px rgba(15,52,115,0.03); border: 1px solid rgba(15,52,115,0.04); font-size: 1.05rem; transition: var(--transition-smooth); }
-    .drawer-item:active { transform: scale(0.97); }
+    .drawer-item { padding: 14px; background: var(--white); border-radius: 16px; font-weight: 800; display: flex; align-items: center; gap: 12px; margin-bottom: 12px; color: var(--primary); cursor: pointer; box-shadow: 0 4px 10px rgba(15,52,115,0.03); border: 1px solid rgba(15,52,115,0.04); font-size: 0.95rem; transition: var(--transition-smooth); }
+    .drawer-item:active { transform: scale(0.96); }
 
-    /* Modales Flotantes */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,52,115,0.4); backdrop-filter: blur(8px); z-index: 3000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+    /* === MODALES FLOTANTES (OPTIMIZADOS) === */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,52,115,0.4); backdrop-filter: blur(6px); z-index: 3000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
-    .modal-card { width: 100%; max-height: 90vh; border-radius: 40px 40px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); background: var(--bg-base); box-shadow: 0 -15px 50px rgba(15,52,115,0.15); }
+    .modal-card { width: 100%; max-height: 88vh; border-radius: 35px 35px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); background: var(--bg-base); box-shadow: 0 -10px 40px rgba(15,52,115,0.15); }
     .modal-overlay.active .modal-card { transform: translateY(0); }
-    .modal-header { padding: 30px 30px 20px; display: flex; justify-content: space-between; align-items: center; }
-    .modal-header h3 { font-size: 1.6rem; font-weight: 900; color: var(--primary); letter-spacing: -0.5px; }
-    .btn-close { background: rgba(15,52,115,0.05); border: none; color: var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; }
-    .modal-body { padding: 0 30px 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; }
+    .modal-header { padding: 24px 24px 16px; display: flex; justify-content: space-between; align-items: center; }
+    .modal-header h3 { font-size: 1.4rem; font-weight: 900; color: var(--primary); letter-spacing: -0.5px; }
+    .btn-close { background: rgba(15,52,115,0.05); border: none; color: var(--primary); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s; }
+    .btn-close:active { transform: scale(0.9); }
+    .modal-body { padding: 0 24px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; scroll-behavior: smooth; }
 
-    /* Formularios */
-    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 18px 24px; border: 2px solid transparent; border-radius: 24px; background: var(--white); font-weight: 600; margin-bottom: 16px; font-size: 1.05rem; color: var(--primary); outline: none; transition: var(--transition-smooth); box-shadow: 0 4px 12px rgba(15,52,115,0.03); appearance: none; }
+    /* === FORMULARIOS === */
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 14px 20px; border: 2px solid transparent; border-radius: 20px; background: var(--white); font-weight: 600; margin-bottom: 12px; font-size: 0.95rem; color: var(--primary); outline: none; transition: var(--transition-smooth); box-shadow: 0 4px 10px rgba(15,52,115,0.03); appearance: none; }
     .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary); box-shadow: var(--shadow-soft); }
 
-    /* === FICHA DEL LOCAL: MINIATURAS ANTI-COLAPSO === */
-    .biz-carousel-container { display: flex; overflow-x: auto; gap: 14px; padding-bottom: 12px; scrollbar-width: none; -webkit-overflow-scrolling: touch; margin-top: 5px; min-height: 90px; flex-shrink: 0; width: 100%; }
+    /* === FICHA DEL LOCAL === */
+    .biz-carousel-container { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 10px; scrollbar-width: none; -webkit-overflow-scrolling: touch; margin-top: 5px; flex-shrink: 0; width: 100%; }
     .biz-carousel-container::-webkit-scrollbar { display: none; }
-    .biz-carousel-item { flex: 0 0 85px; height: 85px; border-radius: 22px; box-shadow: 0 6px 16px rgba(15,52,115,0.15); cursor: zoom-in; overflow: hidden; background-color: var(--white); background-size: cover; background-position: center; border: 2px solid var(--white); flex-shrink: 0; }
+    .biz-carousel-item { flex: 0 0 75px; height: 75px; border-radius: 18px; box-shadow: 0 4px 12px rgba(15,52,115,0.1); cursor: zoom-in; overflow: hidden; background-color: var(--white); background-size: cover; background-position: center; border: 2px solid var(--white); flex-shrink: 0; }
+    .biz-meta { background: var(--white); padding: 20px; border-radius: 24px; font-size: 0.95rem; font-weight: 600; color: var(--primary); box-shadow: var(--shadow-soft); flex-shrink: 0; }
+    .biz-meta div { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; line-height: 1.4; }
+    .biz-meta i { color: rgba(15,52,115,0.5); width: 18px; font-size: 1.1rem; margin-top: 2px; }
 
     /* REDES SOCIALES */
-    .social-links-container { display: flex; gap: 12px; margin-bottom: 16px; padding: 0 4px; flex-wrap: wrap; flex-shrink: 0; }
-    .social-link { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; color: var(--white); font-size: 1.4rem; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.2s; }
+    .social-links-container { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; flex-shrink: 0; }
+    .social-link { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 12px; color: var(--white); font-size: 1.2rem; text-decoration: none; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.2s; }
     .social-link:active { transform: scale(0.85); }
     .social-wa { background: #25D366; } .social-ig { background: #E1306C; } .social-fb { background: #1877F2; } .social-web { background: var(--primary); } 
 
-    /* LIGHTBOX ZOOM */
-    #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,52,115,0.95); z-index: 9999; backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; cursor: zoom-out; }
-    #lightbox.active { display: flex; opacity: 1; }
-    #lightbox img { max-width: 95vw; max-height: 90vh; border-radius: 20px; object-fit: contain; box-shadow: 0 10px 40px rgba(0,0,0,0.4); transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1); }
-    #lightbox.active img { transform: scale(1); }
-
-    /* TARJETA DE INFORMACIÓN (META) */
-    .biz-meta { background: var(--white); padding: 26px; border-radius: 30px; font-size: 1.05rem; font-weight: 600; color: var(--primary); box-shadow: var(--shadow-soft); border: 1px solid rgba(15,52,115,0.02); flex-shrink: 0; position: relative; z-index: 2; }
-    .biz-meta div { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; line-height: 1.5; }
-    .biz-meta i { color: rgba(15,52,115,0.5); width: 20px; font-size: 1.3rem; margin-top: 2px; }
-
-    /* Reseñas */
-    .review-card { background: var(--white); border-radius: 30px; padding: 26px; display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; box-shadow: var(--shadow-soft); flex-shrink: 0; }
-    .review-header { display: flex; align-items: center; gap: 16px; }
-    .review-header img { width: 56px; height: 56px; border-radius: 18px; object-fit: cover; box-shadow: 0 4px 10px rgba(15,52,115,0.1); }
-    .review-author { font-weight: 900; font-size: 1.2rem; }
-    .review-media img { width: 100%; border-radius: 20px; margin-top: 10px; object-fit: cover; box-shadow: 0 4px 12px rgba(15,52,115,0.1); cursor: zoom-in; }
-    .review-media audio { width: 100%; height: 44px; margin-top: 10px; filter: contrast(0.9); }
+    /* === RESEÑAS === */
+    .review-card { background: var(--white); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; box-shadow: var(--shadow-soft); flex-shrink: 0; }
+    .review-header { display: flex; align-items: center; gap: 12px; }
+    .review-header img { width: 44px; height: 44px; border-radius: 14px; object-fit: cover; box-shadow: 0 4px 8px rgba(15,52,115,0.1); }
+    .review-author { font-weight: 900; font-size: 1.05rem; }
+    .review-media img { width: 100%; border-radius: 16px; margin-top: 8px; object-fit: cover; cursor: zoom-in; }
+    .review-media audio { width: 100%; height: 38px; margin-top: 8px; filter: contrast(0.9); }
     
-    /* Wizard (Paso a Paso) */
-    .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+    /* === WIZARD (PASO A PASO) === */
+    .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 14px; }
     .wizard-step.active { display: flex; animation: slideUpFade 0.4s ease forwards; }
-    .star-rating-picker { font-size: 3.5rem; color: rgba(15,52,115,0.1); display: flex; gap: 14px; margin: 30px 0; }
+    .star-rating-picker { font-size: 2.8rem; color: rgba(15,52,115,0.1); display: flex; gap: 10px; margin: 20px 0; }
     .star-rating-picker i { cursor: pointer; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease; }
+    .star-rating-picker i:active { transform: scale(0.8); }
     .star-rating-picker i.active { color: #F5A623; transform: scale(1.15); filter: drop-shadow(0 4px 8px rgba(245, 166, 35, 0.3)); }
     
-    /* Tabs Compartidos (Login & Ranking) */
-    .tabs { display: flex; gap: 8px; margin-bottom: 24px; background: rgba(15,52,115,0.05); padding: 8px; border-radius: 40px; }
-    .tab { flex: 1; text-align: center; padding: 16px; border-radius: 30px; cursor: pointer; font-weight: 800; color: rgba(15,52,115,0.4); transition: var(--transition-smooth); font-size: 1.05rem; }
+    /* === RANKING STYLES (NUEVO) === */
+    .ranking-card { display: flex; align-items: center; gap: 14px; background: var(--white); padding: 14px 18px; border-radius: 20px; margin-bottom: 12px; box-shadow: var(--shadow-soft); transition: transform 0.2s ease; cursor: pointer; border: 1px solid rgba(15,52,115,0.02); }
+    .ranking-card:active { transform: scale(0.96); }
+    .rank-medal { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.1rem; color: var(--white); flex-shrink: 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .rank-1 { background: linear-gradient(135deg, #FFD700, #FFAA00); box-shadow: 0 4px 12px rgba(255,215,0,0.4); }
+    .rank-2 { background: linear-gradient(135deg, #E0E0E0, #9E9E9E); box-shadow: 0 4px 12px rgba(158,158,158,0.4); }
+    .rank-3 { background: linear-gradient(135deg, #FF9966, #CD7F32); box-shadow: 0 4px 12px rgba(205,127,50,0.4); }
+    .rank-other { background: rgba(15,52,115,0.05); color: var(--primary); box-shadow: none; font-size: 1rem; }
+    .rank-img { width: 50px; height: 50px; border-radius: 16px; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(15,52,115,0.1); }
+    .rank-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .rank-name { font-weight: 900; font-size: 1.05rem; color: var(--primary); line-height: 1.2; margin-bottom: 4px; }
+    .rank-stat { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+
+    /* Tabs Compartidos */
+    .tabs { display: flex; gap: 6px; margin-bottom: 20px; background: rgba(15,52,115,0.05); padding: 6px; border-radius: 30px; }
+    .tab { flex: 1; text-align: center; padding: 14px; border-radius: 24px; cursor: pointer; font-weight: 800; color: rgba(15,52,115,0.4); transition: var(--transition-smooth); font-size: 0.95rem; }
     .tab.active { background: var(--white); color: var(--primary); box-shadow: var(--shadow-soft); }
     .form-section { display: none; }
     .form-section.active { display: block; animation: slideUpFade 0.4s ease forwards; }
 
-    /* === RANKINGS STYLES === */
-    .ranking-card { display: flex; align-items: center; gap: 16px; background: var(--white); padding: 16px 20px; border-radius: 24px; margin-bottom: 12px; box-shadow: var(--shadow-soft); transition: transform 0.2s ease; cursor: pointer; }
-    .ranking-card:active { transform: scale(0.96); }
-    .rank-medal { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.3rem; color: var(--white); flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    .rank-1 { background: linear-gradient(135deg, #FFD700, #FFAA00); box-shadow: 0 4px 12px rgba(255,215,0,0.4); }
-    .rank-2 { background: linear-gradient(135deg, #E0E0E0, #9E9E9E); box-shadow: 0 4px 12px rgba(158,158,158,0.4); }
-    .rank-3 { background: linear-gradient(135deg, #FF9966, #CD7F32); box-shadow: 0 4px 12px rgba(205,127,50,0.4); }
-    .rank-other { background: rgba(15,52,115,0.05); color: var(--primary); box-shadow: none; border: 2px solid rgba(15,52,115,0.1); font-size: 1.1rem; }
-    .rank-img { width: 56px; height: 56px; border-radius: 18px; object-fit: cover; flex-shrink: 0; border: 1px solid rgba(15,52,115,0.1); }
-    .rank-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-    .rank-name { font-weight: 900; font-size: 1.15rem; color: var(--primary); line-height: 1.2; margin-bottom: 4px; }
-    .rank-stat { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+    /* LIGHTBOX ZOOM */
+    #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,52,115,0.95); z-index: 9999; backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
+    #lightbox.active { display: flex; opacity: 1; }
+    #lightbox img { max-width: 95vw; max-height: 90vh; border-radius: 16px; object-fit: contain; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1); }
+    #lightbox.active img { transform: scale(1); }
 
     /* Toast */
-    .toast { position: fixed; top: 40px; left: 50%; transform: translate(-50%, -150px); background: var(--primary); color: var(--white); padding: 18px 36px; border-radius: 40px; z-index: 10000; font-weight: 800; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: var(--shadow-btn); font-size: 1.05rem; white-space: nowrap; }
+    .toast { position: fixed; top: 40px; left: 50%; transform: translate(-50%, -150px); background: var(--primary); color: var(--white); padding: 14px 28px; border-radius: 30px; z-index: 10000; font-weight: 800; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: var(--shadow-btn); font-size: 0.95rem; white-space: nowrap; }
     .toast.show { transform: translate(-50%, 0); }
   </style>
 </head>
@@ -189,19 +173,20 @@
 
   <!-- HEADER -->
   <header class="top-header fade-in">
-    <img src="1.png" onerror="this.src='https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO'" alt="Logo" class="header-center-img">
+    <!-- PON AQUÍ TU LOGO -->
+    <img src="tu_logo.png" onerror="this.src='https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO'" alt="Logo" class="header-center-img">
   </header>
 
   <!-- MAPA PRINCIPAL -->
   <div id="map" class="fade-in"></div>
 
-  <!-- BARRA VERTICAL RETRÁCTIL -->
-  <div class="toolbar-wrapper slide-up" id="toolbar-wrapper" style="animation-delay: 0.9s;">
-    <button class="toggle-toolbar-btn" onclick="window.toggleToolbar()"><i class="fa-solid fa-chevron-right" id="toolbar-icon"></i></button>
+  <!-- BARRA VERTICAL RETRÁCTIL (TUS MEDIDAS) -->
+  <div class="toolbar-wrapper slide-up" id="toolbar-wrapper" style="animation-delay: 0.3s;">
+    <button class="toggle-toolbar-btn float" onclick="window.toggleToolbar()"><i class="fa-solid fa-chevron-right" id="toolbar-icon"></i></button>
     <div class="vertical-toolbar">
       <button class="tool-btn" onclick="window.openDrawer()"><i class="fa-solid fa-bars"></i></button>
       <button class="tool-btn" onclick="window.openModal('modal-search')"><i class="fa-solid fa-magnifying-glass"></i></button>
-      <!-- NUEVO BOTÓN DE RANKING -->
+      <!-- NUEVO BOTÓN: RANKING -->
       <button class="tool-btn" onclick="window.openRankingModal()"><i class="fa-solid fa-trophy" style="color:#F5A623; filter:drop-shadow(0 2px 4px rgba(245,166,35,0.4));"></i></button>
       <button class="tool-btn" onclick="window.startQrScanner()"><i class="fa-solid fa-qrcode"></i></button>
       <button class="tool-btn" onclick="window.centerToUser()"><i class="fa-solid fa-location-crosshairs"></i></button>
@@ -211,21 +196,21 @@
   <!-- MENÚ HAMBURGUESA -->
   <div class="drawer-overlay" id="drawer-overlay" onclick="window.closeDrawer()"></div>
   <div class="drawer" id="drawer">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-      <h3 style="color:var(--primary); font-weight:900; font-size:1.6rem;">MENÚ</h3>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+      <h3 style="color:var(--primary); font-weight:900; font-size:1.4rem;">MENÚ</h3>
       <button class="btn-close" onclick="window.closeDrawer()"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
-    <div id="drawer-user-profile" class="slide-up" style="background:var(--white); padding:30px; border-radius:35px; text-align:center; margin-bottom:24px; display:none; box-shadow:var(--shadow-soft);">
-      <img id="drawer-avatar" src="" style="width:90px; height:90px; border-radius:30px; margin:0 auto 16px; object-fit:cover; border:3px solid var(--primary);">
-      <div id="drawer-username" style="font-weight:900; font-size:1.4rem;"></div>
+    <div id="drawer-user-profile" class="slide-up" style="background:var(--white); padding:20px; border-radius:24px; text-align:center; margin-bottom:20px; display:none; box-shadow:var(--shadow-soft);">
+      <img id="drawer-avatar" src="" style="width:70px; height:70px; border-radius:22px; margin:0 auto 12px; object-fit:cover; border:2px solid var(--primary);">
+      <div id="drawer-username" style="font-weight:900; font-size:1.2rem;"></div>
     </div>
 
     <div class="drawer-item" onclick="window.handleMenuProfile()">
-      <i class="fa-solid fa-user-circle" style="font-size:1.4rem;"></i> <span id="menu-text-auth">Mi Perfil / Registro</span>
+      <i class="fa-solid fa-user-circle" style="font-size:1.2rem;"></i> <span id="menu-text-auth">Mi Perfil / Registro</span>
     </div>
     <div class="drawer-item" id="menu-btn-logout" style="display:none; color:#D9534F;" onclick="window.logoutUser()">
-      <i class="fa-solid fa-right-from-bracket" style="font-size:1.4rem;"></i> Cerrar Sesión
+      <i class="fa-solid fa-right-from-bracket" style="font-size:1.2rem;"></i> Cerrar Sesión
     </div>
   </div>
 
@@ -236,7 +221,7 @@
         <h3>Explorar Locales</h3>
         <button class="btn-close" onclick="window.closeModal('modal-search')"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="modal-body" style="padding-bottom: 50px;">
+      <div class="modal-body" style="padding-bottom: 40px;">
         <div class="form-group slide-up" style="animation-delay: 0.1s;">
           <select id="filter-cat" onchange="window.renderMapPins(); window.closeModal('modal-search');">
             <option value="ALL">Todas las Categorías</option>
@@ -253,40 +238,58 @@
     </div>
   </div>
 
-  <!-- MODAL: RANKING / LEADERBOARD -->
+  <!-- MODAL: RANKING / LEADERBOARD (NUEVO) -->
   <div class="modal-overlay" id="modal-ranking">
     <div class="modal-card">
       <div class="modal-header">
         <h3>Ranking Proof</h3>
         <button class="btn-close" onclick="window.closeModal('modal-ranking')"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="modal-body" style="padding-bottom: 50px;">
+      <div class="modal-body" style="padding-bottom: 40px;">
         <div class="tabs slide-up">
           <div id="tab-ranking-biz" class="tab active" onclick="window.switchRankingTab('biz')">Top Locales</div>
           <div id="tab-ranking-users" class="tab" onclick="window.switchRankingTab('users')">Top Usuarios</div>
         </div>
 
         <div id="rankingBizSection" class="form-section active">
-          <!-- Aquí se inyectan los locales con mejores estrellas -->
+          <!-- Locales inyectados por JS -->
         </div>
 
         <div id="rankingUsersSection" class="form-section">
-          <!-- Aquí se inyectan los usuarios con más proofs -->
+          <!-- Usuarios inyectados por JS -->
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: MI PERFIL -->
+  <!-- MODAL: MI PERFIL (ACTUALIZADO CON SISTEMA DE PUNTOS) -->
   <div class="modal-overlay" id="modal-profile">
     <div class="modal-card">
       <div class="modal-header">
         <h3>Mi Perfil</h3>
         <button class="btn-close" onclick="window.closeModal('modal-profile')"><i class="fa-solid fa-chevron-down"></i></button>
       </div>
-      <div class="modal-body" style="padding-bottom: 50px;">
-        <h4 style="font-weight:900; margin-bottom:10px;">Mis Proofs Guardados</h4>
-        <div id="my-reviews-list" style="display:flex; flex-direction:column; gap:16px;"></div>
+      <div class="modal-body" style="padding-bottom: 40px;">
+        
+        <!-- TARJETA DE GAMIFICACIÓN / PUNTOS -->
+        <div id="profile-stats-card" class="slide-up" style="background: linear-gradient(135deg, var(--primary), #1a4b9e); color: white; padding: 20px; border-radius: 24px; margin-bottom: 16px; display: flex; justify-content: space-around; text-align: center; box-shadow: var(--shadow-btn); animation-delay: 0.1s;">
+          <div style="flex:1;">
+            <div style="font-size: 2rem; font-weight: 900; line-height: 1;" id="prof-points">0</div>
+            <div style="font-size: 0.7rem; text-transform: uppercase; opacity: 0.9; margin-top: 6px; font-weight: 800;">Puntos Proof</div>
+          </div>
+          <div style="width: 2px; background: rgba(255,255,255,0.2); border-radius: 2px;"></div>
+          <div style="flex:1;">
+            <div style="font-size: 2rem; font-weight: 900; line-height: 1;" id="prof-rank">-</div>
+            <div style="font-size: 0.7rem; text-transform: uppercase; opacity: 0.9; margin-top: 6px; font-weight: 800;">Top Semanal</div>
+          </div>
+        </div>
+        
+        <p class="slide-up" style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-bottom: 24px; line-height: 1.4; padding: 0 10px; animation-delay: 0.2s;">
+          <i class="fa-solid fa-gift" style="color: #F5A623;"></i> Sube de puesto y acumula puntos con cada reseña. <b>Próximamente podrás canjearlos en nuestro catálogo.</b>
+        </p>
+
+        <h4 class="slide-up" style="font-weight:900; margin-bottom:10px; animation-delay: 0.3s;">Mis Proofs Guardados</h4>
+        <div id="my-reviews-list" style="display:flex; flex-direction:column; gap:12px;"></div>
       </div>
     </div>
   </div>
@@ -312,8 +315,8 @@
           <i class="fa-solid fa-star"></i> Dejar un Proof
         </button>
 
-        <h4 class="slide-up" style="margin-top:24px; font-weight:900; font-size:1.5rem; animation-delay: 0.3s;">Evidencias de Usuarios</h4>
-        <div id="biz-reviews-list" style="display:flex; flex-direction:column; padding-bottom:50px;"></div>
+        <h4 class="slide-up" style="margin-top:20px; font-weight:900; font-size:1.3rem; animation-delay: 0.3s;">Evidencias de Usuarios</h4>
+        <div id="biz-reviews-list" style="display:flex; flex-direction:column; padding-bottom:40px;"></div>
       </div>
     </div>
   </div>
@@ -325,7 +328,7 @@
         <h3>Identificación</h3>
         <button class="btn-close" onclick="window.closeModal('modal-auth')"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="modal-body" style="padding-bottom:50px;">
+      <div class="modal-body" style="padding-bottom:40px;">
         <div class="tabs">
           <div id="tab-login" class="tab active" onclick="window.switchAuthTab('login')">Ingresar</div>
           <div id="tab-register" class="tab" onclick="window.switchAuthTab('register')">Crear Cuenta</div>
@@ -341,7 +344,7 @@
           <div class="form-group"><input type="text" id="regName" placeholder="Nombre completo"></div>
           <div class="form-group"><input type="email" id="regEmail" placeholder="Correo electrónico"></div>
           <div class="form-group"><input type="password" id="regPassword" placeholder="Contraseña (mín 6)"></div>
-          <label class="btn btn-secondary" style="width:100%; margin-bottom:16px;">
+          <label class="btn btn-secondary" style="width:100%; margin-bottom:12px;">
             <i class="fa-solid fa-camera"></i> Subir Foto de Perfil
             <input type="file" id="regPhoto" accept="image/*" style="display:none;">
           </label>
@@ -358,10 +361,10 @@
         <h3>Tu Experiencia</h3>
         <button class="btn-close" onclick="window.closeModal('modal-wizard')"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="modal-body" style="padding-bottom:50px;">
+      <div class="modal-body" style="padding-bottom:40px;">
         
         <div id="wiz-step-1" class="wizard-step active">
-          <h4 style="font-size:1.4rem; font-weight:900;">¿Cómo calificarías este local?</h4>
+          <h4 style="font-size:1.3rem; font-weight:900;">¿Cómo calificarías este local?</h4>
           <div class="star-rating-picker" id="star-picker">
             <i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i>
             <i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i>
@@ -371,23 +374,23 @@
         </div>
 
         <div id="wiz-step-2" class="wizard-step">
-          <h4 style="font-size:1.4rem; font-weight:900;">Escribe tu opinión</h4>
-          <textarea id="wiz-text" rows="5" placeholder="¿Qué fue lo mejor del servicio?" style="width:100%; border:2px solid rgba(15,52,115,0.1); border-radius:24px; padding:20px; font-size:1.1rem;"></textarea>
-          <div style="display:flex; gap:16px; width:100%;"><button class="btn btn-secondary" style="flex:1;" onclick="window.nextWizardStep(3)">Saltar</button><button class="btn btn-primary" style="flex:1;" onclick="window.nextWizardStep(3)">Siguiente</button></div>
+          <h4 style="font-size:1.3rem; font-weight:900;">Escribe tu opinión</h4>
+          <textarea id="wiz-text" rows="4" placeholder="¿Qué fue lo mejor del servicio?" style="width:100%; border:2px solid rgba(15,52,115,0.1); border-radius:20px; padding:16px; font-size:1rem;"></textarea>
+          <div style="display:flex; gap:12px; width:100%;"><button class="btn btn-secondary" style="flex:1;" onclick="window.nextWizardStep(3)">Saltar</button><button class="btn btn-primary" style="flex:1;" onclick="window.nextWizardStep(3)">Siguiente</button></div>
         </div>
 
         <div id="wiz-step-3" class="wizard-step">
-          <h4 style="font-size:1.4rem; font-weight:900;">Sube una foto (Proof)</h4>
-          <img id="wiz-photo-preview" style="width:100%; max-height:220px; border-radius:24px; display:none; margin-bottom:16px; object-fit:cover; box-shadow: var(--shadow-sm);">
-          <label class="btn btn-secondary" style="width:100%; margin-bottom:16px;"><i class="fa-solid fa-image"></i> Abrir Galería<input type="file" id="wiz-photo" accept="image/*" onchange="window.previewWizPhoto(event)" style="display:none;"></label>
-          <div style="display:flex; gap:16px; width:100%;"><button class="btn btn-secondary" style="flex:1;" onclick="window.nextWizardStep(4)">Saltar</button><button class="btn btn-primary" style="flex:1;" onclick="window.nextWizardStep(4)">Siguiente</button></div>
+          <h4 style="font-size:1.3rem; font-weight:900;">Sube una foto (Proof)</h4>
+          <img id="wiz-photo-preview" style="width:100%; max-height:200px; border-radius:20px; display:none; margin-bottom:12px; object-fit:cover; box-shadow: var(--shadow-sm);">
+          <label class="btn btn-secondary" style="width:100%; margin-bottom:12px;"><i class="fa-solid fa-image"></i> Abrir Galería<input type="file" id="wiz-photo" accept="image/*" onchange="window.previewWizPhoto(event)" style="display:none;"></label>
+          <div style="display:flex; gap:12px; width:100%;"><button class="btn btn-secondary" style="flex:1;" onclick="window.nextWizardStep(4)">Saltar</button><button class="btn btn-primary" style="flex:1;" onclick="window.nextWizardStep(4)">Siguiente</button></div>
         </div>
 
         <div id="wiz-step-4" class="wizard-step">
-          <h4 style="font-size:1.4rem; font-weight:900;">Graba un audio rápido</h4>
-          <button class="btn btn-secondary" id="btn-wiz-audio" style="width:100%; padding:24px; border:2px dashed var(--primary);" onclick="window.toggleWizAudio()"><i class="fa-solid fa-microphone"></i> Iniciar Grabación</button>
-          <audio id="wiz-audio-preview" controls style="width:100%; display:none; margin-top:20px;"></audio>
-          <button class="btn btn-primary" style="width:100%; margin-top:40px; font-size:1.2rem; padding:20px;" id="btn-wiz-submit" onclick="window.submitWizardReview()">Publicar Proof <i class="fa-solid fa-paper-plane"></i></button>
+          <h4 style="font-size:1.3rem; font-weight:900;">Graba un audio rápido</h4>
+          <button class="btn btn-secondary" id="btn-wiz-audio" style="width:100%; padding:20px; border:2px dashed var(--primary);" onclick="window.toggleWizAudio()"><i class="fa-solid fa-microphone"></i> Iniciar Grabación</button>
+          <audio id="wiz-audio-preview" controls style="width:100%; display:none; margin-top:16px;"></audio>
+          <button class="btn btn-primary" style="width:100%; margin-top:30px; padding:16px;" id="btn-wiz-submit" onclick="window.submitWizardReview()">Publicar Proof <i class="fa-solid fa-paper-plane"></i></button>
         </div>
 
       </div>
@@ -398,7 +401,7 @@
   <div class="modal-overlay" id="modal-qr">
     <div class="modal-card">
       <div class="modal-header"><h3>Escanear Código</h3><button class="btn-close" onclick="window.closeModal('modal-qr')"><i class="fa-solid fa-xmark"></i></button></div>
-      <div class="modal-body" style="padding-bottom:50px;"><div id="qr-reader" style="border-radius:24px; overflow:hidden; border: 2px solid rgba(15,52,115,0.1);"></div></div>
+      <div class="modal-body" style="padding-bottom:40px;"><div id="qr-reader" style="border-radius:20px; overflow:hidden; border: 2px solid rgba(15,52,115,0.1);"></div></div>
     </div>
   </div>
 
@@ -442,6 +445,7 @@
         allBusinesses = snapshot.val() || {};
         window.renderMapPins();
         
+        // DEEP LINKING
         const urlParams = new URLSearchParams(window.location.search);
         const bizParam = urlParams.get('biz');
         if (bizParam && allBusinesses[bizParam] && !window.deepLinkOpened) {
@@ -550,7 +554,6 @@
     }
 
     function renderRankings() {
-      // 1. Calcular Top Locales (Promedio Estrellas)
       let placesArr = [];
       Object.entries(allBusinesses).forEach(([id, biz]) => {
         let revs = biz.reviews ? Object.values(biz.reviews) : [];
@@ -562,11 +565,9 @@
           placesArr.push({ id, name: biz.name, avg: avg, count: revs.length, photo: photo });
         }
       });
-      // Ordenar: primero por promedio, luego por cantidad de reseñas
       placesArr.sort((a, b) => b.avg !== a.avg ? b.avg - a.avg : b.count - a.count);
 
-      const bizContainer = document.getElementById('rankingBizSection');
-      bizContainer.innerHTML = "";
+      const bizContainer = document.getElementById('rankingBizSection'); bizContainer.innerHTML = "";
       if (placesArr.length === 0) {
         bizContainer.innerHTML = "<p style='text-align:center; color:#888; margin-top:20px;'>No hay locales calificados aún.</p>";
       } else {
@@ -583,7 +584,6 @@
         });
       }
 
-      // 2. Calcular Top Usuarios (Cantidad de Proofs)
       let userCounts = {};
       Object.values(allBusinesses).forEach(biz => {
         if(biz.reviews) {
@@ -599,8 +599,7 @@
       });
       let usersArr = Object.values(userCounts).sort((a, b) => b.count - a.count);
 
-      const userContainer = document.getElementById('rankingUsersSection');
-      userContainer.innerHTML = "";
+      const userContainer = document.getElementById('rankingUsersSection'); userContainer.innerHTML = "";
       if (usersArr.length === 0) {
         userContainer.innerHTML = "<p style='text-align:center; color:#888; margin-top:20px;'>No hay usuarios activos aún.</p>";
       } else {
@@ -716,8 +715,30 @@
       window.openModal('modal-biz');
     };
 
+    /* === GAMIFICACIÓN Y PUNTOS EN EL PERFIL === */
     window.openMyProfile = function() {
       const container = document.getElementById('my-reviews-list'); container.innerHTML = ""; let count = 0;
+      
+      // Calcular Ranking y Puntos Globales
+      let userCounts = {};
+      Object.values(allBusinesses).forEach(biz => {
+        if (biz.reviews) {
+          Object.values(biz.reviews).forEach(r => {
+            if (!userCounts[r.authorUid]) userCounts[r.authorUid] = 0;
+            userCounts[r.authorUid]++;
+          });
+        }
+      });
+
+      let sortedUids = Object.keys(userCounts).sort((a, b) => userCounts[b] - userCounts[a]);
+      let myRank = sortedUids.indexOf(currentUser.uid) + 1;
+      let myReviewCount = userCounts[currentUser.uid] || 0;
+      let myPoints = myReviewCount * 50; 
+
+      document.getElementById('prof-points').innerText = myPoints;
+      document.getElementById('prof-rank').innerText = myRank > 0 ? `#${myRank}` : '-';
+
+      // Renderizar Mis Reseñas
       Object.entries(allBusinesses).forEach(([id, b]) => {
         if (b.reviews) {
           Object.values(b.reviews).forEach((r, index) => {
@@ -762,7 +783,7 @@
       try {
         let photoB64 = null; if (photoInput.files.length > 0) photoB64 = await fileToBase64Compress(photoInput.files[0]);
         await push(ref(db, `businesses/${selectedBizId}/reviews`), { authorUid: currentUser.uid, authorName: currentUser.name, authorPhoto: currentUser.photo, rating: wizRating, text, audioBase64: recordedAudioBase64, photoBase64: photoB64, timestamp: Date.now() });
-        window.closeModal('modal-wizard'); window.openBusinessModal(selectedBizId); showToast("¡Proof guardado!");
+        window.closeModal('modal-wizard'); window.openBusinessModal(selectedBizId); showToast("¡Proof guardado y Puntos Sumados!");
       } catch(err) { showToast("Error al publicar"); } finally { btn.disabled = false; btn.innerHTML = `Publicar Proof <i class="fa-solid fa-paper-plane"></i>`; }
     };
 
