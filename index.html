@@ -19,14 +19,14 @@
     :root {
       --bg-base: #F6f4F1; 
       --primary: #0F3473; 
-      --glass-bg: rgba(246, 244, 241, 0.75);
+      --glass-bg: rgba(246, 244, 241, 0.85);
       --white: #FFFFFF;
       --success: #4CAF50;
       --danger: #F44336;
       --shadow-soft: 0 10px 30px rgba(15, 52, 115, 0.08);
       --shadow-hover: 0 16px 40px rgba(15, 52, 115, 0.15);
       --shadow-btn: 0 6px 20px rgba(15, 52, 115, 0.2);
-      --transition-smooth: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      --transition-smooth: all 0.4s ease-in-out;
       --transition-fast: all 0.2s ease-out;
     }
 
@@ -34,28 +34,28 @@
     body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-base); color: var(--primary); }
 
     /* === ANIMACIONES GLOBALES === */
-    @keyframes popIn { 0% { opacity: 0; transform: scale(0.6) translateY(15px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
     @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
     @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+    @keyframes popIn { 0% { opacity: 0; transform: scale(0.6) translateY(15px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
     
     .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-    .slide-up { animation: slideUpFade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; opacity: 0; }
+    .slide-up { animation: slideUpFade 0.5s ease-out forwards; opacity: 0; }
     .pop-in { animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
-    /* === MAPA AESTHETIC === */
+    /* === MAPA === */
     #map { width: 100%; height: 100vh; z-index: 1; background-color: var(--bg-base); }
     .leaflet-container { background: var(--bg-base); }
     .leaflet-tile-pane { filter: grayscale(100%) sepia(10%) contrast(1.1) brightness(1.05); opacity: 0.75; }
     .leaflet-control-attribution { display: none; }
 
-    /* === PINES AESTHETIC === */
+    /* === PINES BLINDADOS === */
     .custom-photo-pin { background: transparent; border: none; outline: none; }
     .photo-pin-img {
       width: 56px; height: 56px; border-radius: 18px; 
       box-shadow: 0 8px 24px rgba(15,52,115,0.3); 
       background-size: cover; background-position: center; 
       background-color: var(--white);
-      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: transform 0.2s ease;
     }
     .photo-pin-img:active { transform: scale(0.85); }
     .status-dot {
@@ -66,26 +66,31 @@
 
     /* === HEADER SUPERIOR === */
     .top-header { position: absolute; top: 40px; left: 0; right: 0; z-index: 1000; display: flex; justify-content: center; align-items: center; pointer-events: none; }
-    .header-center-img { height: 58px; width: auto; max-width: 60%; object-fit: contain; pointer-events: auto; filter: drop-shadow(0 6px 12px rgba(15,52,115,0.15)); transition: transform 0.3s ease; }
+    .header-center-img { height: 48px; width: auto; max-width: 60%; object-fit: contain; pointer-events: auto; filter: drop-shadow(0 6px 12px rgba(15,52,115,0.15)); transition: transform 0.3s ease; }
     .header-center-img:active { transform: scale(0.95); }
 
-    /* === BARRA VERTICAL RETRÁCTIL === */
+    /* === BARRA VERTICAL RETRÁCTIL (MATEMÁTICA PERFECTA) === */
     .toolbar-wrapper { 
-      position: absolute; right: 16px; top: 50%; transform: translateY(-50%); 
+      position: absolute; 
+      right: 16px; /* Posición visible */
+      top: 50%; 
+      margin-top: -120px; /* Centrado absoluto infalible */
       z-index: 1000; display: flex; align-items: center; 
-      transition: right 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
+      transition: right 0.4s ease-in-out; 
     }
-    .toolbar-wrapper.hidden { right: -70px; }
+    .toolbar-wrapper.hidden { 
+      right: -70px; /* Esconde toda la barra (60px) + la sombra (10px) = 70px fuera de la pantalla */
+    }
     
     .toggle-toolbar-btn { 
       background: var(--white); border: 1px solid rgba(15,52,115,0.05); color: var(--primary); 
       width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
       cursor: pointer; box-shadow: var(--shadow-soft); z-index: 1001; 
-      position: absolute; left: -56px; 
+      position: absolute; 
+      left: -32px; /* Al esconderse -70px, estos -32px garantizan que la flecha asome exactamente por la mitad en cualquier celular */
       font-size: 1.1rem; transition: var(--transition-smooth); 
     }
     .toggle-toolbar-btn:active { transform: scale(0.85); }
-    .toggle-toolbar-btn:hover { box-shadow: var(--shadow-hover); }
     
     .vertical-toolbar { display: flex; flex-direction: column; align-items: center; gap: 20px; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.4); padding: 22px 14px; border-radius: 35px; box-shadow: var(--shadow-soft); width: 60px; }
     .tool-btn { background: transparent; border: none; color: var(--primary); font-size: 1.5rem; cursor: pointer; transition: var(--transition-fast); display: flex; align-items: center; justify-content: center; opacity: 0.8; }
@@ -93,15 +98,15 @@
     .tool-btn:active { transform: scale(0.8); }
 
     /* Botones Generales */
-    .btn { padding: 18px 26px; border: none; border-radius: 30px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.05rem; transition: var(--transition-smooth); box-shadow: var(--shadow-soft); letter-spacing: 0.5px; }
+    .btn { padding: 18px 26px; border: none; border-radius: 30px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.05rem; transition: var(--transition-smooth); box-shadow: var(--shadow-soft); }
     .btn:active { transform: scale(0.94); box-shadow: none; }
     .btn-primary { background: var(--primary); color: var(--white); box-shadow: var(--shadow-btn); }
     .btn-secondary { background: var(--bg-base); color: var(--primary); border: 2px solid var(--primary); box-shadow: none; }
 
-    /* Drawer Menú Hamburguesa */
+    /* Drawer Menú */
     .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,52,115,0.3); backdrop-filter: blur(4px); z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
     .drawer-overlay.active { opacity: 1; pointer-events: all; }
-    .drawer { position: fixed; top: 0; left: -350px; width: 320px; height: 100%; background: var(--bg-base); z-index: 2001; transition: left 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); display: flex; flex-direction: column; padding: 40px 24px; border-radius: 0 40px 40px 0; box-shadow: 15px 0 40px rgba(15,52,115,0.1); }
+    .drawer { position: fixed; top: 0; left: -350px; width: 320px; height: 100%; background: var(--bg-base); z-index: 2001; transition: left 0.5s ease; display: flex; flex-direction: column; padding: 40px 24px; border-radius: 0 40px 40px 0; box-shadow: 15px 0 40px rgba(15,52,115,0.1); }
     .drawer.active { left: 0; } 
     .drawer-item { padding: 18px; background: var(--white); border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 14px; margin-bottom: 14px; color: var(--primary); cursor: pointer; box-shadow: 0 4px 12px rgba(15,52,115,0.03); border: 1px solid rgba(15,52,115,0.04); font-size: 1.05rem; transition: var(--transition-smooth); }
     .drawer-item:active { transform: scale(0.97); }
@@ -113,30 +118,35 @@
     .modal-overlay.active .modal-card { transform: translateY(0); }
     .modal-header { padding: 30px 30px 20px; display: flex; justify-content: space-between; align-items: center; }
     .modal-header h3 { font-size: 1.6rem; font-weight: 900; color: var(--primary); letter-spacing: -0.5px; }
-    .btn-close { background: rgba(15,52,115,0.05); border: none; color: var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: var(--transition-fast); }
-    .btn-close:active { transform: scale(0.9); }
+    .btn-close { background: rgba(15,52,115,0.05); border: none; color: var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; }
     .modal-body { padding: 0 30px 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; }
 
     /* Formularios */
     .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 18px 24px; border: 2px solid transparent; border-radius: 24px; background: var(--white); font-weight: 600; margin-bottom: 16px; font-size: 1.05rem; color: var(--primary); outline: none; transition: var(--transition-smooth); box-shadow: 0 4px 12px rgba(15,52,115,0.03); appearance: none; }
     .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary); box-shadow: var(--shadow-soft); }
 
-    /* === FICHA DEL LOCAL Y MINIATURAS (FIX OVERLAP) === */
+    /* === FICHA DEL LOCAL: MINIATURAS (THUMBNAILS) CON BLOQUEO === */
     .biz-carousel-container { 
-      display: flex; overflow-x: auto; gap: 14px; padding-bottom: 15px; 
+      display: flex; overflow-x: auto; gap: 14px; padding-bottom: 12px; 
       scrollbar-width: none; -webkit-overflow-scrolling: touch; margin-top: 5px; 
-      min-height: 105px; /* Forzamos la altura para que no colapse */
-      flex-shrink: 0; width: 100%;
+      min-height: 90px; flex-shrink: 0; width: 100%;
     }
     .biz-carousel-container::-webkit-scrollbar { display: none; }
     .biz-carousel-item { 
       flex: 0 0 85px; height: 85px; border-radius: 22px; 
       box-shadow: 0 6px 16px rgba(15,52,115,0.15); cursor: zoom-in; overflow: hidden; 
       background-color: var(--white); background-size: cover; background-position: center; 
-      transition: transform 0.2s ease; border: 2px solid var(--white); 
-      flex-shrink: 0; /* Evita que las fotos se aplasten */
+      border: 2px solid var(--white); flex-shrink: 0; /* Esto bloquea el CSS para que la tarjeta de abajo no se superponga jamás */
     }
-    .biz-carousel-item:active { transform: scale(0.92); }
+
+    /* REDES SOCIALES */
+    .social-links-container { display: flex; gap: 12px; margin-bottom: 16px; padding: 0 4px; flex-wrap: wrap; flex-shrink: 0; }
+    .social-link { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; color: var(--white); font-size: 1.4rem; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.2s; }
+    .social-link:active { transform: scale(0.85); }
+    .social-wa { background: #25D366; } 
+    .social-ig { background: #E1306C; } 
+    .social-fb { background: #1877F2; } 
+    .social-web { background: var(--primary); } 
 
     /* LIGHTBOX ZOOM */
     #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,52,115,0.95); z-index: 9999; backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; cursor: zoom-out; }
@@ -145,17 +155,12 @@
     #lightbox.active img { transform: scale(1); }
 
     /* TARJETA DE INFORMACIÓN (META) */
-    .biz-meta { 
-      background: var(--white); padding: 26px; border-radius: 30px; font-size: 1.05rem; 
-      font-weight: 600; color: var(--primary); box-shadow: var(--shadow-soft); 
-      border: 1px solid rgba(15,52,115,0.02);
-      flex-shrink: 0; position: relative; z-index: 2; 
-    }
+    .biz-meta { background: var(--white); padding: 26px; border-radius: 30px; font-size: 1.05rem; font-weight: 600; color: var(--primary); box-shadow: var(--shadow-soft); border: 1px solid rgba(15,52,115,0.02); flex-shrink: 0; position: relative; z-index: 2; }
     .biz-meta div { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; line-height: 1.5; }
     .biz-meta i { color: rgba(15,52,115,0.5); width: 20px; font-size: 1.3rem; margin-top: 2px; }
 
     /* Reseñas */
-    .review-card { background: var(--white); border-radius: 30px; padding: 26px; display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; box-shadow: var(--shadow-soft); }
+    .review-card { background: var(--white); border-radius: 30px; padding: 26px; display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; box-shadow: var(--shadow-soft); flex-shrink: 0; }
     .review-header { display: flex; align-items: center; gap: 16px; }
     .review-header img { width: 56px; height: 56px; border-radius: 18px; object-fit: cover; box-shadow: 0 4px 10px rgba(15,52,115,0.1); }
     .review-author { font-weight: 900; font-size: 1.2rem; }
@@ -163,8 +168,8 @@
     .review-media audio { width: 100%; height: 44px; margin-top: 10px; filter: contrast(0.9); }
     
     /* Wizard (Paso a Paso) */
-    .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 16px; animation: fadeIn 0.4s ease forwards; }
-    .wizard-step.active { display: flex; }
+    .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+    .wizard-step.active { display: flex; animation: slideUpFade 0.4s ease forwards; }
     .star-rating-picker { font-size: 3.5rem; color: rgba(15,52,115,0.1); display: flex; gap: 14px; margin: 30px 0; }
     .star-rating-picker i { cursor: pointer; transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease; }
     .star-rating-picker i:active { transform: scale(0.8); }
@@ -186,21 +191,21 @@
 
   <div class="toast" id="toast"></div>
 
-  <!-- LIGHTBOX PARA VER FOTOS COMPLETAS Y GRANDES -->
+  <!-- LIGHTBOX FOTOS -->
   <div id="lightbox" onclick="window.closeLightbox()">
     <img id="lightbox-img" src="" onclick="event.stopPropagation()">
   </div>
 
   <!-- HEADER -->
   <header class="top-header fade-in">
-    <!-- PON TU LOGO AQUÍ EN EL SRC -->
-    <img src="1.png" onerror="this.src='https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO'" alt="Logo Proof" class="header-center-img">
+    <!-- REEMPLAZA EL SRC CON TU LOGO OFICIAL -->
+    <img src="tu_logo.png" onerror="this.src='https://via.placeholder.com/200x60/F6f4F1/0F3473?text=TU+LOGO'" alt="Logo" class="header-center-img">
   </header>
 
   <!-- MAPA PRINCIPAL -->
   <div id="map" class="fade-in"></div>
 
-  <!-- BARRA VERTICAL RETRÁCTIL -->
+  <!-- BARRA VERTICAL RETRÁCTIL (CORREGIDA LA MATEMÁTICA) -->
   <div class="toolbar-wrapper slide-up" id="toolbar-wrapper" style="animation-delay: 0.3s;">
     <button class="toggle-toolbar-btn" onclick="window.toggleToolbar()"><i class="fa-solid fa-chevron-right" id="toolbar-icon"></i></button>
     <div class="vertical-toolbar">
@@ -220,7 +225,7 @@
     </div>
 
     <div id="drawer-user-profile" class="slide-up" style="background:var(--white); padding:30px; border-radius:35px; text-align:center; margin-bottom:24px; display:none; box-shadow:var(--shadow-soft);">
-      <img id="drawer-avatar" src="" style="width:90px; height:90px; border-radius:30px; margin:0 auto 16px; object-fit:cover; border:3px solid var(--primary); box-shadow: 0 8px 20px rgba(15,52,115,0.15);">
+      <img id="drawer-avatar" src="" style="width:90px; height:90px; border-radius:30px; margin:0 auto 16px; object-fit:cover; border:3px solid var(--primary);">
       <div id="drawer-username" style="font-weight:900; font-size:1.4rem;"></div>
     </div>
 
@@ -270,7 +275,7 @@
     </div>
   </div>
 
-  <!-- MODAL: FICHA DEL LOCAL (Con Miniaturas Perfectas) -->
+  <!-- MODAL: FICHA DEL LOCAL -->
   <div class="modal-overlay" id="modal-biz">
     <div class="modal-card">
       <div class="modal-header">
@@ -282,11 +287,14 @@
         <!-- CARRUSEL DE MINIATURAS (THUMBNAILS) -->
         <div id="biz-photos-carousel" class="biz-carousel-container slide-up"></div>
         
+        <!-- REDES SOCIALES A COLOR -->
+        <div id="biz-social-links" class="social-links-container slide-up" style="animation-delay: 0.05s;"></div>
+        
+        <!-- METADATA -->
         <div class="biz-meta slide-up" style="animation-delay: 0.1s;">
           <div><i class="fa-solid fa-quote-left"></i> <span id="biz-desc"></span></div>
           <div><i class="fa-solid fa-clock"></i> <span id="biz-hours"></span></div>
           <div><i class="fa-solid fa-location-dot"></i> <span id="biz-address"></span></div>
-          <div id="biz-menu-container"><i class="fa-solid fa-link"></i> <a id="biz-menu" href="#" target="_blank" style="color:var(--primary); font-weight:900;">Ver Menú / Web</a></div>
         </div>
 
         <button class="btn btn-primary slide-up" style="width:100%; margin-top:10px; animation-delay: 0.2s;" onclick="window.startReviewWizard()">
@@ -402,7 +410,8 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    const defaultImg = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' style='background:%23F6f4F1;'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='26' fill='%230F3473'%3ELocal%3C/text%3E%3C/svg%3E";
+    // IMAGEN SEGURA DE REEMPLAZO (ELIMINADO EL SVG ROTO)
+    const defaultImg = "https://via.placeholder.com/150/F6f4F1/0F3473?text=Proof";
 
     let currentUser = null; 
     let userCoords = { lat: -38.0055, lng: -57.5426 }; 
@@ -489,7 +498,6 @@
       else icon.classList.replace('fa-chevron-left', 'fa-chevron-right');
     };
 
-    /* COMPRESIÓN FOTOS */
     function fileToBase64Compress(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -517,7 +525,6 @@
       });
     }
 
-    /* HORARIOS Y PUNTITO VERDE/ROJO */
     function checkIsOpen(openTime, closeTime) {
       if (!openTime || !closeTime) return null;
       const now = new Date();
@@ -555,7 +562,9 @@
             if (b.photos && b.photos.length > 0) imgUrl = b.photos[0];
             else if (b.photoBase64 && b.photoBase64.trim() !== "") imgUrl = b.photoBase64;
             
-            // PINES AESTHETIC EXACTOS (Flotando arriba del punto)
+            // FILTRO DE SEGURIDAD (Evita iconos rotos [?])
+            if (!imgUrl.startsWith('http') && !imgUrl.startsWith('data:image')) imgUrl = defaultImg;
+            
             const iconHtml = `
               <div style="display: flex; flex-direction: column; align-items: center;">
                 <div class="pin-container">
@@ -575,7 +584,6 @@
       });
     };
 
-    /* LIGHTBOX ZOOM */
     window.openLightbox = function(url) {
       const lb = document.getElementById('lightbox');
       document.getElementById('lightbox-img').src = url;
@@ -588,12 +596,11 @@
       setTimeout(() => lb.style.display = 'none', 300);
     };
 
-    /* FICHA Y CARRUSEL DE MINIATURAS (THUMBNAILS) */
+    /* === FICHA DEL LOCAL CON REDES SOCIALES === */
     window.openBusinessModal = function(id) {
       selectedBizId = id; const biz = allBusinesses[id];
       document.getElementById('biz-title').innerText = biz.name;
       
-      // MINIATURAS TIPO PINES
       const carouselContainer = document.getElementById('biz-photos-carousel');
       carouselContainer.innerHTML = "";
       
@@ -603,13 +610,39 @@
       else photosArray = [defaultImg];
 
       photosArray.forEach(imgStr => {
+        let safeUrl = imgStr;
+        if (!safeUrl.startsWith('http') && !safeUrl.startsWith('data:image')) safeUrl = defaultImg;
+        
         const item = document.createElement('div');
         item.className = 'biz-carousel-item';
-        item.style.backgroundImage = `url('${imgStr}')`;
-        item.onclick = () => window.openLightbox(imgStr);
+        item.style.backgroundImage = `url('${safeUrl}')`;
+        item.onclick = () => window.openLightbox(safeUrl);
         carouselContainer.appendChild(item);
       });
       
+      // INYECTAR REDES SOCIALES A COLOR
+      const socialContainer = document.getElementById('biz-social-links');
+      socialContainer.innerHTML = "";
+      let socialHtml = "";
+      
+      if (biz.whatsapp) {
+        let waLink = biz.whatsapp.replace(/[^0-9]/g, '');
+        if(waLink) socialHtml += `<a href="https://wa.me/${waLink}" target="_blank" class="social-link social-wa"><i class="fa-brands fa-whatsapp"></i></a>`;
+      }
+      if (biz.instagram) {
+        let igLink = biz.instagram.startsWith('http') ? biz.instagram : 'https://' + biz.instagram;
+        socialHtml += `<a href="${igLink}" target="_blank" class="social-link social-ig"><i class="fa-brands fa-instagram"></i></a>`;
+      }
+      if (biz.facebook) {
+        let fbLink = biz.facebook.startsWith('http') ? biz.facebook : 'https://' + biz.facebook;
+        socialHtml += `<a href="${fbLink}" target="_blank" class="social-link social-fb"><i class="fa-brands fa-facebook"></i></a>`;
+      }
+      if (biz.menu) {
+        let webLink = biz.menu.startsWith('http') ? biz.menu : 'https://' + biz.menu;
+        socialHtml += `<a href="${webLink}" target="_blank" class="social-link social-web"><i class="fa-solid fa-globe"></i></a>`;
+      }
+      socialContainer.innerHTML = socialHtml;
+
       document.getElementById('biz-desc').innerText = biz.desc || "Sin descripción";
       
       let statusText = "";
@@ -621,9 +654,6 @@
       document.getElementById('biz-hours').innerHTML = `${statusText} ${biz.hoursDesc || 'Horarios a consultar'}`;
       
       document.getElementById('biz-address').innerText = biz.address || "Ubicación en mapa";
-      
-      const menuBtn = document.getElementById('biz-menu-container');
-      if (biz.menu) { menuBtn.style.display = "flex"; document.getElementById('biz-menu').href = biz.menu; } else { menuBtn.style.display = "none"; }
 
       const container = document.getElementById('biz-reviews-list'); container.innerHTML = "";
       const reviewsArr = biz.reviews ? Object.values(biz.reviews).sort((a,b) => b.timestamp - a.timestamp) : [];
@@ -636,11 +666,14 @@
           if (r.audioBase64) media += `<audio controls src="${r.audioBase64}"></audio>`;
           let stars = `<div style="color:#F5A623; font-size:1.1rem;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.rating || 5) + `</div>`;
 
+          let safeAuthorPhoto = r.authorPhoto;
+          if (!safeAuthorPhoto || (!safeAuthorPhoto.startsWith('http') && !safeAuthorPhoto.startsWith('data:image'))) safeAuthorPhoto = defaultImg;
+
           const div = document.createElement('div');
           div.className = 'review-card slide-up';
           div.style.animationDelay = `${index * 0.1}s`;
           div.innerHTML = `
-            <div class="review-header"><img src="${r.authorPhoto}"><div><div class="review-author">${escapeHtml(r.authorName)}</div>${stars}</div></div>
+            <div class="review-header"><img src="${safeAuthorPhoto}"><div><div class="review-author">${escapeHtml(r.authorName)}</div>${stars}</div></div>
             ${r.text ? `<div style="font-weight:600; font-size:1.05rem; color:#555;">${escapeHtml(r.text)}</div>` : ''}
             <div class="review-media">${media}</div>
           `;
@@ -716,7 +749,7 @@
       const n = document.getElementById('regName').value, e = document.getElementById('regEmail').value, p = document.getElementById('regPassword').value, f = document.getElementById('regPhoto').files[0];
       if(!n || !e || !p) return showToast("Faltan datos");
       try {
-        let b64 = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' style='background:%230F3473;'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' font-size='50' fill='%23FFFFFF'%3E"+n.charAt(0).toUpperCase()+"%3C/text%3E%3C/svg%3E"; 
+        let b64 = "https://via.placeholder.com/150/0F3473/FFFFFF?text="+n.charAt(0).toUpperCase(); 
         if(f) b64 = await fileToBase64Compress(f);
         const c = await createUserWithEmailAndPassword(auth, e, p);
         await set(ref(db, 'users/'+c.user.uid), {name:n, photo:b64, createdAt:Date.now()}); window.closeModal('modal-auth'); showToast("¡Cuenta habilitada!");

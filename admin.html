@@ -30,7 +30,6 @@
     .custom-file-upload { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--white); border: 2px dashed var(--primary); color: var(--primary); padding: 16px 24px; border-radius: 20px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.3s; }
     .custom-file-upload input { display: none; }
     
-    /* Previsualización de varias fotos */
     #photo-preview-container { display: flex; gap: 10px; overflow-x: auto; margin-top: 10px; padding-bottom: 5px; }
     #photo-preview-container img { width: 80px; height: 80px; object-fit: cover; border-radius: 12px; border: 2px solid var(--primary); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
   </style>
@@ -51,13 +50,11 @@
     
     <div class="form-group"><label>Nombre del Local</label><input type="text" id="name" placeholder="Ej: Café Central"></div>
     
-    <!-- MÚLTIPLES FOTOS -->
     <div class="form-group">
       <label>Fotos del Local (La primera será el Pin, puedes seleccionar varias)</label>
       <label class="custom-file-upload">
         <i class="fa-solid fa-images"></i> Seleccionar Imágenes
-        <!-- Agregado "multiple" para permitir varias fotos -->
-        <input type="file" id="photos" accept="image/*" multiple onchange="previewAdminPhotos(event)">
+        <input type="file" id="photos" accept="image/*" multiple onchange="window.previewAdminPhotos(event)">
       </label>
       <div id="photo-preview-container"></div>
     </div>
@@ -68,7 +65,6 @@
       <div class="form-group" style="flex:1;"><label>Categoría</label><select id="cat"><option>Gastronomía</option><option>Servicios</option><option>Comercio</option></select></div>
     </div>
 
-    <!-- HORARIOS ESTRUCTURADOS PARA PUNTO VERDE -->
     <div style="background: rgba(15,52,115,0.05); padding: 16px; border-radius: 16px; margin-bottom: 16px;">
       <label><i class="fa-solid fa-clock"></i> Horario de Funcionamiento</label>
       <p style="font-size:0.85rem; color:#666; margin-bottom:10px;">Determinará si el local muestra el "Puntito Verde" de abierto.</p>
@@ -79,25 +75,43 @@
       <div class="form-group" style="margin-bottom:0;"><label style="font-size:0.8rem;">Texto Descriptivo (Opcional)</label><input type="text" id="hoursDesc" placeholder="Ej: Lun a Vier de 08:00 a 20:00"></div>
     </div>
     
-    <div class="form-group"><label>Menú / Web</label><input type="text" id="menu" placeholder="https://..."></div>
+    <!-- NUEVAS REDES SOCIALES -->
+    <div style="background: rgba(15,52,115,0.05); padding: 16px; border-radius: 16px; margin-bottom: 16px;">
+      <label><i class="fa-solid fa-share-nodes"></i> Redes Sociales y Contacto</label>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+        <div class="form-group" style="flex:1; min-width: 150px;">
+          <label style="font-size:0.8rem;"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> WhatsApp</label>
+          <input type="text" id="whatsapp" placeholder="Ej: 549223...">
+        </div>
+        <div class="form-group" style="flex:1; min-width: 150px;">
+          <label style="font-size:0.8rem;"><i class="fa-brands fa-instagram" style="color:#E1306C;"></i> Instagram</label>
+          <input type="text" id="instagram" placeholder="https://instagram.com/...">
+        </div>
+        <div class="form-group" style="flex:1; min-width: 150px;">
+          <label style="font-size:0.8rem;"><i class="fa-brands fa-facebook" style="color:#1877F2;"></i> Facebook</label>
+          <input type="text" id="facebook" placeholder="https://facebook.com/...">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:0;"><label style="font-size:0.8rem;"><i class="fa-solid fa-globe"></i> Web / Menú</label><input type="text" id="menu" placeholder="https://..."></div>
+    </div>
     
     <div class="form-group" style="margin-top:20px;">
       <label>1. Dirección (Calle y Ciudad)</label>
       <div style="display:flex; gap:10px;">
         <input type="text" id="address" placeholder="Ej: Güemes 1234">
-        <button onclick="searchAddress()" class="btn-secondary">Buscar Mapa</button>
+        <button onclick="window.searchAddress()" class="btn-secondary">Buscar Mapa</button>
       </div>
     </div>
     
     <div class="form-group" style="margin-bottom:20px;">
       <label>2. O usar ubicación exacta (Si estás físicamente ahí)</label>
-      <button onclick="useAdminGPS()" class="btn-secondary" style="width:100%;">📍 Capturar mi GPS</button>
+      <button onclick="window.useAdminGPS()" class="btn-secondary" style="width:100%;">📍 Capturar mi GPS</button>
     </div>
     
     <div id="admin-map"></div>
     <input type="hidden" id="lat"><input type="hidden" id="lng">
     
-    <button onclick="saveBusiness()" style="width:100%; margin-top:30px; font-size:1.2rem;" id="btn-save"><i class="fa-solid fa-cloud-arrow-up"></i> Guardar Local y Crear QR</button>
+    <button onclick="window.saveBusiness()" style="width:100%; margin-top:30px; font-size:1.2rem;" id="btn-save"><i class="fa-solid fa-cloud-arrow-up"></i> Guardar Local y Crear QR</button>
 
     <h2 style="margin-top:60px;">Locales Registrados y QRs</h2>
     <div id="biz-list"></div>
@@ -134,10 +148,9 @@
       adminMap.setView([lat, lng], 16);
     }
 
-    // PREVISUALIZAR VARIAS FOTOS
     window.previewAdminPhotos = function(event) {
       const container = document.getElementById('photo-preview-container');
-      container.innerHTML = ""; // Limpiar anteriores
+      container.innerHTML = ""; 
       const files = event.target.files;
       for(let i=0; i<files.length; i++) {
         const reader = new FileReader();
@@ -204,8 +217,13 @@
       const hoursDesc = document.getElementById('hoursDesc').value.trim();
       const openTime = document.getElementById('openTime').value;
       const closeTime = document.getElementById('closeTime').value;
-      const menu = document.getElementById('menu').value.trim(); 
       const address = document.getElementById('address').value.trim();
+      
+      const whatsapp = document.getElementById('whatsapp').value.trim();
+      const instagram = document.getElementById('instagram').value.trim();
+      const facebook = document.getElementById('facebook').value.trim();
+      const menu = document.getElementById('menu').value.trim(); 
+
       const lat = parseFloat(document.getElementById('lat').value); 
       const lng = parseFloat(document.getElementById('lng').value);
       const photoFiles = document.getElementById('photos').files;
@@ -215,32 +233,32 @@
       const btn = document.getElementById('btn-save'); btn.disabled = true; btn.innerText = "Comprimiendo y Subiendo...";
 
       try {
-        // COMPRIMIR Y GUARDAR MÚLTIPLES FOTOS
         let photosArray = [];
         for(let i=0; i<photoFiles.length; i++) {
           let b64 = await fileToBase64Compress(photoFiles[i]);
           photosArray.push(b64);
         }
 
-        // Si no subió fotos, mandamos null
         const payload = { 
           name, desc, category: cat, hoursDesc, openTime, closeTime, 
-          address, menu, lat, lng, 
+          address, lat, lng, 
+          whatsapp, instagram, facebook, menu, // Redes Sociales Guardadas
           photos: photosArray, 
-          photoBase64: photosArray.length > 0 ? photosArray[0] : null, // Mantenemos esta variable para compatibilidad del pin
+          photoBase64: photosArray.length > 0 ? photosArray[0] : null, 
           timestamp: Date.now() 
         };
 
         await push(ref(db, 'businesses'), payload);
         showToast("Local guardado con éxito");
         
-        // Limpiar
-        document.querySelectorAll('input:not([type=hidden]), textarea').forEach(i => i.value='');
+        document.querySelectorAll('input:not([type=hidden]), textarea').forEach(i => {
+            if (i.id !== 'app-domain') i.value=''; 
+        });
         document.getElementById('photo-preview-container').innerHTML = "";
       } catch(err) {
         showToast("Error: " + err.message);
       } finally {
-        btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Guardar Local y Crear QR`;
+        btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Guardar Local y Crear QR`;
       }
     };
 
