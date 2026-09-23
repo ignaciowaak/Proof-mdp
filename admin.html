@@ -13,6 +13,7 @@
     body { font-family: 'Outfit', sans-serif; background: var(--bg-base); padding: 20px; color: var(--primary); }
     .container { max-width: 800px; margin: 0 auto; background: var(--white); padding: 30px; border-radius: 24px; box-shadow: 0 12px 30px rgba(15,52,115,0.1); }
     h2 { font-weight: 900; margin-bottom: 24px; font-size: 1.8rem; text-transform: uppercase; letter-spacing: -0.5px; }
+    h3 { font-weight: 800; margin-bottom: 16px; font-size: 1.4rem; color: var(--primary); }
     .form-group { margin-bottom: 16px; }
     label { display: block; font-weight: 800; margin-bottom: 8px; font-size: 0.95rem; }
     input, select, textarea { width: 100%; padding: 14px; border: 2px solid rgba(15,52,115,0.1); border-radius: 16px; font-size: 1rem; color: var(--primary); font-family: 'Outfit'; outline: none; transition: 0.3s; }
@@ -39,82 +40,147 @@
   <div id="toast">Notificación</div>
 
   <div class="container">
-    <h2><i class="fa-solid fa-link"></i> Enlace Seguro de QR</h2>
-    <div class="domain-box">
-      <label>Tu Dominio Público de Netlify (URL Exacta)</label>
-      <input type="text" id="app-domain" placeholder="https://proofok.netlify.app" oninput="window.renderAdminList()">
-      <p style="font-size:0.85rem; color:#666; margin-top:8px;">Asegúrate de que empiece con <b>https://</b> para que funcione el Deep Linking de las cámaras.</p>
+    
+    <!-- SECCIÓN 1: CREACIÓN DE LOCAL (Ocultable cuando se gestiona personal) -->
+    <div id="admin-main-section">
+      <h2><i class="fa-solid fa-link"></i> Enlace Seguro de QR</h2>
+      <div class="domain-box">
+        <label>Tu Dominio Público de Netlify (URL Exacta)</label>
+        <input type="text" id="app-domain" placeholder="https://proofok.netlify.app" oninput="window.renderAdminList()">
+        <p style="font-size:0.85rem; color:#666; margin-top:8px;">Asegúrate de que empiece con <b>https://</b> para que funcione el Deep Linking de las cámaras.</p>
+      </div>
+
+      <h2><i class="fa-solid fa-plus-circle"></i> Crear Local</h2>
+      
+      <div class="form-group"><label>Nombre del Local</label><input type="text" id="name" placeholder="Ej: Café Central"></div>
+      
+      <div class="form-group">
+        <label>Fotos del Local (La primera será el Pin, puedes seleccionar varias)</label>
+        <label class="custom-file-upload">
+          <i class="fa-solid fa-images"></i> Seleccionar Imágenes
+          <input type="file" id="photos" accept="image/*" multiple onchange="window.previewAdminPhotos(event)">
+        </label>
+        <div id="photo-preview-container"></div>
+      </div>
+      
+      <div class="form-group"><label>Descripción</label><textarea id="desc" rows="3" placeholder="Descripción del comercio..."></textarea></div>
+      
+      <div style="display:flex; gap:16px;">
+        <div class="form-group" style="flex:1;"><label>Categoría</label><select id="cat"><option>Gastronomía</option><option>Servicios</option><option>Comercio</option></select></div>
+      </div>
+
+      <div style="background: rgba(15,52,115,0.05); padding: 16px; border-radius: 16px; margin-bottom: 16px;">
+        <label><i class="fa-solid fa-clock"></i> Horario de Funcionamiento</label>
+        <p style="font-size:0.85rem; color:#666; margin-bottom:10px;">Determinará si el local muestra el "Puntito Verde" de abierto.</p>
+        <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+          <div style="flex:1;"><label style="font-size:0.8rem;">Apertura</label><input type="time" id="openTime" value="08:00"></div>
+          <div style="flex:1;"><label style="font-size:0.8rem;">Cierre</label><input type="time" id="closeTime" value="20:00"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:0;"><label style="font-size:0.8rem;">Texto Descriptivo (Opcional)</label><input type="text" id="hoursDesc" placeholder="Ej: Lun a Vier de 08:00 a 20:00"></div>
+      </div>
+      
+      <!-- REDES SOCIALES Y MENÚ -->
+      <div style="background: rgba(15,52,115,0.05); padding: 16px; border-radius: 16px; margin-bottom: 16px;">
+        <label><i class="fa-solid fa-share-nodes"></i> Redes Sociales y Menú</label>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+          <div class="form-group" style="flex:1; min-width: 150px;">
+            <label style="font-size:0.8rem;"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> WhatsApp</label>
+            <input type="text" id="whatsapp" placeholder="Ej: 549223...">
+          </div>
+          <div class="form-group" style="flex:1; min-width: 150px;">
+            <label style="font-size:0.8rem;"><i class="fa-brands fa-instagram" style="color:#E1306C;"></i> Instagram</label>
+            <input type="text" id="instagram" placeholder="https://instagram.com/...">
+          </div>
+          <div class="form-group" style="flex:1; min-width: 150px;">
+            <label style="font-size:0.8rem;"><i class="fa-brands fa-facebook" style="color:#1877F2;"></i> Facebook</label>
+            <input type="text" id="facebook" placeholder="https://facebook.com/...">
+          </div>
+        </div>
+        
+        <!-- NUEVO: SUBIR MENÚ COMO IMAGEN -->
+        <div class="form-group" style="margin-bottom:0; border-top: 1px solid rgba(15,52,115,0.2); padding-top: 10px; margin-top: 10px;">
+          <label style="font-size:0.8rem;"><i class="fa-solid fa-book-open"></i> Menú (Sube una foto o pega el link)</label>
+          <input type="text" id="menu" placeholder="Link externo (opcional, ej: https://...)" style="margin-bottom: 8px;">
+          <label class="custom-file-upload" style="padding: 12px; font-size: 0.9rem;">
+            <i class="fa-solid fa-image"></i> Subir Foto del Menú
+            <input type="file" id="menuFile" accept="image/*" onchange="document.getElementById('menuFileName').innerText = this.files[0].name">
+          </label>
+          <p id="menuFileName" style="font-size: 0.8rem; color: var(--primary); margin-top: 4px; font-weight: 600;"></p>
+        </div>
+      </div>
+      
+      <div class="form-group" style="margin-top:20px;">
+        <label>1. Dirección (Calle y Ciudad)</label>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="address" placeholder="Ej: Güemes 1234">
+          <button onclick="window.searchAddress()" class="btn-secondary">Buscar Mapa</button>
+        </div>
+      </div>
+      
+      <div class="form-group" style="margin-bottom:20px;">
+        <label>2. O usar ubicación exacta (Si estás físicamente ahí)</label>
+        <button onclick="window.useAdminGPS()" class="btn-secondary" style="width:100%;">📍 Capturar mi GPS</button>
+      </div>
+      
+      <div id="admin-map"></div>
+      <input type="hidden" id="lat"><input type="hidden" id="lng">
+      
+      <button onclick="window.saveBusiness()" style="width:100%; margin-top:30px; font-size:1.2rem;" id="btn-save"><i class="fa-solid fa-cloud-arrow-up"></i> Guardar Local y Crear QR</button>
+
+      <h2 style="margin-top:60px;">Locales Registrados y QRs</h2>
+      <div id="biz-list"></div>
     </div>
 
-    <h2><i class="fa-solid fa-plus-circle"></i> Crear Local</h2>
-    
-    <div class="form-group"><label>Nombre del Local</label><input type="text" id="name" placeholder="Ej: Café Central"></div>
-    
-    <div class="form-group">
-      <label>Fotos del Local (La primera será el Pin, puedes seleccionar varias)</label>
-      <label class="custom-file-upload">
-        <i class="fa-solid fa-images"></i> Seleccionar Imágenes
-        <input type="file" id="photos" accept="image/*" multiple onchange="window.previewAdminPhotos(event)">
-      </label>
-      <div id="photo-preview-container"></div>
-    </div>
-    
-    <div class="form-group"><label>Descripción</label><textarea id="desc" rows="3" placeholder="Descripción del comercio..."></textarea></div>
-    
-    <div style="display:flex; gap:16px;">
-      <div class="form-group" style="flex:1;"><label>Categoría</label><select id="cat"><option>Gastronomía</option><option>Servicios</option><option>Comercio</option></select></div>
+    <!-- SECCIÓN 2: GESTIÓN GASTRONÓMICA (Personal y Dashboard) -->
+    <div id="admin-manage-section" style="display: none;">
+      <button onclick="window.hideAdminManageSection()" class="btn-secondary" style="margin-bottom: 20px;"><i class="fa-solid fa-arrow-left"></i> Volver a la lista de locales</button>
+      
+      <h2 id="manage-biz-title">Gestionar Local</h2>
+      
+      <!-- GESTIÓN DE PERSONAL -->
+      <div class="domain-box">
+        <h3><i class="fa-solid fa-users"></i> Personal del Restaurante</h3>
+        <p style="font-size:0.85rem; color:#666; margin-bottom:16px;">Sube la foto y el nombre del personal para que los clientes puedan calificarlos.</p>
+        
+        <div class="form-group">
+          <label>Nombre del mesero/a</label>
+          <input type="text" id="adm-staff-name" placeholder="Ej: Juan Pérez">
+        </div>
+        
+        <!-- NUEVO: SUBIR FOTO DEL PERSONAL -->
+        <div class="form-group">
+          <label>Foto del Personal</label>
+          <label class="custom-file-upload">
+            <i class="fa-solid fa-camera"></i> Elegir Foto
+            <input type="file" id="adm-staff-photo-file" accept="image/*" onchange="document.getElementById('staffFileName').innerText = this.files[0].name">
+          </label>
+          <p id="staffFileName" style="font-size: 0.8rem; color: var(--primary); margin-top: 4px; font-weight: 600;"></p>
+        </div>
+
+        <button onclick="window.addStaffMember()" style="width:100%;" id="btn-save-staff"><i class="fa-solid fa-user-plus"></i> Agregar Personal</button>
+        
+        <!-- Lista de personal actual -->
+        <div id="admin-staff-list" style="margin-top: 24px; display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+      <!-- CREDENCIALES DEL DUEÑO -->
+      <div class="domain-box">
+        <h3><i class="fa-solid fa-key"></i> Acceso Privado (Dueño)</h3>
+        <p style="font-size:0.85rem; color:#666; margin-bottom:16px;">Genera un usuario y contraseña para que el dueño acceda al Dashboard privado y vea sus calificaciones.</p>
+        
+        <div class="form-group">
+          <label>Usuario</label>
+          <input type="text" id="adm-owner-user" placeholder="Ej: admin_cafe">
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="text" id="adm-owner-pass" placeholder="Contraseña segura">
+        </div>
+        
+        <button onclick="window.generateOwnerCredentials()" class="btn-secondary" style="width:100%;"><i class="fa-solid fa-lock"></i> Generar Acceso</button>
+      </div>
     </div>
 
-    <div style="background: rgba(15,52,115,0.05); padding: 16px; border-radius: 16px; margin-bottom: 16px;">
-      <label><i class="fa-solid fa-clock"></i> Horario de Funcionamiento</label>
-      <p style="font-size:0.85rem; color:#666; margin-bottom:10px;">Determinará si el local muestra el "Puntito Verde" de abierto.</p>
-      <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
-        <div style="flex:1;"><label style="font-size:0.8rem;">Apertura</label><input type="time" id="openTime" value="08:00"></div>
-        <div style="flex:1;"><label style="font-size:0.8rem;">Cierre</label><input type="time" id="closeTime" value="20:00"></div>
-      </div>
-      <div class="form-group" style="margin-bottom:0;"><label style="font-size:0.8rem;">Texto Descriptivo (Opcional)</label><input type="text" id="hoursDesc" placeholder="Ej: Lun a Vier de 08:00 a 20:00"></div>
-    </div>
-    
-    <!-- NUEVAS REDES SOCIALES -->
-    <div style="background: rgba(15,52,115,0.05); padding: 16px; border-radius: 16px; margin-bottom: 16px;">
-      <label><i class="fa-solid fa-share-nodes"></i> Redes Sociales y Contacto</label>
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-        <div class="form-group" style="flex:1; min-width: 150px;">
-          <label style="font-size:0.8rem;"><i class="fa-brands fa-whatsapp" style="color:#25D366;"></i> WhatsApp</label>
-          <input type="text" id="whatsapp" placeholder="Ej: 549223...">
-        </div>
-        <div class="form-group" style="flex:1; min-width: 150px;">
-          <label style="font-size:0.8rem;"><i class="fa-brands fa-instagram" style="color:#E1306C;"></i> Instagram</label>
-          <input type="text" id="instagram" placeholder="https://instagram.com/...">
-        </div>
-        <div class="form-group" style="flex:1; min-width: 150px;">
-          <label style="font-size:0.8rem;"><i class="fa-brands fa-facebook" style="color:#1877F2;"></i> Facebook</label>
-          <input type="text" id="facebook" placeholder="https://facebook.com/...">
-        </div>
-      </div>
-      <div class="form-group" style="margin-bottom:0;"><label style="font-size:0.8rem;"><i class="fa-solid fa-globe"></i> Web / Menú</label><input type="text" id="menu" placeholder="https://..."></div>
-    </div>
-    
-    <div class="form-group" style="margin-top:20px;">
-      <label>1. Dirección (Calle y Ciudad)</label>
-      <div style="display:flex; gap:10px;">
-        <input type="text" id="address" placeholder="Ej: Güemes 1234">
-        <button onclick="window.searchAddress()" class="btn-secondary">Buscar Mapa</button>
-      </div>
-    </div>
-    
-    <div class="form-group" style="margin-bottom:20px;">
-      <label>2. O usar ubicación exacta (Si estás físicamente ahí)</label>
-      <button onclick="window.useAdminGPS()" class="btn-secondary" style="width:100%;">📍 Capturar mi GPS</button>
-    </div>
-    
-    <div id="admin-map"></div>
-    <input type="hidden" id="lat"><input type="hidden" id="lng">
-    
-    <button onclick="window.saveBusiness()" style="width:100%; margin-top:30px; font-size:1.2rem;" id="btn-save"><i class="fa-solid fa-cloud-arrow-up"></i> Guardar Local y Crear QR</button>
-
-    <h2 style="margin-top:60px;">Locales Registrados y QRs</h2>
-    <div id="biz-list"></div>
   </div>
 
   <script type="module">
@@ -185,6 +251,7 @@
       }
     };
 
+    // Función de compresión de imágenes original
     function fileToBase64Compress(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -222,7 +289,10 @@
       const whatsapp = document.getElementById('whatsapp').value.trim();
       const instagram = document.getElementById('instagram').value.trim();
       const facebook = document.getElementById('facebook').value.trim();
-      const menu = document.getElementById('menu').value.trim(); 
+      
+      // Manejo del menú (Texto o Archivo)
+      let menuData = document.getElementById('menu').value.trim(); 
+      const menuFileInput = document.getElementById('menuFile');
 
       const lat = parseFloat(document.getElementById('lat').value); 
       const lng = parseFloat(document.getElementById('lng').value);
@@ -230,19 +300,25 @@
 
       if(!name || isNaN(lat)) return showToast("Falta el nombre o marcar en el mapa");
       
-      const btn = document.getElementById('btn-save'); btn.disabled = true; btn.innerText = "Comprimiendo y Subiendo...";
+      const btn = document.getElementById('btn-save'); btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Subiendo Local...`;
 
       try {
+        // Comprimir fotos del local
         let photosArray = [];
         for(let i=0; i<photoFiles.length; i++) {
           let b64 = await fileToBase64Compress(photoFiles[i]);
           photosArray.push(b64);
         }
 
+        // Comprimir foto del menú si existe
+        if (menuFileInput.files.length > 0) {
+            menuData = await fileToBase64Compress(menuFileInput.files[0]);
+        }
+
         const payload = { 
           name, desc, category: cat, hoursDesc, openTime, closeTime, 
           address, lat, lng, 
-          whatsapp, instagram, facebook, menu, // Redes Sociales Guardadas
+          whatsapp, instagram, facebook, menu: menuData, 
           photos: photosArray, 
           photoBase64: photosArray.length > 0 ? photosArray[0] : null, 
           timestamp: Date.now() 
@@ -251,10 +327,12 @@
         await push(ref(db, 'businesses'), payload);
         showToast("Local guardado con éxito");
         
+        // Limpiar
         document.querySelectorAll('input:not([type=hidden]), textarea').forEach(i => {
             if (i.id !== 'app-domain') i.value=''; 
         });
         document.getElementById('photo-preview-container').innerHTML = "";
+        document.getElementById('menuFileName').innerText = "";
       } catch(err) {
         showToast("Error: " + err.message);
       } finally {
@@ -266,6 +344,7 @@
     onValue(ref(db, 'businesses'), (snapshot) => {
       globalBizData = snapshot.val() || {};
       window.renderAdminList();
+      if(window.adminActiveBizId) window.renderManageStaffList(); // Refrescar vista staff si está abierta
     });
 
     window.renderAdminList = function() {
@@ -286,7 +365,10 @@
             <div style="flex:1;">
               <h3 style="margin-bottom:8px; font-weight:900;">${b.name}</h3>
               <p style="margin-bottom:15px; font-size:0.9rem;">Dir: ${b.address}</p>
-              <button class="btn-danger" onclick="window.deleteBiz('${id}')">Eliminar Local</button>
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button style="padding: 10px 16px; font-size:0.9rem;" onclick="window.openManageBiz('${id}')"><i class="fa-solid fa-users-gear"></i> Gestionar Personal</button>
+                <button class="btn-danger" onclick="window.deleteBiz('${id}')"><i class="fa-solid fa-trash"></i> Eliminar</button>
+              </div>
             </div>
             <div class="qr-box">
               <img src="${qrSrc}">
@@ -298,6 +380,120 @@
 
     window.deleteBiz = async function(id) { if(confirm("¿Eliminar este local de forma permanente?")) await remove(ref(db, 'businesses/'+id)); };
     function showToast(msg) { const t=document.getElementById('toast'); t.innerText=msg; t.style.display='block'; setTimeout(()=>t.style.display='none', 3000); }
+
+
+    /* =========================================================
+       NUEVAS FUNCIONES: GESTIÓN DE PERSONAL Y CREDENCIALES
+       ========================================================= */
+
+    window.adminActiveBizId = null;
+
+    // Cambiar a la vista de gestión
+    window.openManageBiz = function(id) {
+      window.adminActiveBizId = id;
+      const biz = globalBizData[id];
+      if(!biz) return;
+      
+      document.getElementById('admin-main-section').style.display = 'none';
+      document.getElementById('admin-manage-section').style.display = 'block';
+      document.getElementById('manage-biz-title').innerText = `Gestión: ${biz.name}`;
+      
+      window.renderManageStaffList();
+    };
+
+    // Volver a la vista principal
+    window.hideAdminManageSection = function() {
+      document.getElementById('admin-manage-section').style.display = 'none';
+      document.getElementById('admin-main-section').style.display = 'block';
+      window.adminActiveBizId = null;
+    };
+
+    // Agregar un empleado (Con Foto Archivo)
+    window.addStaffMember = async function() {
+      const name = document.getElementById('adm-staff-name').value.trim();
+      const photoFile = document.getElementById('adm-staff-photo-file');
+      
+      if(!name) return showToast("Ingresa el nombre del personal");
+      
+      const btn = document.getElementById('btn-save-staff');
+      btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Subiendo...`;
+
+      try {
+        let photoBase64 = `https://via.placeholder.com/150/0F3473/FFFFFF?text=${name.charAt(0).toUpperCase()}`;
+        if (photoFile.files.length > 0) {
+            photoBase64 = await fileToBase64Compress(photoFile.files[0]);
+        }
+
+        await push(ref(db, `businesses/${window.adminActiveBizId}/staff`), { 
+          name: name, 
+          photo: photoBase64 
+        });
+
+        // Limpiar form
+        document.getElementById('adm-staff-name').value = ""; 
+        document.getElementById('adm-staff-photo-file').value = "";
+        document.getElementById('staffFileName').innerText = "";
+        showToast("Personal agregado exitosamente");
+      } catch(e) {
+        showToast("Error al guardar: " + e.message);
+      } finally {
+        btn.disabled = false; btn.innerHTML = `<i class="fa-solid fa-user-plus"></i> Agregar Personal`;
+      }
+    };
+
+    // Renderizar la lista de empleados
+    window.renderManageStaffList = function() {
+      const container = document.getElementById('admin-staff-list');
+      container.innerHTML = "";
+      
+      if (!window.adminActiveBizId) return;
+      const biz = globalBizData[window.adminActiveBizId];
+      
+      if(!biz || !biz.staff) { 
+        container.innerHTML = "<p style='font-size:0.9rem; color:#666;'>No hay personal registrado en este local.</p>"; 
+        return; 
+      }
+      
+      Object.entries(biz.staff).forEach(([sId, sData]) => {
+        container.innerHTML += `
+          <div style="display:flex; justify-content:space-between; align-items:center; background:white; padding:12px 16px; border-radius:16px; border:2px solid rgba(15,52,115,0.1);">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <img src="${sData.photo}" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border: 2px solid var(--primary);">
+              <strong style="font-size:1.05rem; color:var(--primary);">${sData.name}</strong>
+            </div>
+            <div>
+              <button class="btn-danger" style="padding:10px; font-size:0.9rem;" onclick="window.deleteStaffMember('${sId}')"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>`;
+      });
+    };
+
+    // Eliminar Empleado
+    window.deleteStaffMember = async function(sId) {
+      if(confirm("¿Seguro que deseas eliminar a esta persona del staff?")) {
+        await remove(ref(db, `businesses/${window.adminActiveBizId}/staff/${sId}`));
+        showToast("Personal eliminado");
+      }
+    };
+
+    // Generar Credenciales
+    window.generateOwnerCredentials = async function() {
+      const user = document.getElementById('adm-owner-user').value.trim();
+      const pass = document.getElementById('adm-owner-pass').value.trim();
+      if(!user || !pass) return showToast("Ingresa un Usuario y Contraseña");
+
+      try {
+        await set(ref(db, `owners/${user}`), { password: pass, bizId: window.adminActiveBizId });
+        await set(ref(db, `businesses/${window.adminActiveBizId}/credentials`), { username: user, password: pass });
+        
+        showToast("Credenciales generadas correctamente");
+        document.getElementById('adm-owner-user').value = "";
+        document.getElementById('adm-owner-pass').value = "";
+      } catch(e) {
+        showToast("Error: " + e.message);
+      }
+    };
+
   </script>
 </body>
 </html>
