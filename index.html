@@ -46,8 +46,19 @@
     /* === ANIMACIONES === */
     @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
     @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
-    .fade-in { animation: fadeIn 0.4s ease-out forwards; }
-    .slide-up { animation: slideUpFade 0.5s ease-out forwards; }
+    .fade-in { animation: fadeIn 0.3s ease-out forwards; }
+    .slide-up { animation: slideUpFade 0.4s ease-out forwards; }
+
+    /* === LOADER GIRATORIO GLOBAL === */
+    .global-loader {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--bg-base); z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+    }
+    .global-loader.active { opacity: 1; pointer-events: all; }
+    .spinner-large { font-size: 3.5rem; color: var(--primary); animation: spin 1s linear infinite; margin-bottom: 20px; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
 
     /* === HEADER (SÓLO BOTÓN HAMBURGUESA FLOTANTE) === */
     .top-header { 
@@ -78,37 +89,21 @@
     .scan-info-box p { font-size: 1rem; font-weight: 600; margin: 0; color: var(--text-main); line-height: 1.5; }
 
     /* === VISTA DEL LOCAL (Pantalla Nueva Completa) === */
-    #biz-main {
-      display: none; height: 100%; padding: 100px 20px 40px; overflow-y: auto; background: var(--bg-base);
-    }
+    #biz-main { display: none; height: 100%; padding: 100px 20px 40px; overflow-y: auto; background: var(--bg-base); }
     .biz-title-main { font-size: 2.2rem; font-weight: 900; margin-bottom: 8px; line-height: 1.1; }
     .biz-category { font-size: 0.9rem; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px; }
     
     /* Galería Horizontal */
-    .gallery-container { 
-      display: flex; overflow-x: auto; gap: 12px; padding: 4px 0 16px; 
-      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; 
-    }
+    .gallery-container { display: flex; overflow-x: auto; gap: 12px; padding: 4px 0 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
     .gallery-container::-webkit-scrollbar { display: none; }
-    .gallery-img { 
-      height: 180px; min-width: 150px; width: 150px; object-fit: cover; 
-      border-radius: 20px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); 
-      scroll-snap-align: start; cursor: pointer; background: var(--surface);
-    }
+    .gallery-img { height: 180px; min-width: 150px; width: 150px; object-fit: cover; border-radius: 20px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); scroll-snap-align: start; cursor: pointer; background: var(--surface); }
 
     /* Detalles del Local */
-    .biz-details-box {
-      background: var(--surface); border: 2px solid var(--primary); border-radius: 24px; 
-      padding: 20px; box-shadow: var(--shadow-hard); margin-bottom: 24px;
-    }
+    .biz-details-box { background: var(--surface); border: 2px solid var(--primary); border-radius: 24px; padding: 20px; box-shadow: var(--shadow-hard); margin-bottom: 24px; }
     .biz-desc { font-size: 0.95rem; line-height: 1.5; font-weight: 500; margin-bottom: 16px; color: var(--primary); }
     .biz-hours { font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: var(--text-muted); }
     .social-links { display: flex; gap: 12px; }
-    .social-btn { 
-      width: 44px; height: 44px; border-radius: 14px; border: 2px solid var(--primary); 
-      display: flex; align-items: center; justify-content: center; font-size: 1.2rem; 
-      color: var(--primary); text-decoration: none; transition: var(--transition-fast); 
-    }
+    .social-btn { width: 44px; height: 44px; border-radius: 14px; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--primary); text-decoration: none; transition: var(--transition-fast); }
     .social-btn:active { background: var(--primary); color: var(--surface); }
 
     /* Botones de Acción Mágicos */
@@ -141,7 +136,7 @@
     .drawer-item { padding: 16px; border-radius: 16px; font-weight: 800; display: flex; align-items: center; gap: 14px; color: var(--primary); cursor: pointer; font-size: 1.05rem; transition: var(--transition-fast); border: 2px solid transparent; }
     .drawer-item:active { background: var(--surface); border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
 
-    /* === MODALES (Auth, Perfil, Wizard) === */
+    /* === MODALES === */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.5); backdrop-filter: blur(6px); z-index: 5000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
     .modal-card { width: 100%; max-height: 92vh; border-radius: 36px 36px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.5s var(--spring); background: var(--bg-base); border-top: 2px solid var(--primary); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); }
@@ -158,16 +153,16 @@
       .modal-overlay.active .modal-card { transform: scale(1); opacity: 1; }
     }
 
-    /* === WIZARD Y FORMULARIOS === */
+    /* === FORMULARIOS Y WIZARD === */
     .form-group input, .form-group textarea { width: 100%; padding: 18px 24px; border: 2px solid var(--primary); border-radius: 20px; background: var(--surface); font-family: 'Inter', sans-serif; margin-bottom: 8px; font-size: 1rem; color: var(--primary); outline: none; }
     .tabs { display: flex; gap: 6px; margin-bottom: 20px; background: var(--surface); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); }
     .tab { flex: 1; text-align: center; padding: 12px; border-radius: 100px; cursor: pointer; font-weight: 800; color: var(--text-muted); font-size: 0.95rem; }
     .tab.active { background: var(--primary); color: var(--surface); }
     .form-section { display: none; }
-    .form-section.active { display: block; animation: slideUpFade 0.4s ease forwards; }
-
+    .form-section.active { display: block; animation: slideUpFade 0.3s ease forwards; }
+    
     .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
-    .wizard-step.active { display: flex; animation: fadeIn 0.4s ease forwards; }
+    .wizard-step.active { display: flex; animation: fadeIn 0.3s ease forwards; }
     .staff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
     .staff-card { background: var(--surface); border: 2px solid var(--primary); border-radius: 16px; padding: 12px 8px; text-align: center; cursor: pointer; }
     .staff-card img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 6px; }
@@ -180,15 +175,21 @@
     .reward-tag { background: var(--surface); color: var(--success); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 900; border: 2px solid var(--primary); margin-left: 8px; box-shadow: 2px 2px 0px var(--primary); }
 
     /* Toast */
-    .toast { position: fixed; top: 90px; left: 50%; transform: translate(-50%, -150px); background: var(--surface); color: var(--primary); padding: 16px 28px; border-radius: 100px; z-index: 10000; font-weight: 900; transition: transform 0.5s var(--spring); font-size: 1rem; white-space: nowrap; display: flex; align-items: center; gap: 12px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
+    .toast { position: fixed; top: 90px; left: 50%; transform: translate(-50%, -150px); background: var(--surface); color: var(--primary); padding: 16px 28px; border-radius: 100px; z-index: 10000; font-weight: 900; transition: transform 0.4s var(--spring); font-size: 1rem; white-space: nowrap; display: flex; align-items: center; gap: 12px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
     .toast.show { transform: translate(-50%, 0); }
   </style>
 </head>
 <body>
 
+  <!-- LOADER DE CARGA OPTIMIZADO -->
+  <div class="global-loader" id="global-loader">
+    <i class="fa-solid fa-circle-notch spinner-large"></i>
+    <h2 style="color:var(--primary); font-family:'Plus Jakarta Sans'; font-weight:900;">Preparando el menú...</h2>
+  </div>
+
   <div class="toast" id="toast"></div>
 
-  <!-- HEADER FIJO (SÓLO LAS TRES RAYITAS COMO PEDISTE) -->
+  <!-- HEADER FIJO (SÓLO LAS TRES RAYITAS FLOTANDO) -->
   <header class="top-header fade-in" id="main-header">
     <button class="btn-icon" onclick="window.openDrawerSafe()"><i class="fa-solid fa-bars"></i></button>
   </header>
@@ -196,7 +197,6 @@
   <!-- HOME HERO (PANTALLA DE ESPERA LIMPIA) -->
   <main class="hero-section fade-in" id="hero-main">
     <h1 class="hero-title">Tu experiencia,<br>tu voz.</h1>
-    
     <div class="scan-info-box">
       <!-- Icono genérico simulando el de la imagen -->
       <img src="https://cdn-icons-png.flaticon.com/512/714/714390.png" onerror="this.style.display='none'">
@@ -217,11 +217,9 @@
     <!-- Caja de Info: Descripción, Horarios, Redes -->
     <div class="biz-details-box">
       <p id="biz-desc-main" class="biz-desc">Descripción del local...</p>
-      
       <div id="biz-hours-main" class="biz-hours">
         <i class="fa-solid fa-clock"></i> <span>Abierto</span>
       </div>
-
       <div class="social-links" id="biz-social-main">
         <!-- Botones sociales inyectados dinámicamente -->
       </div>
@@ -413,11 +411,14 @@
   <div class="modal-overlay" id="modal-guilt" style="z-index: 6000; align-items: center; background: rgba(34,34,34, 0.8);">
     <div class="modal-card pop-in" style="max-width: 340px; background: transparent; box-shadow: none; border: none;">
       <div class="modal-body" style="padding: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px; width:100%;">
-        <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
+        
+        <div style="display: flex; flex-direction: column; gap: 14px; width: 100%; background: var(--bg-base); padding: 24px; border-radius: 30px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard-lg);">
+          <h3 style="font-family:'Plus Jakarta Sans'; font-weight:900; color:var(--primary); font-size:1.4rem;">¿Seguro que deseas omitir este paso?</h3>
+          <p style="font-weight:600; font-size:0.95rem;">Perderás los puntos de bonificación.</p>
           <button class="btn btn-secondary" style="width: 100%; padding: 18px; justify-content: center; gap: 10px;" onclick="window.cancelSkip()">
             <i class="fa-solid fa-star" style="color:var(--warning);"></i> Completar paso
           </button>
-          <button class="btn" style="width: 100%; background: transparent; color: var(--surface); border: none; font-weight: 700; text-decoration: underline;" onclick="window.confirmSkip()">
+          <button class="btn" style="width: 100%; background: transparent; color: var(--primary); border: none; font-weight: 800; text-decoration: underline; box-shadow: none !important;" onclick="window.confirmSkip()">
             Saltar igual
           </button>
         </div>
@@ -427,23 +428,59 @@
 
   <!-- CORE SCRIPTS: Firebase y Lógica Global -->
   <script type="module">
-    // === PRIORIDAD MÁXIMA UI ===
-    window.openModal = function(id) { document.getElementById(id).classList.add('active'); };
-    window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); };
-    window.openDrawerSafe = function() { document.getElementById('drawer').classList.add('active'); document.getElementById('drawer-overlay').classList.add('active'); };
-    window.closeDrawerSafe = function() { document.getElementById('drawer').classList.remove('active'); document.getElementById('drawer-overlay').classList.remove('active'); };
+    // === LOADER OPTIMIZADO (Aparece inmediatamente si hay URL ?biz=) ===
+    const urlParamsFast = new URLSearchParams(window.location.search);
+    if(urlParamsFast.has('biz')) {
+      document.getElementById('global-loader').classList.add('active');
+    }
+
+    // === SISTEMA HISTORY API (EL BOTÓN ATRÁS DEL CELULAR YA NO CIERRA LA APP) ===
+    window.openModal = function(id) { 
+      document.getElementById(id).classList.add('active'); 
+      if (window.location.hash !== '#' + id) history.pushState({ modal: id }, '', '#' + id);
+    };
     
+    window.closeModal = function(id, fromPopState = false) { 
+      document.getElementById(id).classList.remove('active'); 
+      if (!fromPopState && window.location.hash === '#' + id) history.back();
+    };
+    
+    window.openDrawerSafe = function() { 
+      document.getElementById('drawer').classList.add('active'); 
+      document.getElementById('drawer-overlay').classList.add('active'); 
+      if (window.location.hash !== '#drawer') history.pushState({ drawer: true }, '', '#drawer');
+    };
+    
+    window.closeDrawerSafe = function(fromPopState = false) { 
+      document.getElementById('drawer').classList.remove('active'); 
+      document.getElementById('drawer-overlay').classList.remove('active'); 
+      if (!fromPopState && window.location.hash === '#drawer') history.back();
+    };
+
+    window.addEventListener('popstate', (e) => {
+      // Si presiona atrás, se cierran todos los modales/menús
+      document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+      document.getElementById('drawer').classList.remove('active');
+      document.getElementById('drawer-overlay').classList.remove('active');
+      
+      const lb = document.getElementById('lightbox');
+      if(lb) { lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 300); }
+    });
+
+    // === MANEJO LIGHTBOX ===
     window.openLightbox = function(src) { 
       document.getElementById('lightbox-img').src = src; 
       const lb = document.getElementById('lightbox');
       lb.style.display = 'flex';
       setTimeout(() => lb.classList.add('active'), 10);
+      history.pushState({ lightbox: true }, '', '#lightbox');
     };
     window.closeLightbox = function(e) { 
       if (e) e.stopPropagation();
       const lb = document.getElementById('lightbox');
       lb.classList.remove('active');
       setTimeout(() => lb.style.display = 'none', 300);
+      if (window.location.hash === '#lightbox') history.back();
     };
 
     window.handleMenuProfile = function() { 
@@ -463,7 +500,12 @@
       const t = document.getElementById('toast'); 
       t.innerHTML = `<i class="fa-solid ${icon}" style="color:var(--surface);"></i> ${msg}`;
       t.classList.add('show'); 
-      setTimeout(() => t.classList.remove('show'), 3500); 
+      setTimeout(() => t.classList.remove('show'), 3000); 
+    };
+
+    window.showLoader = function(show) {
+      if(show) document.getElementById('global-loader').classList.add('active');
+      else document.getElementById('global-loader').classList.remove('active');
     };
 
     window.escapeHtml = function(s) { return s ? s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : ""; };
@@ -487,13 +529,13 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    const defaultImg = "2.png";
+    const defaultImg = "https://via.placeholder.com/150/e8eee8/222222?text=P";
 
     window.globalCurrentUser = null; 
     let allBusinesses = {}; 
     let selectedBizId = null;
 
-    // WIZARD STATE 
+    // WIZARD STATE
     let wizStaffId = null; let wizStaffName = null;
     let wRatings = { general: 0, food: 0, staff: 0 };
     let pendingSkipStep = null;
@@ -504,17 +546,26 @@
       onValue(ref(db, 'businesses'), (snapshot) => {
         allBusinesses = snapshot.val() || {};
         
-        // DEEP LINKING LÓGICA (QR Escaneado)
+        // DEEP LINKING LÓGICA RÁPIDA
         const urlParams = new URLSearchParams(window.location.search);
         const bizParam = urlParams.get('biz');
         
-        if (bizParam && allBusinesses[bizParam] && !window.deepLinkOpened) {
+        if (bizParam && !window.deepLinkOpened) {
           window.deepLinkOpened = true; 
-          setTimeout(() => {
-            window.openRestaurant(bizParam);
-            // Mantenemos la URL limpia
-            window.history.replaceState({}, document.title, window.location.pathname);
-          }, 200); 
+          
+          if(allBusinesses[bizParam]) {
+             // Abre instantáneamente, 0 retraso
+             window.openRestaurant(bizParam);
+             window.history.replaceState({}, document.title, window.location.pathname);
+          } else {
+             window.showToast("Local no encontrado", "fa-triangle-exclamation");
+          }
+          window.showLoader(false);
+        }
+        
+        // Si el local ya está abierto y se actualiza la DB, re-renderizar reseñas
+        if(selectedBizId && allBusinesses[selectedBizId]) {
+            renderInlineReviews(allBusinesses[selectedBizId].reviews || {});
         }
       });
     });
@@ -565,7 +616,7 @@
     /* === VISTA RESTAURANTE (PANTALLA COMPLETA) === */
     window.openRestaurant = function(id) {
       selectedBizId = id; const biz = allBusinesses[id];
-      if(!biz) return;
+      if(!biz) return window.showToast("Local no encontrado", "fa-triangle-exclamation");
       
       // Ocultar inicio, Mostrar restaurante
       document.getElementById('hero-main').style.display = 'none';
@@ -589,10 +640,13 @@
       // Galería Horizontal
       const gallery = document.getElementById('biz-gallery');
       gallery.innerHTML = "";
-      const photos = biz.photos && biz.photos.length > 0 ? biz.photos : (biz.photoBase64 ? [biz.photoBase64] : [defaultImg]);
-      photos.forEach(src => {
-        gallery.innerHTML += `<img src="${src}" class="gallery-img" onclick="window.openLightbox('${src}')">`;
-      });
+      const photos = biz.photos && biz.photos.length > 0 ? biz.photos : (biz.photoBase64 ? [biz.photoBase64] : []);
+      if (photos.length > 0) {
+        photos.forEach(src => { gallery.innerHTML += `<img src="${src}" class="gallery-img" onclick="window.openLightbox('${src}')">`; });
+      } else {
+        // Fallback si no hay fotos
+        gallery.innerHTML = `<img src="https://via.placeholder.com/600x400/e8eee8/222222?text=FOTO+DEL+LOCAL" class="gallery-img">`;
+      }
       
       // Botón Menú
       const menuBtn = document.getElementById('biz-menu-btn');
@@ -654,8 +708,6 @@
         window.showToast("Inicia sesión para calificar", "fa-user-lock");
         return window.openModal('modal-auth');
       }
-      
-      // GPS DESACTIVADO PARA PRUEBAS
       
       const biz = allBusinesses[selectedBizId];
       if(!biz) return;
@@ -721,6 +773,7 @@
       document.getElementById('wiz-step-'+s).classList.add('active'); 
     };
 
+    // CORRECCIÓN BUG: VACÍA LOS CAMPOS SI ELIGE SALTAR PARA NO REGALAR PUNTOS
     window.trySkipWizard = function(nextStep, ptsToLose, typeName) { 
       pendingSkipStep = nextStep; 
       document.querySelector('#modal-guilt .btn-secondary').innerHTML = `<i class="fa-solid fa-star" style="color:var(--warning);"></i> Completar paso`;
@@ -728,10 +781,26 @@
     };
     
     window.cancelSkip = function() { window.closeModal('modal-guilt'); pendingSkipStep = null; };
+    
     window.confirmSkip = function() {
       window.closeModal('modal-guilt');
-      if (pendingSkipStep === 'submit') window.processSubmitReview(); 
-      else if (pendingSkipStep !== null) window.nextWizardStep(pendingSkipStep); 
+      window.showToast("Paso omitido. No sumarás esos puntos.", "fa-forward-step");
+
+      if (pendingSkipStep === 'submit') {
+        // Vacia la foto para que no gane los puntos de foto
+        document.getElementById('wiz-photo').value = "";
+        document.getElementById('wiz-photo-preview').src = "";
+        document.getElementById('wiz-photo-preview').style.display = 'none';
+        window.processSubmitReview(); 
+      } 
+      else if (pendingSkipStep !== null) {
+        if (pendingSkipStep === 4) {
+          // Vacia el texto para que no gane los puntos de texto
+          document.getElementById('wiz-text').value = "";
+          document.getElementById('wiz-food-name').value = "";
+        }
+        window.nextWizardStep(pendingSkipStep); 
+      } 
       pendingSkipStep = null;
     };
 
@@ -753,8 +822,9 @@
       btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando...`;
       
       try {
-        let photoB64 = null; if (photoInput.files.length > 0) photoB64 = await fileToBase64Compress(photoInput.files[0]);
-        let isGpsVerified = true; 
+        let photoB64 = null; 
+        if (photoInput.files.length > 0) photoB64 = await fileToBase64Compress(photoInput.files[0]);
+        let isGpsVerified = true; // Forzado a True para pruebas
 
         await push(ref(db, `businesses/${selectedBizId}/reviews`), { 
           authorUid: window.globalCurrentUser.uid, authorName: window.globalCurrentUser.name, authorPhoto: window.globalCurrentUser.photo, 
@@ -766,9 +836,6 @@
         
         window.closeModal('modal-wizard'); window.showToast("¡Experiencia publicada!", "fa-award"); 
         window.updateUserPointsDisplay();
-        
-        const biz = allBusinesses[selectedBizId];
-        if(biz) renderInlineReviews(biz.reviews || {});
 
       } catch(err) { window.showToast("Error al publicar", "fa-triangle-exclamation"); } finally { btn.disabled = false; btn.innerHTML = `PUBLICAR EXPERIENCIA`; }
     };
