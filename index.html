@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Proof  Experiencia Gastronómica</title>
+  <title>Proof - Experiencia Gastronómica</title>
 
   <!-- FontAwesome Iconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -50,21 +50,29 @@
     /* === ANIMACIONES === */
     @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(28px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
     @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
-    @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes floatSoft { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
 
     .fade-in { animation: fadeIn 0.4s ease-out forwards; will-change: opacity; }
     .slide-up { animation: slideUpFade 0.6s var(--spring) forwards; opacity: 0; will-change: transform, opacity; }
-    .pop-in { animation: popIn 0.5s var(--spring) forwards; will-change: transform, opacity; }
 
-    /* === HEADER Y MENÚ === */
-    .top-header { position: absolute; top: 16px; left: 16px; right: 16px; z-index: 1000; display: flex; justify-content: space-between; align-items: center; background: rgba(214, 229, 216, 0.95); backdrop-filter: blur(5px); padding: 12px 20px; border: 1px solid var(--primary); border-radius: 20px; box-shadow: 4px 4px 0px var(--primary); }
+    /* === HEADER Y MENÚ (Oculto al inicio) === */
+    .top-header { display: none; position: absolute; top: 16px; left: 16px; right: 16px; z-index: 5100; justify-content: space-between; align-items: center; background: rgba(214, 229, 216, 0.95); backdrop-filter: blur(5px); padding: 12px 20px; border: 1px solid var(--primary); border-radius: 20px; box-shadow: 4px 4px 0px var(--primary); }
     .brand { font-size: 1.4rem; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 8px; color: var(--primary); }
     .btn-icon { background: var(--bg-base); border: 1px solid var(--primary); color: var(--primary); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; transition: var(--transition-fast); border-radius: 12px; }
     
+    /* === HOME HERO (Pantalla Principal Pasiva) === */
+    .hero-section { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 24px; text-align: center; }
+    .hero-img { width: 160px; height: 160px; border-radius: 30px; object-fit: cover; margin-bottom: 24px; filter: drop-shadow(0 10px 20px rgba(34,34,34,0.15)); animation: floatSoft 4s ease-in-out infinite; border: 2px solid var(--primary); }
+    .hero-title { font-size: 2.2rem; font-weight: 900; color: var(--primary); margin-bottom: 12px; line-height: 1.1; }
+    .hero-subtitle { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 40px; font-weight: 500; max-width: 320px; line-height: 1.5; }
+    .scan-info-box { background: var(--surface); border: 1px solid var(--primary); padding: 20px; border-radius: 24px; display: flex; align-items: center; gap: 16px; text-align: left; box-shadow: var(--shadow-soft); max-width: 400px; }
+    .scan-info-box i { font-size: 2.2rem; color: var(--primary); }
+    .scan-info-box p { font-size: 0.95rem; font-weight: 600; margin: 0; color: var(--text-main); line-height: 1.4; }
+
     /* === DRAWER MENÚ === */
-    .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.4); backdrop-filter: blur(4px); z-index: 4000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.4); backdrop-filter: blur(4px); z-index: 5200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .drawer-overlay.active { opacity: 1; pointer-events: all; }
-    .drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: var(--bg-base); z-index: 4001; transition: left 0.4s var(--spring); display: flex; flex-direction: column; padding: 30px 24px; box-shadow: 10px 0 40px rgba(34, 34, 34, 0.15); border-radius: 0 30px 30px 0; border-right: 1px solid var(--primary); }
+    .drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: var(--bg-base); z-index: 5300; transition: left 0.4s var(--spring); display: flex; flex-direction: column; padding: 30px 24px; box-shadow: 10px 0 40px rgba(34, 34, 34, 0.15); border-radius: 0 30px 30px 0; border-right: 1px solid var(--primary); }
     .drawer.active { left: 0; } 
     .drawer-item { padding: 16px; border-radius: 16px; font-weight: 700; display: flex; align-items: center; gap: 14px; color: var(--primary); cursor: pointer; font-size: 1rem; border: 1px solid transparent; }
 
@@ -133,18 +141,31 @@
 
   <div class="toast" id="toast"></div>
 
-  <!-- HEADER FIJO -->
-  <header class="top-header fade-in">
-    <div class="brand"><i class="fa-solid fa-utensils"></i> PROOF</div>
+  <!-- HEADER FIJO (Se muestra SOLO cuando se abre el restaurante) -->
+  <header class="top-header fade-in" id="main-header">
+    <div class="brand">
+      <!-- Logo Superior -->
+      <img src="2.png" onerror="this.src='https://via.placeholder.com/100x30/d6e5d8/222222?text=PROOF'" alt="Proof" style="height: 24px; object-fit: contain;">
+    </div>
     <button class="btn-icon" onclick="window.openDrawerSafe()"><i class="fa-solid fa-bars"></i></button>
   </header>
 
-  <!-- PANTALLA EN BLANCO (Solo se ve si entran sin código QR) -->
-  <!-- Se eliminó el hero-section. La web es solo color sólido hasta escanear el QR -->
+  <!-- HOME HERO (PANTALLA DE ESPERA SI NO HAY QR ESCANEADO) -->
+  <main class="hero-section fade-in" id="hero-main">
+    <!-- PON AQUÍ TU PROPIO LOGO CAMBIANDO EL SRC -->
+    <img src="2.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3714/3714151.png'" class="hero-img" alt="Logo Principal">
+    <h1 class="hero-title">Tu experiencia,<br>tu voz.</h1>
+    <p class="hero-subtitle">Para comenzar, utiliza la cámara nativa de tu celular y escanea el código QR de tu mesa.</p>
+    
+    <div class="scan-info-box">
+      <i class="fa-solid fa-qrcode"></i>
+      <p>Al escanear el QR accederás automáticamente al menú y podrás evaluar el servicio recibido. No necesitas descargar nada.</p>
+    </div>
+  </main>
 
   <!-- MENÚ HAMBURGUESA -->
   <div class="drawer-overlay" id="drawer-overlay" onclick="window.closeDrawerSafe()"></div>
-  <div class="drawer" id="drawer" style="z-index: 4001;">
+  <div class="drawer" id="drawer">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
       <h3 style="font-size:1.4rem; color:var(--primary);">Menú</h3>
       <button class="btn-close" onclick="window.closeDrawerSafe()"><i class="fa-solid fa-xmark"></i></button>
@@ -165,7 +186,7 @@
   </div>
 
   <!-- MODAL: MI PERFIL / PUNTOS -->
-  <div class="modal-overlay" id="modal-profile">
+  <div class="modal-overlay" id="modal-profile" style="z-index: 5400;">
     <div class="modal-card">
       <div class="modal-handle"></div>
       <div class="modal-header">
@@ -194,17 +215,17 @@
 
   <!-- MODAL: FICHA DEL RESTAURANTE -->
   <div class="modal-overlay" id="modal-biz">
-    <div class="modal-card">
-      <div class="modal-handle"></div>
-      <div class="modal-header">
-        <h3 id="biz-title" class="fade-in" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Restaurante</h3>
-        <!-- Botón comentado por si quieres que no lo cierren, pero lo dejo activo para UX -->
-        <button class="btn-close" onclick="window.closeModal('modal-biz')"><i class="fa-solid fa-chevron-down"></i></button>
+    <div class="modal-card" style="height: 100vh; max-height: 100vh; border-radius: 0; border: none;">
+      <!-- Para que simule la pantalla completa, no le ponemos handle -->
+      <div class="modal-header" style="padding-top: 80px; justify-content: center;">
+        <h3 id="biz-title" class="fade-in" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align: center;">Restaurante</h3>
+        <!-- Boton de regresar a escanear (Opcional) -->
+        <button class="btn-close" style="position: absolute; right: 20px; top: 80px;" onclick="window.closeRestaurant()"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
         
-        <!-- LOGO DEL LOCAL O FOTO POR DEFECTO -->
-        <img id="biz-cover" src="2.png" style="width:100%; height:220px; object-fit:cover; border-radius: 0 0 24px 24px; margin-top: -20px; border-bottom: 2px solid var(--primary); margin-bottom:16px;">
+        <!-- LOGO O FOTO DEL LOCAL SUBIDA POR EL ADMIN -->
+        <img id="biz-cover" src="2.png" onerror="this.src='https://via.placeholder.com/600x400/d6e5d8/222222?text=FOTO+DEL+LOCAL'" style="width:100%; height:220px; object-fit:cover; border-radius: 24px; border: 2px solid var(--primary); margin-bottom:16px;">
         
         <div class="card-clean slide-up" style="text-align:center;">
           <!-- Botón de Menú (Abre Link o PDF automáticamente) -->
@@ -225,7 +246,7 @@
   </div>
 
   <!-- MODAL: LISTA DE RESEÑAS -->
-  <div class="modal-overlay" id="modal-reviews-list">
+  <div class="modal-overlay" id="modal-reviews-list" style="z-index: 5400;">
     <div class="modal-card">
       <div class="modal-handle"></div>
       <div class="modal-header">
@@ -274,7 +295,7 @@
   </div>
 
   <!-- MODAL: WIZARD DE EXPERIENCIA GASTRONÓMICA -->
-  <div class="modal-overlay" id="modal-wizard">
+  <div class="modal-overlay" id="modal-wizard" style="z-index: 5600;">
     <div class="modal-card">
       <div class="modal-handle"></div>
       <div class="modal-header" style="align-items:flex-start; padding-bottom:10px;">
@@ -500,8 +521,13 @@
     window.openRestaurant = function(id) {
       selectedBizId = id; const biz = allBusinesses[id];
       if(!biz) return;
+      
+      // Mostrar la barra de arriba y ocultar el hero principal
+      document.getElementById('main-header').style.display = 'flex';
+      document.getElementById('hero-main').style.display = 'none';
+
       document.getElementById('biz-title').innerText = biz.name;
-      document.getElementById('biz-cover').src = biz.photoBase64 || defaultImg;
+      document.getElementById('biz-cover').src = (biz.photos && biz.photos[0]) ? biz.photos[0] : (biz.photoBase64 || defaultImg);
       
       const menuBtn = document.getElementById('biz-menu-btn');
       if(biz.menu && biz.menu.trim() !== '') {
@@ -521,6 +547,12 @@
       window.openModal('modal-biz');
     };
 
+    window.closeRestaurant = function() {
+      window.closeModal('modal-biz');
+      document.getElementById('main-header').style.display = 'none';
+      document.getElementById('hero-main').style.display = 'flex';
+    };
+
     /* === WIZARD DE RESEÑAS GASTRONÓMICAS === */
     window.startReviewWizard = function() {
       if (!window.globalCurrentUser) {
@@ -528,13 +560,7 @@
         return window.openModal('modal-auth');
       }
       
-      // BLOQUEO GPS DESACTIVADO PARA PRUEBAS (comentado)
-      // if (!isGpsActive) return window.showToast("Activa tu GPS para calificar", "fa-satellite-dish");
-      // const biz = allBusinesses[selectedBizId];
-      // if(biz && biz.lat && biz.lng) {
-      //   const dist = getDistance(userCoords.lat, userCoords.lng, biz.lat, biz.lng);
-      //   if (dist > 300) return window.showToast(`Debes estar en el local (Estás a ${Math.round(dist)}m)`, "fa-location-dot");
-      // }
+      // BLOQUEO GPS DESACTIVADO PARA PRUEBAS
       
       const biz = allBusinesses[selectedBizId];
       if(!biz) return;
