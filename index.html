@@ -101,7 +101,7 @@
     .custom-pin-photo {
       width: 100%; height: 100%;
       background-size: cover; background-position: center; background-color: var(--surface);
-      border: 1px solid var(--primary); /* Borde Dusty Coal añadido al pin */
+      border: 1px solid var(--primary); 
       box-shadow: 0 10px 25px rgba(34, 34, 34, 0.25);
       border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; 
       animation: abstractMorph 12s ease-in-out infinite; 
@@ -128,7 +128,7 @@
       color: var(--primary); 
       margin-top: 2px; 
       box-shadow: 0 4px 12px rgba(34, 34, 34, 0.1);
-      border: 1px solid var(--primary); /* Borde Dusty Coal al texto flotante */
+      border: 1px solid var(--primary); 
       border-radius: 12px;
       white-space: nowrap; 
       max-width: 110px; overflow: hidden; text-overflow: ellipsis; 
@@ -227,7 +227,7 @@
     .btn-action-sm:active { transform: scale(0.94); background: var(--bg-base); box-shadow: none; }
     .btn-action-sm i { font-size: 1.3rem; color: var(--text-muted); transition: color 0.2s; }
 
-    /* REDES SOCIALES (Integradas a la paleta) */
+    /* REDES SOCIALES */
     .social-links-container { display: flex; gap: 24px; margin-top: 10px; margin-bottom: 24px; flex-wrap: wrap; justify-content: flex-start; }
     .social-link { display: inline-flex; align-items: center; justify-content: center; width: 54px; height: 54px; border-radius: 18px; color: var(--surface); background: var(--primary); font-size: 1.8rem; text-decoration: none; box-shadow: 0 8px 20px rgba(34, 34, 34, 0.15); transition: transform 0.2s var(--spring); border: 1px solid var(--primary); }
     .social-link:active { transform: scale(0.85); }
@@ -273,6 +273,11 @@
     /* Toast */
     .toast { position: fixed; top: 50px; left: 50%; transform: translate(-50%, -150px); background: var(--primary); color: var(--surface); padding: 18px 28px; border-radius: 100px; z-index: 10000; font-weight: 700; transition: transform 0.5s var(--spring); box-shadow: var(--shadow-md); font-size: 1rem; white-space: nowrap; display: flex; align-items: center; gap: 12px; border: 1px solid var(--accent); }
     .toast.show { transform: translate(-50%, 0); }
+
+    /* CSS Ajustes Lector QR (Responsive estricto) */
+    #qr-reader { width: 100% !important; border-radius: 24px; overflow: hidden; border: 1px solid var(--primary); background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; }
+    #qr-reader video { max-height: 50vh !important; width: 100% !important; object-fit: cover; border-radius: 16px; border: 1px solid var(--primary); }
+    #qr-reader__dashboard_section_swaplink { color: var(--primary) !important; font-weight: bold; text-decoration: none; margin-top: 10px; display: inline-block; }
   </style>
 </head>
 <body>
@@ -409,7 +414,7 @@
       </div>
       <div class="modal-body">
         
-        <div id="profile-stats-card" class="slide-up" style="background: var(--primary); color: var(--surface); padding: 28px; border-radius: 28px; margin-bottom: 20px; display: flex; justify-content: space-around; text-align: center; box-shadow: var(--shadow-btn); animation-delay: 0.05s; border: 1px solid var(--primary);">
+        <div id="profile-stats-card" class="slide-up" style="background: linear-gradient(135deg, var(--color-coal), var(--color-coal-light)); color: var(--surface); padding: 28px; border-radius: 28px; margin-bottom: 20px; display: flex; justify-content: space-around; text-align: center; box-shadow: var(--shadow-btn); animation-delay: 0.05s; border: 1px solid var(--primary);">
           <div style="flex:1;">
             <div style="font-size: 2.4rem; font-family:'Plus Jakarta Sans'; font-weight: 900; line-height: 1;" id="prof-points">0</div>
             <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing:0.5px; opacity: 0.9; margin-top: 8px; font-weight: 700;">Puntos Totales</div>
@@ -437,8 +442,8 @@
     </div>
   </div>
 
-  <!-- MODAL: PERFIL PÚBLICO -->
-  <div class="modal-overlay" id="modal-public-profile" style="z-index: 3600;">
+  <!-- MODAL: PERFIL PÚBLICO (Z-INDEX SUPERIOR PARA VERSE SOBRE LOCALES) -->
+  <div class="modal-overlay" id="modal-public-profile" style="z-index: 6000;">
     <div class="modal-card">
       <div class="modal-handle"></div>
       <div class="modal-header">
@@ -502,9 +507,9 @@
     </div>
   </div>
 
-  <!-- MODAL: LOGIN / REGISTRO -->
-  <div class="modal-overlay" id="modal-auth" style="z-index: 5000;">
-    <div class="modal-card">
+  <!-- MODAL: LOGIN / REGISTRO (ALTA PRIORIDAD VISUAL) -->
+  <div class="modal-overlay" id="modal-auth" style="z-index: 5500;">
+    <div class="modal-card" style="max-width: 420px;">
       <div class="modal-handle"></div>
       <div class="modal-header">
         <h3>Identificación</h3>
@@ -595,7 +600,7 @@
   </div>
 
   <!-- MODAL: ALERTA DE CULPA -->
-  <div class="modal-overlay" id="modal-guilt" style="z-index: 6000; align-items: center; background: rgba(34,34,34, 0.8); backdrop-filter: blur(8px);">
+  <div class="modal-overlay" id="modal-guilt" style="z-index: 6500; align-items: center; background: rgba(34,34,34, 0.8); backdrop-filter: blur(8px);">
     <div class="modal-card pop-in" style="max-width: 340px; background: transparent; box-shadow: none; overflow: visible; align-items:center; justify-content:center; border: none;">
       <div class="modal-body" style="padding: 16px; text-align: center; overflow: visible; display: flex; flex-direction: column; align-items: center; gap: 24px; width:100%;">
         
@@ -614,28 +619,24 @@
     </div>
   </div>
 
-  <!-- Modal QR Lector -->
+  <!-- Modal QR Lector (Con CSS Responsive Fix) -->
   <div class="modal-overlay" id="modal-qr">
-    <div class="modal-card">
+    <div class="modal-card" style="max-width: 450px;">
       <div class="modal-handle"></div>
       <div class="modal-header"><h3>Escanear Código</h3><button class="btn-close" onclick="window.closeModal('modal-qr')"><i class="fa-solid fa-xmark"></i></button></div>
-      <div class="modal-body"><div id="qr-reader" style="border-radius:24px; overflow:hidden; border: 1px solid var(--primary); background: var(--surface);"></div></div>
+      <div class="modal-body">
+        <div id="qr-reader" style="width: 100% !important; max-width: 100%; border-radius: 24px; overflow: hidden; border: 1px solid var(--primary); background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center;"></div>
+      </div>
     </div>
   </div>
 
   <!-- CORE SCRIPTS: Firebase y Lógica Global -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-    import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
-
-    // === DEFINICIÓN DE FUNCIONES GLOBALES (A PRUEBA DE FALLOS) ===
+    // === PRIORIDAD MÁXIMA DE SCRIPTS UI ===
     window.openModal = function(id) { document.getElementById(id).classList.add('active'); };
     window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); };
     window.openDrawerSafe = function() { document.getElementById('drawer').classList.add('active'); document.getElementById('drawer-overlay').classList.add('active'); };
     window.closeDrawerSafe = function() { document.getElementById('drawer').classList.remove('active'); document.getElementById('drawer-overlay').classList.remove('active'); };
-    window.openDrawer = window.openDrawerSafe;
-    window.closeDrawer = window.closeDrawerSafe;
     
     window.handleMenuProfile = function() { 
       window.closeDrawerSafe(); 
@@ -659,6 +660,11 @@
 
     window.escapeHtml = function(s) { return s ? s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : ""; };
 
+    // === FIREBASE CONFIG ===
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+    import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyAhz1XHoprhhrHyYfuAdIYGMJxm5UsDO-4",
       authDomain: "the-pic-c437e.firebaseapp.com",
@@ -677,6 +683,8 @@
 
     window.globalCurrentUser = null; 
     let userCoords = { lat: -38.0055, lng: -57.5426 }; 
+    let isGpsActive = false; // ESTADO REAL DEL GPS PARA MODERACIÓN
+
     let map, userMarker, heatLayer = null;
     let currentMarkers = [];
     let allBusinesses = {}; 
@@ -696,16 +704,6 @@
         window.renderMapPins();
         if(window.globalCurrentUser) window.updateUserPointsDisplay(); 
         if(heatLayer) window.toggleHeatmap(true); 
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const bizParam = urlParams.get('biz');
-        if (bizParam && allBusinesses[bizParam] && !window.deepLinkOpened) {
-          window.deepLinkOpened = true; 
-          setTimeout(() => {
-            window.openBusinessModal(bizParam);
-            window.history.replaceState({}, document.title, window.location.pathname);
-          }, 500); 
-        }
       });
     });
 
@@ -762,7 +760,7 @@
       if(profStreak) profStreak.innerText = `${window.globalCurrentUser.streak || 0} Días 🔥`;
     };
 
-    /* === ACCIONES === */
+    /* === ACCIONES DE LOCAL === */
     window.toggleWantToGo = async function() {
       if (!window.globalCurrentUser) return window.openModal('modal-auth');
       const refPath = `users/${window.globalCurrentUser.uid}/wantToGo/${selectedBizId}`;
@@ -771,11 +769,20 @@
       else { await set(ref(db, refPath), Date.now()); window.showToast("¡Guardado!", "fa-check"); document.getElementById('icon-want-to-go').classList.replace('fa-regular', 'fa-solid'); }
     };
     window.toggleWantToGoFromList = async function(bizId) { if (!window.globalCurrentUser) return; await remove(ref(db, `users/${window.globalCurrentUser.uid}/wantToGo/${bizId}`)); window.showToast("Eliminado", "fa-trash"); window.openMyProfile(); };
+    
     window.markVisit = async function() {
       if (!window.globalCurrentUser) return window.openModal('modal-auth');
+      if (!isGpsActive) return window.showToast("Activa tu GPS para registrar visitas", "fa-satellite-dish");
+      
+      const biz = allBusinesses[selectedBizId];
+      if(!biz) return;
+      const dist = getDistance(userCoords.lat, userCoords.lng, biz.lat, biz.lng);
+      if (dist > 300) return window.showToast(`Debes estar en el local (A ${Math.round(dist)}m)`, "fa-location-dot");
+
       await set(ref(db, `businesses/${selectedBizId}/visits/${window.globalCurrentUser.uid}`), Date.now());
       window.showToast("📍 ¡Visita registrada! (+5 Pts)", "fa-location-dot"); window.updateUserPointsDisplay();
     };
+
     window.shareLocal = function() {
       const url = window.location.origin + window.location.pathname + '?biz=' + selectedBizId;
       if (navigator.share) { navigator.share({ title: 'Proof', url: url }).catch(()=>{}); } 
@@ -888,6 +895,17 @@
       
       map.on('zoomend', () => window.renderMapPins());
       map.on('dragstart', () => { const tw = document.getElementById('toolbar-wrapper'); if (!tw.classList.contains('hidden')) window.toggleToolbar(); });
+
+      // RASTREO CONSTANTE GPS Y MODERACIÓN
+      if ("geolocation" in navigator) {
+        gpsWatcherId = navigator.geolocation.watchPosition((pos) => {
+          isGpsActive = true;
+          userCoords.lat = pos.coords.latitude; userCoords.lng = pos.coords.longitude;
+          if (userMarker) userMarker.setLatLng([userCoords.lat, userCoords.lng]);
+        }, (err) => {
+          isGpsActive = false; // GPS Denegado o Inactivo
+        }, { enableHighAccuracy: true });
+      }
     }
 
     window.toggleHeatmap = function(refreshOnly = false) {
@@ -913,12 +931,15 @@
       window.showToast("Buscando señal GPS...", "fa-location-crosshairs");
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition((pos) => {
+          isGpsActive = true;
           userCoords.lat = pos.coords.latitude; userCoords.lng = pos.coords.longitude;
           if (!userMarker) { const icon = L.divIcon({ className: '', html: "<div style='background:var(--primary); width:20px; height:20px; border-radius:50%; border:3px solid var(--surface); box-shadow:0 0 15px rgba(34,34,34,0.5);'></div>", iconSize: [20,20] }); userMarker = L.marker([userCoords.lat, userCoords.lng], { icon, zIndexOffset: 1000 }).addTo(map); } 
           else { userMarker.setLatLng([userCoords.lat, userCoords.lng]); }
           map.setView([userCoords.lat, userCoords.lng], 16, {animate: true, duration: 1}); window.showToast("¡Ubicación lista!", "fa-check");
-          if (!gpsWatcherId) { gpsWatcherId = navigator.geolocation.watchPosition((p) => { userCoords.lat = p.coords.latitude; userCoords.lng = p.coords.longitude; if (userMarker) userMarker.setLatLng([userCoords.lat, userCoords.lng]); }, (e) => {}, { enableHighAccuracy: true }); }
-        }, (err) => { window.showToast("Error GPS: Verifica permisos", "fa-triangle-exclamation"); }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+        }, (err) => { 
+          isGpsActive = false;
+          window.showToast("Error GPS: Verifica permisos", "fa-triangle-exclamation"); 
+        }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
       } else { window.showToast("Navegador sin GPS", "fa-xmark"); }
     };
 
@@ -986,7 +1007,7 @@
     window.openLightbox = function(url) { const lb = document.getElementById('lightbox'); document.getElementById('lightbox-img').src = url; lb.style.display = 'flex'; setTimeout(() => lb.classList.add('active'), 10); };
     window.closeLightbox = function() { const lb = document.getElementById('lightbox'); lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 300); };
 
-    /* === FICHA DEL LOCAL CON SKELETONS LIGEROS === */
+    /* === FICHA DEL LOCAL === */
     window.openBusinessModal = function(id) {
       selectedBizId = id; const biz = allBusinesses[id];
       document.getElementById('biz-title').innerText = biz.name;
@@ -1106,9 +1127,17 @@
       window.openModal('modal-profile');
     };
 
-    /* === WIZARD Y ALERTA CULPA === */
+    /* === WIZARD Y MODERACIÓN GPS === */
     window.startReviewWizard = function() {
       if (!window.globalCurrentUser) return window.openModal('modal-auth');
+      
+      // MODERACIÓN: Chequeo de GPS y Distancia real.
+      if (!isGpsActive) return window.showToast("Activa tu GPS para calificar", "fa-satellite-dish");
+      const biz = allBusinesses[selectedBizId];
+      if(!biz) return;
+      const dist = getDistance(userCoords.lat, userCoords.lng, biz.lat, biz.lng);
+      if (dist > 300) return window.showToast(`Debes estar en el local (Estás a ${Math.round(dist)}m)`, "fa-location-dot");
+
       wizRating = 0; document.querySelectorAll('#star-picker i').forEach(s => s.classList.remove('active'));
       document.getElementById('wiz-text').value = ''; document.getElementById('wiz-photo').value = ''; document.getElementById('wiz-photo-preview').style.display = 'none';
       recordedAudioBase64 = null; document.getElementById('wiz-audio-preview').style.display = 'none';
@@ -1155,7 +1184,7 @@
         let photoB64 = null; if (photoInput.files.length > 0) photoB64 = await fileToBase64Compress(photoInput.files[0]);
         
         let isGpsVerified = false; const biz = allBusinesses[selectedBizId];
-        if (userCoords && biz) { const dist = getDistance(userCoords.lat, userCoords.lng, biz.lat, biz.lng); if (dist <= 300) isGpsVerified = true; }
+        if (userCoords && biz && isGpsActive) { const dist = getDistance(userCoords.lat, userCoords.lng, biz.lat, biz.lng); if (dist <= 300) isGpsVerified = true; }
 
         let newStreak = window.globalCurrentUser.streak || 0; let streakBonus = window.globalCurrentUser.streakBonus || 0;
         const now = new Date(); const today = now.toISOString().split('T')[0];
