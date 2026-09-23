@@ -15,19 +15,15 @@
   <style>
     :root {
       /* === PALETA MATCHA & DUSTY COAL === */
-      --color-matcha: #C2D8C4;
-      --color-matcha-light: #d6e5d8; 
-      --color-matcha-dark: #a9c4ac;  
+      --color-matcha: #C5D7C6; 
+      --color-surface: #E8EEE8; 
       --color-coal: #222222;
-      --color-coal-light: #333333;
       --color-gold: #cfa144; 
 
       /* Asignación UX/UI */
       --bg-base: var(--color-matcha); 
-      --surface: var(--color-matcha-light);
+      --surface: var(--color-surface);
       --primary: var(--color-coal); 
-      --primary-hover: var(--color-coal-light);
-      --accent: var(--color-matcha-dark);
       --text-main: var(--color-coal);
       --text-muted: rgba(34, 34, 34, 0.7);
       
@@ -35,12 +31,12 @@
       --danger: #a84646;  
       --warning: var(--color-gold);
       
-      /* Sombras */
-      --shadow-soft: 0 10px 30px rgba(34, 34, 34, 0.08);
-      --shadow-btn: 0 8px 20px rgba(34, 34, 34, 0.2);
+      /* Sombras Neo-Brutalistas */
+      --shadow-hard: 4px 4px 0px var(--color-coal);
+      --shadow-hard-lg: 6px 6px 0px var(--color-coal);
       
       --spring: cubic-bezier(0.175, 0.885, 0.32, 1.15);
-      --transition-fast: all 0.25s ease-out;
+      --transition-fast: all 0.2s ease-out;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -48,92 +44,143 @@
     h1, h2, h3, h4, h5, .brand, .btn, .review-author, .reward-tag { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; }
 
     /* === ANIMACIONES === */
-    @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(28px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
     @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
-    @keyframes floatSoft { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+    @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    .slide-up { animation: slideUpFade 0.5s ease-out forwards; }
 
-    .fade-in { animation: fadeIn 0.4s ease-out forwards; will-change: opacity; }
-    .slide-up { animation: slideUpFade 0.6s var(--spring) forwards; opacity: 0; will-change: transform, opacity; }
+    /* === HEADER (SÓLO BOTÓN HAMBURGUESA FLOTANTE) === */
+    .top-header { 
+      position: fixed; top: 20px; right: 20px; z-index: 4000; 
+      display: flex; justify-content: flex-end; align-items: center; 
+    }
+    .btn-icon { 
+      background: var(--surface); border: 2px solid var(--primary); color: var(--primary); 
+      width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; 
+      cursor: pointer; font-size: 1.3rem; transition: var(--transition-fast); border-radius: 12px; 
+      box-shadow: var(--shadow-hard);
+    }
+    .btn-icon:active { background: var(--primary); color: var(--surface); transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--primary); }
 
-    /* === HEADER Y MENÚ (Oculto al inicio) === */
-    .top-header { display: none; position: absolute; top: 16px; left: 16px; right: 16px; z-index: 5100; justify-content: space-between; align-items: center; background: rgba(214, 229, 216, 0.95); backdrop-filter: blur(5px); padding: 12px 20px; border: 1px solid var(--primary); border-radius: 20px; box-shadow: 4px 4px 0px var(--primary); }
-    .brand { font-size: 1.4rem; font-weight: 900; text-transform: uppercase; display: flex; align-items: center; gap: 8px; color: var(--primary); }
-    .btn-icon { background: var(--bg-base); border: 1px solid var(--primary); color: var(--primary); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; transition: var(--transition-fast); border-radius: 12px; }
+    /* === HOME HERO (Landing Limpia) === */
+    #hero-main { 
+      display: flex; flex-direction: column; align-items: center; justify-content: center; 
+      height: 100%; padding: 24px; text-align: center; overflow-y: auto;
+    }
+    .hero-title { font-size: 2.8rem; font-weight: 900; color: var(--primary); margin-bottom: 30px; line-height: 1.1; }
     
-    /* === HOME HERO (Pantalla Principal Pasiva) === */
-    .hero-section { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 24px; text-align: center; }
-    .hero-img { width: 160px; height: 160px; border-radius: 30px; object-fit: cover; margin-bottom: 24px; filter: drop-shadow(0 10px 20px rgba(34,34,34,0.15)); animation: floatSoft 4s ease-in-out infinite; border: 2px solid var(--primary); }
-    .hero-title { font-size: 2.2rem; font-weight: 900; color: var(--primary); margin-bottom: 12px; line-height: 1.1; }
-    .hero-subtitle { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 40px; font-weight: 500; max-width: 320px; line-height: 1.5; }
-    .scan-info-box { background: var(--surface); border: 1px solid var(--primary); padding: 20px; border-radius: 24px; display: flex; align-items: center; gap: 16px; text-align: left; box-shadow: var(--shadow-soft); max-width: 400px; }
-    .scan-info-box i { font-size: 2.2rem; color: var(--primary); }
-    .scan-info-box p { font-size: 0.95rem; font-weight: 600; margin: 0; color: var(--text-main); line-height: 1.4; }
+    .scan-info-box { 
+      background: var(--surface); border: 2px solid var(--primary); padding: 24px; 
+      border-radius: 24px; display: flex; align-items: flex-start; gap: 16px; text-align: left; 
+      box-shadow: var(--shadow-hard); max-width: 400px; 
+    }
+    .scan-info-box img { width: 36px; height: 36px; object-fit: contain; }
+    .scan-info-box p { font-size: 1rem; font-weight: 600; margin: 0; color: var(--text-main); line-height: 1.5; }
+
+    /* === VISTA DEL LOCAL (Pantalla Nueva Completa) === */
+    #biz-main {
+      display: none; height: 100%; padding: 100px 20px 40px; overflow-y: auto; background: var(--bg-base);
+    }
+    .biz-title-main { font-size: 2.2rem; font-weight: 900; margin-bottom: 8px; line-height: 1.1; }
+    .biz-category { font-size: 0.9rem; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px; }
+    
+    /* Galería Horizontal */
+    .gallery-container { 
+      display: flex; overflow-x: auto; gap: 12px; padding: 4px 0 16px; 
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; 
+    }
+    .gallery-container::-webkit-scrollbar { display: none; }
+    .gallery-img { 
+      height: 180px; min-width: 150px; width: 150px; object-fit: cover; 
+      border-radius: 20px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); 
+      scroll-snap-align: start; cursor: pointer; background: var(--surface);
+    }
+
+    /* Detalles del Local */
+    .biz-details-box {
+      background: var(--surface); border: 2px solid var(--primary); border-radius: 24px; 
+      padding: 20px; box-shadow: var(--shadow-hard); margin-bottom: 24px;
+    }
+    .biz-desc { font-size: 0.95rem; line-height: 1.5; font-weight: 500; margin-bottom: 16px; color: var(--primary); }
+    .biz-hours { font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: var(--text-muted); }
+    .social-links { display: flex; gap: 12px; }
+    .social-btn { 
+      width: 44px; height: 44px; border-radius: 14px; border: 2px solid var(--primary); 
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem; 
+      color: var(--primary); text-decoration: none; transition: var(--transition-fast); 
+    }
+    .social-btn:active { background: var(--primary); color: var(--surface); }
+
+    /* Botones de Acción Mágicos */
+    .btn { padding: 18px 24px; border: 2px solid var(--primary); border-radius: 100px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.1rem; transition: var(--transition-fast); text-decoration: none; width: 100%; margin-bottom: 12px; }
+    .btn:active { transform: translateY(2px); box-shadow: 2px 2px 0px var(--color-coal) !important; }
+    .btn-primary { background: var(--surface); color: var(--primary); box-shadow: var(--shadow-hard); }
+    .btn-secondary { background: var(--primary); color: var(--surface); box-shadow: var(--shadow-hard); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Reseñas Integradas */
+    .section-title { font-size: 1.5rem; font-weight: 900; margin: 32px 0 16px; }
+    .review-card { background: var(--surface); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
+    .review-header { display: flex; align-items: center; gap: 14px; }
+    .review-header img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+    .review-author { font-weight: 800; font-size: 1.05rem; color: var(--primary); }
+    .review-text-quote { font-weight: 500; font-size: 1rem; color: var(--text-main); line-height: 1.5; padding-left: 12px; border-left: 3px solid var(--primary); margin-top: 4px; }
+    .review-media img { width: 100%; height: 180px; border-radius: 16px; margin-top: 8px; object-fit: cover; border: 2px solid var(--primary); cursor: pointer; }
+
+    /* === LIGHTBOX DE IMÁGENES === */
+    .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.9); z-index: 6000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; }
+    .lightbox.active { opacity: 1; }
+    .lightbox img { max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface); }
+    .lightbox-close { position: absolute; top: 30px; right: 30px; background: var(--surface); border: 2px solid var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; z-index: 6001; }
 
     /* === DRAWER MENÚ === */
     .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.4); backdrop-filter: blur(4px); z-index: 5200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .drawer-overlay.active { opacity: 1; pointer-events: all; }
-    .drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: var(--bg-base); z-index: 5300; transition: left 0.4s var(--spring); display: flex; flex-direction: column; padding: 30px 24px; box-shadow: 10px 0 40px rgba(34, 34, 34, 0.15); border-radius: 0 30px 30px 0; border-right: 1px solid var(--primary); }
+    .drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: var(--bg-base); z-index: 5300; transition: left 0.4s var(--spring); display: flex; flex-direction: column; padding: 30px 24px; border-right: 2px solid var(--primary); box-shadow: var(--shadow-hard-lg); }
     .drawer.active { left: 0; } 
-    .drawer-item { padding: 16px; border-radius: 16px; font-weight: 700; display: flex; align-items: center; gap: 14px; color: var(--primary); cursor: pointer; font-size: 1rem; border: 1px solid transparent; }
+    .drawer-item { padding: 16px; border-radius: 16px; font-weight: 800; display: flex; align-items: center; gap: 14px; color: var(--primary); cursor: pointer; font-size: 1.05rem; transition: var(--transition-fast); border: 2px solid transparent; }
+    .drawer-item:active { background: var(--surface); border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
 
-    /* === BOTONES GENERALES === */
-    .btn { padding: 16px 26px; border: 1px solid var(--primary); border-radius: 100px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 1rem; transition: var(--transition-fast); color: var(--surface); }
-    .btn-primary { background: linear-gradient(135deg, var(--color-coal), var(--color-coal-light)); box-shadow: var(--shadow-btn); }
-    .btn-secondary { background: var(--accent); color: var(--primary); }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    /* === MODALES === */
+    /* === MODALES (Auth, Perfil, Wizard) === */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.5); backdrop-filter: blur(6px); z-index: 5000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
-    .modal-card { width: 100%; max-height: 92vh; border-radius: 36px 36px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.5s var(--spring); background: var(--bg-base); box-shadow: 0 -20px 50px rgba(34, 34, 34, 0.15); border-top: 1px solid var(--primary); }
+    .modal-card { width: 100%; max-height: 92vh; border-radius: 36px 36px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.5s var(--spring); background: var(--bg-base); border-top: 2px solid var(--primary); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); }
     .modal-overlay.active .modal-card { transform: translateY(0); }
-    .modal-handle { width: 48px; height: 6px; background: rgba(34, 34, 34, 0.2); border-radius: 12px; margin: 16px auto 8px; border: 1px solid var(--primary); }
-    .modal-header { padding: 16px 28px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-    .modal-header h3 { font-size: 1.45rem; font-weight: 900; color: var(--primary); margin:0; }
-    .btn-close { background: rgba(34, 34, 34, 0.05); border: 1px solid var(--primary); color: var(--primary); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; }
-    .modal-body { padding: 0 28px 34px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
+    .modal-header { padding: 24px 28px 16px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .modal-header h3 { font-size: 1.5rem; font-weight: 900; color: var(--primary); margin:0; }
+    .btn-close { background: var(--surface); border: 2px solid var(--primary); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 2px 2px 0px var(--primary); transition: 0.1s; }
+    .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--primary); }
+    .modal-body { padding: 0 28px 34px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+    
     @media (min-width: 650px) {
       .modal-overlay { align-items: center; padding: 24px; }
-      .modal-card { max-width: 520px; border-radius: 32px; max-height: 90vh; transform: scale(0.95); opacity: 0; border: 1px solid var(--primary); }
+      .modal-card { max-width: 520px; border-radius: 32px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard-lg); transform: scale(0.95); opacity: 0; }
       .modal-overlay.active .modal-card { transform: scale(1); opacity: 1; }
-      .modal-handle { display: none; }
     }
 
-    /* === FORMULARIOS === */
-    .form-group input, .form-group textarea { width: 100%; padding: 18px 24px; border: 1px solid var(--primary); border-radius: 20px; background: var(--surface); font-family: 'Inter', sans-serif; margin-bottom: 8px; font-size: 1rem; color: var(--primary); outline: none; }
-    .tabs { display: flex; gap: 6px; margin-bottom: 20px; background: rgba(34, 34, 34, 0.05); padding: 6px; border-radius: 100px; border: 1px solid var(--primary); }
-    .tab { flex: 1; text-align: center; padding: 12px; border-radius: 100px; cursor: pointer; font-weight: 700; color: var(--text-muted); font-size: 0.95rem; }
-    .tab.active { background: var(--surface); color: var(--primary); border: 1px solid var(--primary); }
+    /* === WIZARD Y FORMULARIOS === */
+    .form-group input, .form-group textarea { width: 100%; padding: 18px 24px; border: 2px solid var(--primary); border-radius: 20px; background: var(--surface); font-family: 'Inter', sans-serif; margin-bottom: 8px; font-size: 1rem; color: var(--primary); outline: none; }
+    .tabs { display: flex; gap: 6px; margin-bottom: 20px; background: var(--surface); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); }
+    .tab { flex: 1; text-align: center; padding: 12px; border-radius: 100px; cursor: pointer; font-weight: 800; color: var(--text-muted); font-size: 0.95rem; }
+    .tab.active { background: var(--primary); color: var(--surface); }
     .form-section { display: none; }
     .form-section.active { display: block; animation: slideUpFade 0.4s ease forwards; }
 
-    /* === WIZARD STAFF === */
-    .staff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
-    .staff-card { background: var(--surface); border: 1px solid var(--primary); border-radius: 16px; padding: 12px 8px; text-align: center; cursor: pointer; }
-    .staff-card img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid var(--primary); margin-bottom: 6px; }
-    .staff-card.active { background: var(--primary); color: var(--surface); transform: translateY(-4px); box-shadow: var(--shadow-soft); }
-    
-    /* === RESEÑAS Y CARDS === */
-    .card-clean { background: var(--surface); border-radius: 24px; padding: 20px; box-shadow: var(--shadow-soft); border: 1px solid var(--primary); }
-    .review-card { background: var(--surface); border-radius: 28px; padding: 24px; display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; border: 1px solid var(--primary); }
-    .review-header { display: flex; align-items: center; gap: 16px; }
-    .review-header img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1px solid var(--primary); }
-    .review-author { font-weight: 800; font-size: 1.1rem; color: var(--primary); }
-    .review-text-quote { font-weight: 500; font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; padding-left: 12px; border-left: 3px solid var(--accent); }
-    .review-media img { width: 100%; border-radius: 20px; margin-top: 10px; object-fit: cover; border: 1px solid var(--primary); }
-
-    /* === WIZARD Y ESTRELLAS === */
     .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
     .wizard-step.active { display: flex; animation: fadeIn 0.4s ease forwards; }
-    .star-rating-picker { font-size: 2.5rem; color: rgba(34, 34, 34, 0.1); display: flex; gap: 8px; margin: 10px 0 20px; }
+    .staff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+    .staff-card { background: var(--surface); border: 2px solid var(--primary); border-radius: 16px; padding: 12px 8px; text-align: center; cursor: pointer; }
+    .staff-card img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 6px; }
+    .staff-card.active { background: var(--primary); color: var(--surface); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
+    .star-rating-picker { font-size: 2.5rem; color: rgba(34, 34, 34, 0.2); display: flex; gap: 8px; margin: 10px 0 20px; }
     .star-rating-picker i { cursor: pointer; }
-    .star-rating-picker i.active { color: var(--warning); }
-    .rating-row { display: flex; flex-direction: column; align-items: center; width: 100%; border-bottom: 1px solid rgba(34,34,34,0.1); padding-bottom: 10px; }
-    .rating-row label { font-weight: 800; text-transform: uppercase; font-size: 0.9rem; margin-top: 10px; }
-    .reward-tag { background: rgba(74, 124, 89, 0.15); color: var(--success); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 800; display: inline-block; vertical-align: middle; margin-left: 8px; border: 1px solid var(--success); }
+    .star-rating-picker i.active { color: var(--warning); text-shadow: 2px 2px 0px var(--primary); }
+    .rating-row { display: flex; flex-direction: column; align-items: center; width: 100%; border-bottom: 2px solid rgba(34,34,34,0.1); padding-bottom: 10px; }
+    .rating-row label { font-weight: 900; text-transform: uppercase; font-size: 0.9rem; margin-top: 10px; }
+    .reward-tag { background: var(--surface); color: var(--success); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 900; border: 2px solid var(--primary); margin-left: 8px; box-shadow: 2px 2px 0px var(--primary); }
 
     /* Toast */
-    .toast { position: fixed; top: 50px; left: 50%; transform: translate(-50%, -150px); background: var(--primary); color: var(--surface); padding: 18px 28px; border-radius: 100px; z-index: 10000; font-weight: 700; transition: transform 0.5s var(--spring); font-size: 1rem; white-space: nowrap; display: flex; align-items: center; gap: 12px; border: 1px solid var(--accent); }
+    .toast { position: fixed; top: 90px; left: 50%; transform: translate(-50%, -150px); background: var(--surface); color: var(--primary); padding: 16px 28px; border-radius: 100px; z-index: 10000; font-weight: 900; transition: transform 0.5s var(--spring); font-size: 1rem; white-space: nowrap; display: flex; align-items: center; gap: 12px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
     .toast.show { transform: translate(-50%, 0); }
   </style>
 </head>
@@ -141,120 +188,111 @@
 
   <div class="toast" id="toast"></div>
 
-  <!-- HEADER FIJO (Se muestra SOLO cuando se abre el restaurante) -->
+  <!-- HEADER FIJO (SÓLO LAS TRES RAYITAS COMO PEDISTE) -->
   <header class="top-header fade-in" id="main-header">
-    <div class="brand">
-      <!-- Logo Superior -->
-      <img src="2.png" onerror="this.src='https://via.placeholder.com/100x30/d6e5d8/222222?text=PROOF'" alt="Proof" style="height: 24px; object-fit: contain;">
-    </div>
     <button class="btn-icon" onclick="window.openDrawerSafe()"><i class="fa-solid fa-bars"></i></button>
   </header>
 
-  <!-- HOME HERO (PANTALLA DE ESPERA SI NO HAY QR ESCANEADO) -->
+  <!-- HOME HERO (PANTALLA DE ESPERA LIMPIA) -->
   <main class="hero-section fade-in" id="hero-main">
-    <!-- PON AQUÍ TU PROPIO LOGO CAMBIANDO EL SRC -->
-    <img src="2.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3714/3714151.png'" class="hero-img" alt="Logo Principal">
     <h1 class="hero-title">Tu experiencia,<br>tu voz.</h1>
-    <p class="hero-subtitle">Para comenzar, utiliza la cámara nativa de tu celular y escanea el código QR de tu mesa.</p>
     
     <div class="scan-info-box">
-      <i class="fa-solid fa-qrcode"></i>
+      <!-- Icono genérico simulando el de la imagen -->
+      <img src="https://cdn-icons-png.flaticon.com/512/714/714390.png" onerror="this.style.display='none'">
       <p>Al escanear el QR accederás automáticamente al menú y podrás evaluar el servicio recibido. No necesitas descargar nada.</p>
     </div>
   </main>
 
-  <!-- MENÚ HAMBURGUESA -->
+  <!-- VISTA DEL LOCAL (PANTALLA NUEVA COMPLETA, APARECE AL ESCANEAR QR) -->
+  <main id="biz-main" class="fade-in">
+    <h1 id="biz-title-main" class="biz-title-main">Restaurante</h1>
+    <div id="biz-category-main" class="biz-category">Categoría</div>
+
+    <!-- Galería Horizontal de Fotos -->
+    <div class="gallery-container" id="biz-gallery">
+      <!-- Fotos inyectadas dinámicamente -->
+    </div>
+
+    <!-- Caja de Info: Descripción, Horarios, Redes -->
+    <div class="biz-details-box">
+      <p id="biz-desc-main" class="biz-desc">Descripción del local...</p>
+      
+      <div id="biz-hours-main" class="biz-hours">
+        <i class="fa-solid fa-clock"></i> <span>Abierto</span>
+      </div>
+
+      <div class="social-links" id="biz-social-main">
+        <!-- Botones sociales inyectados dinámicamente -->
+      </div>
+    </div>
+
+    <!-- Botones Principales -->
+    <a id="biz-menu-btn" href="#" target="_blank" class="btn btn-primary">
+      <i class="fa-solid fa-book-open"></i> VER MENÚ DIGITAL
+    </a>
+    <button class="btn btn-secondary" onclick="window.startReviewWizard()">
+      <i class="fa-solid fa-star"></i> CALIFICAR EXPERIENCIA
+    </button>
+
+    <!-- Reseñas Integradas abajo -->
+    <h3 class="section-title">Opiniones de clientes</h3>
+    <div id="biz-inline-reviews">
+      <!-- Reseñas aquí -->
+    </div>
+  </main>
+
+  <!-- LIGHTBOX PARA FOTOS -->
+  <div class="lightbox" id="lightbox" onclick="window.closeLightbox(event)">
+    <button class="lightbox-close" onclick="window.closeLightbox(event)"><i class="fa-solid fa-xmark"></i></button>
+    <img id="lightbox-img" src="" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- MENÚ HAMBURGUESA (DRAWER) -->
   <div class="drawer-overlay" id="drawer-overlay" onclick="window.closeDrawerSafe()"></div>
   <div class="drawer" id="drawer">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-      <h3 style="font-size:1.4rem; color:var(--primary);">Menú</h3>
+      <h3 style="font-size:1.4rem; color:var(--primary); font-weight:900;">MENÚ</h3>
       <button class="btn-close" onclick="window.closeDrawerSafe()"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
-    <div id="drawer-user-profile" class="slide-up" style="text-align:center; margin-bottom:24px; display:none; padding: 28px 20px; background:var(--surface); border-radius:24px; border: 1px solid var(--primary);">
-      <img id="drawer-avatar" src="" style="width:76px; height:76px; border-radius:50%; margin:0 auto 14px; object-fit:cover; border:3px solid var(--accent);">
-      <div id="drawer-username" style="font-weight:900; font-size:1.25rem; color:var(--primary);"></div>
-      <div id="drawer-level" style="margin-top:6px; font-weight: 700; color:var(--warning);"></div>
+    <div id="drawer-user-profile" class="slide-up" style="text-align:center; margin-bottom:24px; display:none; padding: 24px 20px; background:var(--surface); border-radius:24px; border: 2px solid var(--primary); box-shadow:var(--shadow-hard);">
+      <img id="drawer-avatar" src="" style="width:76px; height:76px; border-radius:50%; margin:0 auto 14px; object-fit:cover; border:2px solid var(--primary);">
+      <div id="drawer-username" style="font-weight:900; font-size:1.25rem; color:var(--primary); text-transform:uppercase;"></div>
+      <div id="drawer-level" style="margin-top:6px; font-weight: 800; color:var(--warning);"></div>
     </div>
 
     <div class="drawer-item" onclick="window.handleMenuProfile()">
-      <i class="fa-solid fa-user-circle" style="font-size:1.3rem; color:var(--accent);"></i> <span id="menu-text-auth">Mi Perfil</span>
+      <i class="fa-solid fa-user-circle" style="font-size:1.4rem;"></i> <span id="menu-text-auth">Mi Perfil</span>
     </div>
     <div class="drawer-item" id="menu-btn-logout" style="display:none;" onclick="window.logoutUser()">
-      <i class="fa-solid fa-right-from-bracket" style="font-size:1.3rem; color:var(--danger);"></i> <span style="color:var(--danger);">Cerrar Sesión</span>
+      <i class="fa-solid fa-right-from-bracket" style="font-size:1.4rem; color:var(--danger);"></i> <span style="color:var(--danger);">Cerrar Sesión</span>
     </div>
   </div>
 
   <!-- MODAL: MI PERFIL / PUNTOS -->
-  <div class="modal-overlay" id="modal-profile" style="z-index: 5400;">
+  <div class="modal-overlay" id="modal-profile">
     <div class="modal-card">
-      <div class="modal-handle"></div>
       <div class="modal-header">
         <h3>Mi Perfil</h3>
         <button class="btn-close" onclick="window.closeModal('modal-profile')"><i class="fa-solid fa-chevron-down"></i></button>
       </div>
       <div class="modal-body">
         
-        <div class="slide-up" style="background: linear-gradient(135deg, var(--color-coal), var(--color-coal-light)); color: var(--surface); padding: 28px; border-radius: 28px; margin-bottom: 20px; display: flex; justify-content: space-around; text-align: center; border: 1px solid var(--primary);">
+        <div class="slide-up" style="background: var(--surface); padding: 28px; border-radius: 28px; margin-bottom: 20px; display: flex; justify-content: space-around; text-align: center; border: 2px solid var(--primary); box-shadow: var(--shadow-hard);">
           <div style="flex:1;">
             <div style="font-size: 2.4rem; font-family:'Plus Jakarta Sans'; font-weight: 900; line-height: 1;" id="prof-points">0</div>
-            <div style="font-size: 0.8rem; text-transform: uppercase; margin-top: 8px; font-weight: 700;">Puntos</div>
+            <div style="font-size: 0.8rem; text-transform: uppercase; margin-top: 8px; font-weight: 900;">Puntos</div>
           </div>
-          <div style="width: 1px; background: rgba(214,229,216,0.2);"></div>
+          <div style="width: 2px; background: var(--primary);"></div>
           <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
             <div style="font-size: 1.1rem; font-weight: 900;" id="prof-level">Novato 🌱</div>
           </div>
         </div>
 
-        <h4 style="font-weight:900; font-size:1.2rem; margin-bottom:14px;">Mis Evaluaciones</h4>
+        <h4 style="font-weight:900; font-size:1.2rem; margin-bottom:14px; text-transform:uppercase;">Mis Evaluaciones</h4>
         <div id="my-reviews-list" style="display:flex; flex-direction:column; gap:16px;"></div>
 
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: FICHA DEL RESTAURANTE -->
-  <div class="modal-overlay" id="modal-biz">
-    <div class="modal-card" style="height: 100vh; max-height: 100vh; border-radius: 0; border: none;">
-      <!-- Para que simule la pantalla completa, no le ponemos handle -->
-      <div class="modal-header" style="padding-top: 80px; justify-content: center;">
-        <h3 id="biz-title" class="fade-in" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align: center;">Restaurante</h3>
-        <!-- Boton de regresar a escanear (Opcional) -->
-        <button class="btn-close" style="position: absolute; right: 20px; top: 80px;" onclick="window.closeRestaurant()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="modal-body">
-        
-        <!-- LOGO O FOTO DEL LOCAL SUBIDA POR EL ADMIN -->
-        <img id="biz-cover" src="2.png" onerror="this.src='https://via.placeholder.com/600x400/d6e5d8/222222?text=FOTO+DEL+LOCAL'" style="width:100%; height:220px; object-fit:cover; border-radius: 24px; border: 2px solid var(--primary); margin-bottom:16px;">
-        
-        <div class="card-clean slide-up" style="text-align:center;">
-          <!-- Botón de Menú (Abre Link o PDF automáticamente) -->
-          <a id="biz-menu-btn" href="#" target="_blank" class="btn btn-primary" style="width:100%; padding:20px; font-size:1.2rem; margin-bottom:12px; text-decoration:none;">
-            <i class="fa-solid fa-book-open"></i> VER MENÚ
-          </a>
-          <button class="btn btn-secondary" style="width:100%; padding:18px; font-size:1.1rem;" onclick="window.startReviewWizard()">
-            <i class="fa-solid fa-star"></i> CALIFICAR EXPERIENCIA
-          </button>
-        </div>
-
-        <button class="btn" style="width:100%; border:1px dashed var(--primary); background:transparent; color:var(--primary); margin-top: 12px;" onclick="window.openReviewsList()">
-          Ver opiniones de otros clientes
-        </button>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: LISTA DE RESEÑAS -->
-  <div class="modal-overlay" id="modal-reviews-list" style="z-index: 5400;">
-    <div class="modal-card">
-      <div class="modal-handle"></div>
-      <div class="modal-header">
-        <h3>Opiniones</h3>
-        <button class="btn-close" onclick="window.closeModal('modal-reviews-list')"><i class="fa-solid fa-arrow-left"></i></button>
-      </div>
-      <div class="modal-body" id="biz-reviews-container">
-        <!-- Reseñas se inyectan aquí -->
       </div>
     </div>
   </div>
@@ -262,13 +300,12 @@
   <!-- MODAL: LOGIN / REGISTRO -->
   <div class="modal-overlay" id="modal-auth" style="z-index: 5500;">
     <div class="modal-card" style="max-width: 420px;">
-      <div class="modal-handle"></div>
       <div class="modal-header">
         <h3>Identificación</h3>
         <button class="btn-close" onclick="window.closeModal('modal-auth')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
-        <p style="text-align:center; font-size:0.9rem; color:var(--text-muted); margin-bottom:10px;">Para publicar tu experiencia y ganar puntos debes iniciar sesión.</p>
+        <p style="text-align:center; font-size:0.95rem; font-weight:600; color:var(--text-main); margin-bottom:10px;">Para publicar tu experiencia y ganar puntos debes iniciar sesión.</p>
         <div class="tabs">
           <div id="tab-login" class="tab active" onclick="window.switchAuthTab('login')">Ingresar</div>
           <div id="tab-register" class="tab" onclick="window.switchAuthTab('register')">Crear Cuenta</div>
@@ -277,18 +314,18 @@
         <div id="loginForm" class="form-section active">
           <div class="form-group"><input type="email" id="loginEmail" placeholder="Correo electrónico"></div>
           <div class="form-group"><input type="password" id="loginPassword" placeholder="Contraseña"></div>
-          <button class="btn btn-primary" id="btn-login" style="width:100%; margin-top:12px;" onclick="window.loginUser()">Entrar</button>
+          <button class="btn btn-secondary" id="btn-login" style="width:100%; margin-top:12px;" onclick="window.loginUser()">Entrar</button>
         </div>
 
         <div id="registerForm" class="form-section">
           <div class="form-group"><input type="text" id="regName" placeholder="Nombre completo"></div>
           <div class="form-group"><input type="email" id="regEmail" placeholder="Correo electrónico"></div>
           <div class="form-group"><input type="password" id="regPassword" placeholder="Contraseña (mín 6)"></div>
-          <label class="btn btn-secondary" style="width:100%; margin-bottom:16px;">
-            <i class="fa-solid fa-camera" style="color:var(--primary);"></i> Subir Foto de Perfil
+          <label class="btn btn-primary" style="width:100%; margin-bottom:16px; background:var(--surface); color:var(--primary);">
+            <i class="fa-solid fa-camera"></i> Subir Foto de Perfil
             <input type="file" id="regPhoto" accept="image/*" style="display:none;">
           </label>
-          <button class="btn btn-primary" id="btn-register" style="width:100%;" onclick="window.registerUser()">Comenzar</button>
+          <button class="btn btn-secondary" id="btn-register" style="width:100%;" onclick="window.registerUser()">Comenzar</button>
         </div>
       </div>
     </div>
@@ -297,11 +334,10 @@
   <!-- MODAL: WIZARD DE EXPERIENCIA GASTRONÓMICA -->
   <div class="modal-overlay" id="modal-wizard" style="z-index: 5600;">
     <div class="modal-card">
-      <div class="modal-handle"></div>
       <div class="modal-header" style="align-items:flex-start; padding-bottom:10px;">
         <div>
           <h3 style="margin-bottom:4px;">Tu Experiencia</h3>
-          <span id="wizard-user-points" style="color:var(--warning); font-weight:800; font-size:0.9rem; display:block; margin-top:2px;">🏆 Tienes 0 Pts</span>
+          <span id="wizard-user-points" style="color:var(--warning); font-weight:900; font-size:0.9rem; display:block; margin-top:2px;">🏆 Tienes 0 Pts</span>
         </div>
         <button class="btn-close" onclick="window.closeModal('modal-wizard')"><i class="fa-solid fa-xmark"></i></button>
       </div>
@@ -310,18 +346,17 @@
         
         <!-- PASO 1: PERSONAL -->
         <div id="wiz-step-1" class="wizard-step active">
-          <h4 style="font-size:1.3rem; font-weight:900;">¿Quién te atendió?</h4>
-          <p style="font-size:0.9rem; color:var(--text-muted); margin-top:-8px;">Selecciona a tu mesero/a</p>
+          <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">¿Quién te atendió?</h4>
+          <p style="font-size:0.95rem; font-weight:600; color:var(--text-muted); margin-top:-8px;">Selecciona a tu mesero/a</p>
           <div class="staff-grid" id="wiz-staff-list">
             <!-- Staff inyectado dinámicamente -->
           </div>
-          <button class="btn btn-secondary" style="margin-top:10px;" onclick="window.selectStaff('none', null)">No sé / Otro</button>
+          <button class="btn btn-primary" style="margin-top:10px;" onclick="window.selectStaff('none', null)">No sé / Otro</button>
         </div>
 
         <!-- PASO 2: CALIFICACIONES (Estrellas Múltiples) -->
         <div id="wiz-step-2" class="wizard-step">
-          <h4 style="font-size:1.3rem; font-weight:900;">Califica el servicio <span class="reward-tag">+10 Pts</span></h4>
-          <p style="font-size:0.85rem; color:var(--success); margin-top:-4px; font-weight:800;"><i class="fa-solid fa-location-dot"></i> Estar en el local otorga +50 Pts</p>
+          <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Califica el servicio <span class="reward-tag">+10 Pts</span></h4>
           
           <div class="rating-row">
             <label>Experiencia General</label>
@@ -343,31 +378,31 @@
           </div>
 
           <div style="display:flex; gap:12px; width:100%;">
-            <button class="btn btn-secondary" style="flex:1;" onclick="window.nextWizardStep(1)">Atrás</button>
-            <button class="btn btn-primary" style="flex:1;" onclick="window.validateRatingsAndNext()">Siguiente</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="window.nextWizardStep(1)">Atrás</button>
+            <button class="btn btn-secondary" style="flex:1;" onclick="window.validateRatingsAndNext()">Siguiente</button>
           </div>
         </div>
 
         <!-- PASO 3: COMIDA Y TEXTO -->
         <div id="wiz-step-3" class="wizard-step">
-          <h4 style="font-size:1.3rem; font-weight:900;">Detalles <span class="reward-tag">+20 Pts</span></h4>
+          <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Detalles <span class="reward-tag">+20 Pts</span></h4>
           <div class="form-group" style="width:100%;">
             <input type="text" id="wiz-food-name" placeholder="¿Qué plato pediste? (Ej: Milanesa)">
           </div>
-          <textarea id="wiz-text" rows="3" placeholder="Cuéntanos más sobre tu experiencia..." style="width:100%; border:1px solid var(--primary); border-radius:20px; padding:16px; font-size:1rem; outline:none; background:var(--surface);"></textarea>
+          <textarea id="wiz-text" rows="3" placeholder="Cuéntanos más sobre tu experiencia..." style="width:100%; border:2px solid var(--primary); border-radius:20px; padding:16px; font-size:1rem; outline:none; background:var(--surface);"></textarea>
           
           <div style="display:flex; gap:12px; width:100%;">
-            <button class="btn btn-secondary" style="flex:1;" onclick="window.trySkipWizard(4, 20, 'tu opinión escrita')">Saltar</button>
-            <button class="btn btn-primary" style="flex:1;" onclick="window.tryNextStepText()">Siguiente</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="window.trySkipWizard(4, 20, 'tu opinión escrita')">Saltar</button>
+            <button class="btn btn-secondary" style="flex:1;" onclick="window.tryNextStepText()">Siguiente</button>
           </div>
         </div>
 
         <!-- PASO 4: FOTO Y PUBLICAR -->
         <div id="wiz-step-4" class="wizard-step">
-          <h4 style="font-size:1.3rem; font-weight:900;">Sube una foto del plato <span class="reward-tag">+30 Pts</span></h4>
-          <img id="wiz-photo-preview" style="width:100%; max-height:200px; border-radius:20px; display:none; margin-bottom:14px; object-fit:cover; border: 1px solid var(--primary);">
-          <label class="btn btn-secondary" style="width:100%; margin-bottom:14px;"><i class="fa-solid fa-camera"></i> Tomar / Elegir Foto<input type="file" id="wiz-photo" accept="image/*" onchange="window.previewWizPhoto(event)" style="display:none;"></label>
-          <button class="btn btn-primary" style="width:100%; margin-top:10px; padding:18px; font-size:1.1rem;" id="btn-wiz-submit" onclick="window.submitWizardReview()">PUBLICAR EXPERIENCIA</button>
+          <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Foto del plato <span class="reward-tag">+30 Pts</span></h4>
+          <img id="wiz-photo-preview" style="width:100%; max-height:200px; border-radius:20px; display:none; margin-bottom:14px; object-fit:cover; border: 2px solid var(--primary);">
+          <label class="btn btn-primary" style="width:100%; margin-bottom:14px; background:var(--surface); color:var(--primary);"><i class="fa-solid fa-camera"></i> Tomar / Elegir Foto<input type="file" id="wiz-photo" accept="image/*" onchange="window.previewWizPhoto(event)" style="display:none;"></label>
+          <button class="btn btn-secondary" style="width:100%; margin-top:10px; padding:18px; font-size:1.1rem;" id="btn-wiz-submit" onclick="window.submitWizardReview()">PUBLICAR EXPERIENCIA</button>
         </div>
 
       </div>
@@ -378,11 +413,8 @@
   <div class="modal-overlay" id="modal-guilt" style="z-index: 6000; align-items: center; background: rgba(34,34,34, 0.8);">
     <div class="modal-card pop-in" style="max-width: 340px; background: transparent; box-shadow: none; border: none;">
       <div class="modal-body" style="padding: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px; width:100%;">
-        
-        <img src="2.png" onerror="this.src='https://via.placeholder.com/300x300/C2D8C4/222222?text=¿Saltar?'" style="width: 100%; max-width: 280px; object-fit: contain;">
-        
         <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
-          <button class="btn btn-primary" style="width: 100%; padding: 18px; justify-content: center; gap: 10px;" onclick="window.cancelSkip()">
+          <button class="btn btn-secondary" style="width: 100%; padding: 18px; justify-content: center; gap: 10px;" onclick="window.cancelSkip()">
             <i class="fa-solid fa-star" style="color:var(--warning);"></i> Completar paso
           </button>
           <button class="btn" style="width: 100%; background: transparent; color: var(--surface); border: none; font-weight: 700; text-decoration: underline;" onclick="window.confirmSkip()">
@@ -401,6 +433,19 @@
     window.openDrawerSafe = function() { document.getElementById('drawer').classList.add('active'); document.getElementById('drawer-overlay').classList.add('active'); };
     window.closeDrawerSafe = function() { document.getElementById('drawer').classList.remove('active'); document.getElementById('drawer-overlay').classList.remove('active'); };
     
+    window.openLightbox = function(src) { 
+      document.getElementById('lightbox-img').src = src; 
+      const lb = document.getElementById('lightbox');
+      lb.style.display = 'flex';
+      setTimeout(() => lb.classList.add('active'), 10);
+    };
+    window.closeLightbox = function(e) { 
+      if (e) e.stopPropagation();
+      const lb = document.getElementById('lightbox');
+      lb.classList.remove('active');
+      setTimeout(() => lb.style.display = 'none', 300);
+    };
+
     window.handleMenuProfile = function() { 
       window.closeDrawerSafe(); 
       if(window.globalCurrentUser) window.openMyProfile(); 
@@ -448,7 +493,7 @@
     let allBusinesses = {}; 
     let selectedBizId = null;
 
-    // WIZARD STATE (GASTRONÓMICO)
+    // WIZARD STATE 
     let wizStaffId = null; let wizStaffName = null;
     let wRatings = { general: 0, food: 0, staff: 0 };
     let pendingSkipStep = null;
@@ -467,7 +512,7 @@
           window.deepLinkOpened = true; 
           setTimeout(() => {
             window.openRestaurant(bizParam);
-            // Mantenemos la URL limpia pero la app sabe que ya abrió el QR
+            // Mantenemos la URL limpia
             window.history.replaceState({}, document.title, window.location.pathname);
           }, 200); 
         }
@@ -514,44 +559,94 @@
       if(profLevel) { profLevel.innerText = level.name; profLevel.style.color = level.color; }
       
       const drawerLevel = document.getElementById('drawer-level');
-      if(drawerLevel) drawerLevel.innerHTML = `<span style="color:${level.color}; font-size:0.85rem; font-weight:800;">${level.name}</span>`;
+      if(drawerLevel) drawerLevel.innerHTML = `<span style="color:${level.color}; font-size:0.85rem; font-weight:900; text-transform:uppercase;">${level.name}</span>`;
     };
 
-    /* === VISTA RESTAURANTE === */
+    /* === VISTA RESTAURANTE (PANTALLA COMPLETA) === */
     window.openRestaurant = function(id) {
       selectedBizId = id; const biz = allBusinesses[id];
       if(!biz) return;
       
-      // Mostrar la barra de arriba y ocultar el hero principal
-      document.getElementById('main-header').style.display = 'flex';
+      // Ocultar inicio, Mostrar restaurante
       document.getElementById('hero-main').style.display = 'none';
+      document.getElementById('biz-main').style.display = 'block';
 
-      document.getElementById('biz-title').innerText = biz.name;
-      document.getElementById('biz-cover').src = (biz.photos && biz.photos[0]) ? biz.photos[0] : (biz.photoBase64 || defaultImg);
+      // Llenar Datos
+      document.getElementById('biz-title-main').innerText = biz.name;
+      document.getElementById('biz-category-main').innerText = biz.category || "Gastronomía";
+      document.getElementById('biz-desc-main').innerText = biz.desc || "Sin descripción.";
       
+      const hoursText = biz.hoursDesc || (biz.openTime && biz.closeTime ? `De ${biz.openTime} a ${biz.closeTime}` : "Horario no especificado");
+      document.getElementById('biz-hours-main').innerHTML = `<i class="fa-solid fa-clock"></i> <span>${hoursText}</span>`;
+      
+      // Redes Sociales
+      let socialHtml = "";
+      if(biz.whatsapp) socialHtml += `<a href="https://wa.me/${biz.whatsapp.replace(/\D/g,'')}" target="_blank" class="social-btn"><i class="fa-brands fa-whatsapp"></i></a>`;
+      if(biz.instagram) socialHtml += `<a href="${biz.instagram}" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i></a>`;
+      if(biz.facebook) socialHtml += `<a href="${biz.facebook}" target="_blank" class="social-btn"><i class="fa-brands fa-facebook"></i></a>`;
+      document.getElementById('biz-social-main').innerHTML = socialHtml;
+
+      // Galería Horizontal
+      const gallery = document.getElementById('biz-gallery');
+      gallery.innerHTML = "";
+      const photos = biz.photos && biz.photos.length > 0 ? biz.photos : (biz.photoBase64 ? [biz.photoBase64] : [defaultImg]);
+      photos.forEach(src => {
+        gallery.innerHTML += `<img src="${src}" class="gallery-img" onclick="window.openLightbox('${src}')">`;
+      });
+      
+      // Botón Menú
       const menuBtn = document.getElementById('biz-menu-btn');
       if(biz.menu && biz.menu.trim() !== '') {
-        menuBtn.style.display = 'block';
+        menuBtn.style.display = 'inline-flex';
         if (biz.menu.startsWith('data:')) {
-          // Descargar PDF o Imagen cargada desde panel admin
           menuBtn.href = biz.menu;
           menuBtn.download = `Menu_${biz.name.replace(/\s+/g, '_')}`;
         } else {
-          // Abrir link externo
           menuBtn.href = biz.menu.startsWith('http') ? biz.menu : 'https://' + biz.menu;
           menuBtn.removeAttribute('download');
         }
       } else {
         menuBtn.style.display = 'none';
       }
-      window.openModal('modal-biz');
+
+      // Renderizar Reseñas Directo en la Pantalla
+      renderInlineReviews(biz.reviews || {});
     };
 
-    window.closeRestaurant = function() {
-      window.closeModal('modal-biz');
-      document.getElementById('main-header').style.display = 'none';
-      document.getElementById('hero-main').style.display = 'flex';
-    };
+    function renderInlineReviews(reviewsObj) {
+      const container = document.getElementById('biz-inline-reviews');
+      container.innerHTML = "";
+      const reviewsArr = Object.values(reviewsObj).sort((a,b) => b.timestamp - a.timestamp);
+      
+      if (reviewsArr.length === 0) {
+        container.innerHTML = "<p style='color:var(--text-muted); font-weight:600;'>Aún no hay opiniones. ¡Sé el primero!</p>";
+        return;
+      }
+
+      reviewsArr.forEach(r => {
+        let media = "";
+        if (r.photoBase64) media += `<img src="${r.photoBase64}" onclick="window.openLightbox('${r.photoBase64}')">`;
+        
+        let starsHtml = `<div style="color:var(--warning); font-size:1rem; margin-top:4px;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>`;
+        let detailsHtml = "";
+        if(r.foodName) detailsHtml += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:6px;"><i class="fa-solid fa-utensils"></i> Pidió: ${window.escapeHtml(r.foodName)}</div>`;
+        if(r.staffName) detailsHtml += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:4px;"><i class="fa-solid fa-user-tag"></i> Atendido por: ${window.escapeHtml(r.staffName)}</div>`;
+
+        container.innerHTML += `
+          <div class="review-card">
+            <div class="review-header">
+              <img src="${r.authorPhoto || defaultImg}">
+              <div>
+                <div class="review-author">${window.escapeHtml(r.authorName)}</div>
+                ${starsHtml}
+              </div>
+            </div>
+            ${detailsHtml}
+            ${r.text ? `<div class="review-text-quote" style="margin-top:10px;">${window.escapeHtml(r.text)}</div>` : ''}
+            <div class="review-media">${media}</div>
+          </div>`;
+      });
+    }
 
     /* === WIZARD DE RESEÑAS GASTRONÓMICAS === */
     window.startReviewWizard = function() {
@@ -560,35 +655,32 @@
         return window.openModal('modal-auth');
       }
       
-      // BLOQUEO GPS DESACTIVADO PARA PRUEBAS
+      // GPS DESACTIVADO PARA PRUEBAS
       
       const biz = allBusinesses[selectedBizId];
       if(!biz) return;
       
-      // Reset variables
       wizStaffId = null; wizStaffName = null; wRatings = { general: 0, food: 0, staff: 0 };
       document.querySelectorAll('.star-rating-picker i').forEach(s => s.classList.remove('active'));
       document.getElementById('wiz-food-name').value = ''; document.getElementById('wiz-text').value = ''; 
       document.getElementById('wiz-photo').value = ''; document.getElementById('wiz-photo-preview').style.display = 'none';
 
-      // Cargar personal
       const staffContainer = document.getElementById('wiz-staff-list');
       staffContainer.innerHTML = "";
       if (biz && biz.staff) {
         Object.entries(biz.staff).forEach(([sId, sData]) => {
           const sImg = sData.photo || defaultImg;
-          // Mostrar Rol debajo del nombre si existe
-          const sRole = sData.role ? `<div style="font-size:0.75rem; color:var(--success); font-weight:800; margin-top:4px;">${window.escapeHtml(sData.role)}</div>` : '';
+          const sRole = sData.role ? `<div style="font-size:0.75rem; color:var(--success); font-weight:900; margin-top:4px; text-transform:uppercase;">${window.escapeHtml(sData.role)}</div>` : '';
           
           staffContainer.innerHTML += `
             <div class="staff-card" id="staff-card-${sId}" onclick="window.selectStaff('${sId}', '${window.escapeHtml(sData.name)}')">
               <img src="${sImg}">
-              <div style="font-weight:800; font-size:0.85rem;">${window.escapeHtml(sData.name)}</div>
+              <div style="font-weight:900; font-size:0.85rem;">${window.escapeHtml(sData.name)}</div>
               ${sRole}
             </div>`;
         });
       } else {
-        staffContainer.innerHTML = "<p style='grid-column:1/-1; font-size:0.9rem; color:var(--text-muted);'>No hay personal registrado.</p>";
+        staffContainer.innerHTML = "<p style='grid-column:1/-1; font-size:0.9rem; color:var(--text-muted); font-weight:600;'>No hay personal registrado.</p>";
       }
 
       window.updateUserPointsDisplay();
@@ -620,9 +712,7 @@
     }
 
     window.validateRatingsAndNext = function() {
-      if(wRatings.general === 0 || wRatings.food === 0 || wRatings.staff === 0) {
-        return window.showToast("Por favor califica las 3 áreas", "fa-star");
-      }
+      if(wRatings.general === 0 || wRatings.food === 0 || wRatings.staff === 0) return window.showToast("Por favor califica las 3 áreas", "fa-star");
       window.nextWizardStep(3);
     };
 
@@ -633,7 +723,7 @@
 
     window.trySkipWizard = function(nextStep, ptsToLose, typeName) { 
       pendingSkipStep = nextStep; 
-      document.querySelector('#modal-guilt .btn-primary').innerHTML = `<i class="fa-solid fa-star" style="color:var(--warning);"></i> Completar paso`;
+      document.querySelector('#modal-guilt .btn-secondary').innerHTML = `<i class="fa-solid fa-star" style="color:var(--warning);"></i> Completar paso`;
       window.openModal('modal-guilt'); 
     };
     
@@ -664,8 +754,6 @@
       
       try {
         let photoB64 = null; if (photoInput.files.length > 0) photoB64 = await fileToBase64Compress(photoInput.files[0]);
-        
-        // Damos siempre True en GPS verificado para que te de los puntos en las pruebas
         let isGpsVerified = true; 
 
         await push(ref(db, `businesses/${selectedBizId}/reviews`), { 
@@ -675,46 +763,14 @@
           foodName: foodName, text: text, photoBase64: photoB64, gpsVerified: isGpsVerified,
           timestamp: Date.now() 
         });
-        window.closeModal('modal-wizard'); window.showToast("¡Experiencia publicada!", "fa-award"); window.updateUserPointsDisplay();
+        
+        window.closeModal('modal-wizard'); window.showToast("¡Experiencia publicada!", "fa-award"); 
+        window.updateUserPointsDisplay();
+        
+        const biz = allBusinesses[selectedBizId];
+        if(biz) renderInlineReviews(biz.reviews || {});
+
       } catch(err) { window.showToast("Error al publicar", "fa-triangle-exclamation"); } finally { btn.disabled = false; btn.innerHTML = `PUBLICAR EXPERIENCIA`; }
-    };
-
-    /* === VISUALIZACIÓN DE RESEÑAS PUBLICAS === */
-    window.openReviewsList = function() {
-      const biz = allBusinesses[selectedBizId];
-      if(!biz) return;
-      const container = document.getElementById('biz-reviews-container');
-      container.innerHTML = "";
-      
-      const reviewsArr = biz.reviews ? Object.values(biz.reviews).sort((a,b) => b.timestamp - a.timestamp) : [];
-      if (reviewsArr.length === 0) {
-        container.innerHTML = "<p style='text-align:center; color:var(--text-muted); margin-top:20px;'>Aún no hay opiniones.</p>";
-      } else {
-        reviewsArr.forEach(r => {
-          let media = "";
-          if (r.photoBase64) media += `<img src="${r.photoBase64}" style="width:100%; border-radius:20px; margin-top:10px; object-fit:cover; border:1px solid var(--primary);">`;
-          
-          let starsHtml = `<div style="color:var(--warning); font-size:1rem; margin-top:4px;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>`;
-          let detailsHtml = "";
-          if(r.foodName) detailsHtml += `<div style="font-size:0.85rem; color:var(--primary); font-weight:700; margin-top:6px;"><i class="fa-solid fa-utensils"></i> Comió: ${window.escapeHtml(r.foodName)}</div>`;
-          if(r.staffName) detailsHtml += `<div style="font-size:0.85rem; color:var(--primary); font-weight:700; margin-top:4px;"><i class="fa-solid fa-user-tag"></i> Atendido por: ${window.escapeHtml(r.staffName)}</div>`;
-
-          container.innerHTML += `
-            <div class="review-card">
-              <div class="review-header">
-                <img src="${r.authorPhoto || defaultImg}">
-                <div>
-                  <div class="review-author">${window.escapeHtml(r.authorName)}</div>
-                  ${starsHtml}
-                </div>
-              </div>
-              ${detailsHtml}
-              ${r.text ? `<div class="review-text-quote" style="margin-top:10px;">${window.escapeHtml(r.text)}</div>` : ''}
-              ${media}
-            </div>`;
-        });
-      }
-      window.openModal('modal-reviews-list');
     };
 
     /* === PERFIL PERSONAL === */
@@ -725,10 +781,10 @@
           Object.values(b.reviews).forEach((r, index) => {
             if (r.authorUid === window.globalCurrentUser.uid) {
               count++; let media = "";
-              if (r.photoBase64) media += `<img src="${r.photoBase64}" style="width:100%; border-radius:16px; margin-top:10px;">`;
+              if (r.photoBase64) media += `<img src="${r.photoBase64}" style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary);" onclick="window.openLightbox('${r.photoBase64}')">`;
               const div = document.createElement('div'); div.className = 'review-card slide-up'; div.style.animationDelay = `${index * 0.05}s`;
               div.innerHTML = `
-                <div style="font-weight:800; font-size:1.05rem; color:var(--primary); margin-bottom:6px;">${window.escapeHtml(b.name)}</div>
+                <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
                 <div style="color:var(--warning); margin-bottom:8px; font-size:1.1rem;"><i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>
                 ${r.text ? `<div class="review-text-quote">${window.escapeHtml(r.text)}</div>` : ''}
                 ${media}`;
@@ -737,7 +793,7 @@
           });
         }
       });
-      if (count === 0) container.innerHTML = "<p style='color:var(--text-muted); text-align:center;'>No has publicado experiencias aún.</p>";
+      if (count === 0) container.innerHTML = "<p style='color:var(--text-muted); text-align:center; font-weight:600;'>No has publicado experiencias aún.</p>";
       window.openModal('modal-profile');
     };
 
@@ -761,7 +817,7 @@
       if(!n || !e || !p) return window.showToast("Faltan datos", "fa-circle-info");
       const btn = document.getElementById('btn-register'); if(btn) { btn.disabled = true; btn.innerText = "Creando..."; }
       try {
-        let b64 = "https://via.placeholder.com/150/222222/C2D8C4?text="+n.charAt(0).toUpperCase(); 
+        let b64 = "https://via.placeholder.com/150/e8eee8/222222?text="+n.charAt(0).toUpperCase(); 
         if(f) b64 = await fileToBase64Compress(f);
         const c = await createUserWithEmailAndPassword(auth, e, p);
         await set(ref(db, 'users/'+c.user.uid), {name:n, photo:b64, createdAt:Date.now()}); 
