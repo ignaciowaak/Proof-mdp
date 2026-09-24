@@ -145,14 +145,12 @@
     .lightbox-close { position: absolute; top: 30px; right: 30px; background: var(--surface-solid); border: 2px solid var(--primary); width: 48px; height: 48px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; cursor: pointer; z-index: 8001; transition: var(--transition-fast); }
     .lightbox-close:active { transform: scale(0.85); }
 
-    /* === LECTOR DE MENÚ PDF (VISOR PERFECTO MULTI-PÁGINA) === */
+    /* === LECTOR DE MENÚ PDF === */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 5000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
     
     #modal-pdf .modal-card { height: 90vh; max-height: 90vh; border-radius: 30px 30px 0 0; display: flex; flex-direction: column; overflow: hidden; }
     #modal-pdf .modal-body { padding: 0 !important; flex: 1; position: relative; background: #fff; -webkit-overflow-scrolling: touch; overflow-y: auto; }
-    
-    /* El Iframe Absoluto evita que iOS Safari lo estire al 1000% y corte las hojas */
     #pdf-frame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; display: block; }
 
     /* === DRAWER MENÚ === */
@@ -182,7 +180,7 @@
     .form-section { display: none; }
     .form-section.active { display: block; animation: slideUpFade 0.3s ease forwards; }
     
-    /* === WIZARD Y CALIFICACIÓN INDIVIDUAL DE PERSONAL (ESTILO IMAGEN 3) === */
+    /* === WIZARD Y CALIFICACIÓN INDIVIDUAL DE PERSONAL === */
     .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding-bottom: 5px; }
     .wizard-step.active { display: flex; animation: fadeIn 0.4s ease forwards; }
     
@@ -193,7 +191,6 @@
     .staff-info img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
     .staff-info-name { font-weight: 900; font-size: 0.85rem; color: var(--primary); text-align: center; word-break: break-word; }
     
-    /* Las Estrellas al lado del Mozo */
     .staff-stars-inline { display: flex; gap: 6px; font-size: 2.2rem; color: rgba(34, 34, 34, 0.15); align-items: center; }
     .staff-stars-inline i { cursor: pointer; transition: var(--transition-fast); }
     .staff-stars-inline i:active { transform: scale(0.8); }
@@ -260,7 +257,7 @@
       <div class="social-links" id="biz-social-main"></div>
     </div>
 
-    <!-- BOTÓN MENÚ PDF (SÓLO APARECE SI HAY MENÚ) -->
+    <!-- BOTÓN MENÚ PDF -->
     <button id="biz-menu-btn" class="btn btn-primary" style="display:none;">
       <i class="fa-solid fa-file-pdf"></i> VER MENÚ DIGITAL
     </button>
@@ -279,7 +276,7 @@
     <video id="lightbox-video" controls autoplay playsinline onclick="event.stopPropagation()"></video>
   </div>
 
-  <!-- MODAL: LECTOR DE MENÚ PDF (FORZADO A GOOGLE DOCS VIEWER PARA SCROLL PERFECTO) -->
+  <!-- MODAL: LECTOR DE MENÚ PDF -->
   <div class="modal-overlay" id="modal-pdf" style="z-index: 7000;">
     <div class="modal-card">
       <div class="modal-header" style="background: var(--surface-solid); padding: 16px 24px; z-index: 10; border-bottom: 2px solid var(--primary);">
@@ -290,7 +287,6 @@
         </div>
       </div>
       <div class="modal-body">
-        <!-- El iframe con position absolute permite el scroll sin que iOS lo aplane y corte -->
         <iframe id="pdf-frame" title="Menu PDF"></iframe>
       </div>
     </div>
@@ -414,7 +410,7 @@
     </div>
   </div>
 
-  <!-- MODAL: WIZARD DE EXPERIENCIA (NUEVO SISTEMA DE ESTRELLAS INDIVIDUALES POR MOZO) -->
+  <!-- MODAL: WIZARD DE EXPERIENCIA -->
   <div class="modal-overlay" id="modal-wizard" style="z-index: 5600;">
     <div class="modal-card">
       <div class="modal-header" style="align-items:flex-start; padding-bottom:10px;">
@@ -432,7 +428,6 @@
           <h4 style="font-size:1.2rem; font-weight:900; text-transform:uppercase; margin-bottom:4px;">¿Quién te atendió?</h4>
           <p style="font-size:0.9rem; font-weight:700; color:var(--text-muted); margin-top:-4px;">Puedes calificar a más de uno</p>
           
-          <!-- Lista Vertical con foto y estrellas al lado (Tipo Imagen 3) -->
           <div id="wiz-staff-list" style="width: 100%; margin-bottom: 10px;"></div>
           
           <button class="btn btn-primary btn-sm" id="staff-card-none" style="margin-top:6px; padding: 14px 20px; font-size:0.95rem; background:transparent;" onclick="window.selectStaffNone()">No sé / Otro</button>
@@ -454,6 +449,7 @@
         <div id="wiz-step-2" class="wizard-step">
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Califica el servicio <span class="reward-tag">+10 Pts</span></h4>
           
+          <!-- Se eliminó el div de staff general, ahora solo evalúa comida y general -->
           <div class="rating-row">
             <label>Calidad de la Comida</label>
             <div class="star-rating-picker" id="star-food"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
@@ -516,7 +512,7 @@
     </div>
   </div>
 
-  <!-- CORE SCRIPTS: Firebase y Lógica Global -->
+  <!-- CORE SCRIPTS -->
   <script type="module">
     const urlParamsFast = new URLSearchParams(window.location.search);
     if(urlParamsFast.has('biz')) { document.getElementById('global-loader').classList.add('active'); }
@@ -551,7 +547,7 @@
       if(lb) { lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 300); }
     });
 
-    // === LIGHTBOX MULTIMEDIA ===
+    // === LIGHTBOX ===
     window.openLightbox = function(src, type = 'image') { 
       const lb = document.getElementById('lightbox');
       const imgEl = document.getElementById('lightbox-img');
@@ -577,12 +573,11 @@
       if (window.location.hash === '#lightbox') history.back();
     };
 
-    // === VISOR PDF NATIVO MULTIPAGINA (Docs Viewer Fallback para móviles) ===
+    // === VISOR PDF ===
     window.openPdfViewer = function(url) {
       const iframe = document.getElementById('pdf-frame');
       const extLinkBtn = document.getElementById('pdf-ext-link');
       
-      // El visor embebido de Google Docs soluciona el problema de iOS que sólo renderiza 1 página
       if (url.toLowerCase().endsWith('.pdf') || url.includes('.pdf')) {
         iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
       } else {
@@ -628,7 +623,7 @@
 
     window.escapeHtml = function(s) { return s ? s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : ""; };
 
-    // === FIREBASE IMPORTS ===
+    // === FIREBASE ===
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
     import { getDatabase, ref, set, push, onValue, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
@@ -650,7 +645,7 @@
     let allBusinesses = {}; 
     let selectedBizId = null;
 
-    // ESTADO PARA STAFF MULTIPLE INDIVIDUAL
+    // ESTADO WIZARD
     let selectedStaffList = {}; 
     let selectedStaffTags = [];
     let wRatings = { general: 0, food: 0 }; 
@@ -899,7 +894,6 @@
       
       const menuBtn = document.getElementById('biz-menu-btn');
       
-      // Abre el menú sin saltar automáticamente
       if(biz.menu && biz.menu.trim() !== '') {
         menuBtn.style.display = 'inline-flex';
         menuBtn.onclick = () => window.openPdfViewer(biz.menu);
@@ -959,7 +953,7 @@
       });
     }
 
-    /* === WIZARD DE RESEÑAS (ESTRELLAS INLINE) === */
+    /* === WIZARD (CON CORRECCIÓN DE BUG EN PASO 2) === */
     window.startReviewWizard = function() {
       if (!window.globalCurrentUser) { window.showToast("Inicia sesión para calificar", "fa-user-lock"); return window.openModal('modal-auth'); }
       const biz = allBusinesses[selectedBizId]; if(!biz) return;
@@ -1060,6 +1054,14 @@
       });
     }
 
+    // AQUI ESTABA EL ERROR: Ya no pedimos validación de `staff` porque se califica en el paso anterior.
+    window.validateRatingsAndNext = function() {
+      if(wRatings.general === 0 || wRatings.food === 0) {
+          return window.showToast("Por favor califica Comida y Experiencia General", "fa-star");
+      }
+      window.nextWizardStep(3);
+    };
+
     window.nextWizardStep = function(s) { 
       document.querySelectorAll('.wizard-step').forEach(e => e.classList.remove('active')); 
       document.getElementById('wiz-step-'+s).classList.add('active'); 
@@ -1086,7 +1088,6 @@
     };
     window.tryNextStepText = function() { if (document.getElementById('wiz-text').value.trim() === '') window.trySkipWizard(4, 20, 'tu opinión escrita'); else window.nextWizardStep(4); };
     
-    // MEDIA COMPRESOR Y VALIDACION
     window.previewWizMedia = function(e) { 
       if(e.target.files.length > 0) { 
         const file = e.target.files[0];
