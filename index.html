@@ -20,9 +20,10 @@
       --color-coal: #222222;
       --color-gold: #cfa144; 
 
-      /* Asignación UX/UI */
+      /* Asignación UX/UI con Glassmorphism */
       --bg-base: var(--color-matcha); 
-      --surface: var(--color-surface);
+      --surface: rgba(232, 238, 232, 0.90);
+      --surface-solid: #E8EEE8;
       --primary: var(--color-coal); 
       --text-main: var(--color-coal);
       --text-muted: rgba(34, 34, 34, 0.7);
@@ -31,12 +32,11 @@
       --danger: #a84646;  
       --warning: var(--color-gold);
       
-      /* Sombras Neo-Brutalistas */
       --shadow-hard: 4px 4px 0px var(--color-coal);
       --shadow-hard-lg: 6px 6px 0px var(--color-coal);
       
       --spring: cubic-bezier(0.175, 0.885, 0.32, 1.15);
-      --transition-fast: all 0.2s ease-out;
+      --transition-fast: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -60,20 +60,21 @@
     .spinner-large { font-size: 3.5rem; color: var(--primary); animation: spin 1s linear infinite; margin-bottom: 20px; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    /* === HEADER (SÓLO BOTÓN HAMBURGUESA FLOTANTE) === */
+    /* === HEADER CON BLUR === */
     .top-header { 
       position: fixed; top: 20px; right: 20px; z-index: 4000; 
       display: flex; justify-content: flex-end; align-items: center; 
     }
     .btn-icon { 
-      background: var(--surface); border: 2px solid var(--primary); color: var(--primary); 
+      background: var(--surface); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 2px solid var(--primary); color: var(--primary); 
       width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; 
-      cursor: pointer; font-size: 1.3rem; transition: var(--transition-fast); border-radius: 12px; 
+      cursor: pointer; font-size: 1.3rem; transition: var(--transition-fast); border-radius: 14px; 
       box-shadow: var(--shadow-hard);
     }
-    .btn-icon:active { background: var(--primary); color: var(--surface); transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--primary); }
+    .btn-icon:active { background: var(--primary); color: var(--surface-solid); transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--primary); }
 
-    /* === HOME HERO (Landing Limpia) === */
+    /* === HOME HERO === */
     #hero-main { 
       display: flex; flex-direction: column; align-items: center; justify-content: center; 
       height: 100%; padding: 24px; text-align: center; overflow-y: auto;
@@ -81,7 +82,7 @@
     .hero-title { font-size: 2.8rem; font-weight: 900; color: var(--primary); margin-bottom: 30px; line-height: 1.1; }
     
     .scan-info-box { 
-      background: var(--surface); border: 2px solid var(--primary); padding: 24px; 
+      background: var(--surface); backdrop-filter: blur(8px); border: 2px solid var(--primary); padding: 24px; 
       border-radius: 24px; display: flex; align-items: flex-start; gap: 16px; text-align: left; 
       box-shadow: var(--shadow-hard); max-width: 400px; 
     }
@@ -95,86 +96,90 @@
     
     .gallery-container { display: flex; overflow-x: auto; gap: 12px; padding: 4px 0 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
     .gallery-container::-webkit-scrollbar { display: none; }
-    .gallery-img { height: 180px; min-width: 150px; width: 150px; object-fit: cover; border-radius: 20px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); scroll-snap-align: start; cursor: pointer; background: var(--surface); }
+    .gallery-img { height: 180px; min-width: 150px; width: 150px; object-fit: cover; border-radius: 20px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); scroll-snap-align: start; cursor: pointer; background: var(--surface-solid); }
 
-    .biz-details-box { background: var(--surface); border: 2px solid var(--primary); border-radius: 24px; padding: 20px; box-shadow: var(--shadow-hard); margin-bottom: 24px; }
+    .biz-details-box { background: var(--surface); backdrop-filter: blur(8px); border: 2px solid var(--primary); border-radius: 24px; padding: 20px; box-shadow: var(--shadow-hard); margin-bottom: 24px; }
     .biz-desc { font-size: 0.95rem; line-height: 1.5; font-weight: 500; margin-bottom: 16px; color: var(--primary); }
     .biz-hours { font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: var(--text-muted); }
     .social-links { display: flex; gap: 12px; }
     .social-btn { width: 44px; height: 44px; border-radius: 14px; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--primary); text-decoration: none; transition: var(--transition-fast); }
-    .social-btn:active { background: var(--primary); color: var(--surface); }
+    .social-btn:active { background: var(--primary); color: var(--surface-solid); }
 
     .btn { padding: 18px 24px; border: 2px solid var(--primary); border-radius: 100px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.1rem; transition: var(--transition-fast); text-decoration: none; width: 100%; margin-bottom: 12px; }
     .btn:active { transform: translateY(2px); box-shadow: 2px 2px 0px var(--color-coal) !important; }
-    .btn-primary { background: var(--surface); color: var(--primary); box-shadow: var(--shadow-hard); }
-    .btn-secondary { background: var(--primary); color: var(--surface); box-shadow: var(--shadow-hard); }
+    .btn-primary { background: var(--surface-solid); color: var(--primary); box-shadow: var(--shadow-hard); }
+    .btn-secondary { background: var(--primary); color: var(--surface-solid); box-shadow: var(--shadow-hard); }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .section-title { font-size: 1.5rem; font-weight: 900; margin: 32px 0 16px; }
-    .review-card { background: var(--surface); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
+    .review-card { background: var(--surface); backdrop-filter: blur(6px); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
     .review-header { display: flex; align-items: center; gap: 14px; cursor: pointer; transition: 0.2s; }
     .review-header:active { opacity: 0.7; }
     .review-header img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
     .review-author { font-weight: 800; font-size: 1.05rem; color: var(--primary); }
     .review-text-quote { font-weight: 500; font-size: 1rem; color: var(--text-main); line-height: 1.5; padding-left: 12px; border-left: 3px solid var(--primary); margin-top: 4px; }
     
-    /* Videos y Fotos en el Feed */
     .review-media img, .review-media video { width: 100%; height: 180px; border-radius: 16px; margin-top: 8px; object-fit: cover; border: 2px solid var(--primary); cursor: pointer; background: #000; }
 
     /* === LIGHTBOX MULTIMEDIA === */
     .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.95); z-index: 8000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; }
     .lightbox.active { opacity: 1; }
-    .lightbox img, .lightbox video { max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface); display: none; outline: none; }
-    .lightbox-close { position: absolute; top: 30px; right: 30px; background: var(--surface); border: 2px solid var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; z-index: 8001; }
+    .lightbox img, .lightbox video { max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface-solid); display: none; outline: none; }
+    .lightbox-close { position: absolute; top: 30px; right: 30px; background: var(--surface-solid); border: 2px solid var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; z-index: 8001; }
 
-    /* === DRAWER MENÚ === */
-    .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.4); backdrop-filter: blur(4px); z-index: 5200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    /* === DRAWER MENÚ CON BLUR === */
+    .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.4); backdrop-filter: blur(6px); z-index: 5200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .drawer-overlay.active { opacity: 1; pointer-events: all; }
-    .drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: var(--bg-base); z-index: 5300; transition: left 0.4s var(--spring); display: flex; flex-direction: column; padding: 30px 24px; border-right: 2px solid var(--primary); box-shadow: var(--shadow-hard-lg); }
+    .drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: rgba(197, 215, 198, 0.95); backdrop-filter: blur(16px); z-index: 5300; transition: left 0.4s var(--spring); display: flex; flex-direction: column; padding: 30px 24px; border-right: 2px solid var(--primary); box-shadow: var(--shadow-hard-lg); }
     .drawer.active { left: 0; } 
     .drawer-item { padding: 16px; border-radius: 16px; font-weight: 800; display: flex; align-items: center; gap: 14px; color: var(--primary); cursor: pointer; font-size: 1.05rem; transition: var(--transition-fast); border: 2px solid transparent; }
     .drawer-item:active { background: var(--surface); border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
 
     /* === MODALES === */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.5); backdrop-filter: blur(6px); z-index: 5000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.5); backdrop-filter: blur(8px); z-index: 5000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
     .modal-card { width: 100%; max-height: 92vh; border-radius: 36px 36px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.5s var(--spring); background: var(--bg-base); border-top: 2px solid var(--primary); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); }
     .modal-overlay.active .modal-card { transform: translateY(0); }
     .modal-header { padding: 24px 28px 16px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
     .modal-header h3 { font-size: 1.5rem; font-weight: 900; color: var(--primary); margin:0; }
-    .btn-close { background: var(--surface); border: 2px solid var(--primary); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 2px 2px 0px var(--primary); transition: 0.1s; }
+    .btn-close { background: var(--surface-solid); border: 2px solid var(--primary); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 2px 2px 0px var(--primary); transition: 0.1s; }
     .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--primary); }
     .modal-body { padding: 0 28px 34px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
 
+    /* === CHIPS / BOTONES DE PERSONALIDAD === */
+    .staff-tags-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; justify-content: center; }
+    .tag-chip { background: var(--surface-solid); border: 2px solid var(--primary); padding: 8px 14px; border-radius: 100px; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: var(--transition-fast); display: inline-block; color: var(--primary); }
+    .tag-chip.active { background: var(--primary); color: var(--surface-solid); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
+
     /* === FORMULARIOS Y TABS === */
-    .form-group input, .form-group textarea { width: 100%; padding: 18px 24px; border: 2px solid var(--primary); border-radius: 20px; background: var(--surface); font-family: 'Inter', sans-serif; margin-bottom: 8px; font-size: 1rem; color: var(--primary); outline: none; }
-    .tabs { display: flex; gap: 6px; margin-bottom: 10px; background: var(--surface); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); overflow-x: auto; white-space: nowrap; }
+    .form-group input, .form-group textarea { width: 100%; padding: 18px 24px; border: 2px solid var(--primary); border-radius: 20px; background: var(--surface-solid); font-family: 'Inter', sans-serif; margin-bottom: 8px; font-size: 1rem; color: var(--primary); outline: none; }
+    .tabs { display: flex; gap: 6px; margin-bottom: 10px; background: var(--surface-solid); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); overflow-x: auto; white-space: nowrap; }
     .tab { flex: 1; text-align: center; padding: 12px 16px; border-radius: 100px; cursor: pointer; font-weight: 800; color: var(--text-muted); font-size: 0.95rem; }
-    .tab.active { background: var(--primary); color: var(--surface); }
+    .tab.active { background: var(--primary); color: var(--surface-solid); }
     .form-section { display: none; }
     .form-section.active { display: block; animation: slideUpFade 0.3s ease forwards; }
     
     .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
     .wizard-step.active { display: flex; animation: fadeIn 0.3s ease forwards; }
     .staff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
-    .staff-card { background: var(--surface); border: 2px solid var(--primary); border-radius: 16px; padding: 12px 8px; text-align: center; cursor: pointer; }
+    .staff-card { background: var(--surface-solid); border: 2px solid var(--primary); border-radius: 16px; padding: 12px 8px; text-align: center; cursor: pointer; transition: 0.2s; }
     .staff-card img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 6px; }
-    .staff-card.active { background: var(--primary); color: var(--surface); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
+    .staff-card.active { background: var(--primary); color: var(--surface-solid); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
     .star-rating-picker { font-size: 2.5rem; color: rgba(34, 34, 34, 0.2); display: flex; gap: 8px; margin: 10px 0 20px; }
     .star-rating-picker i { cursor: pointer; }
     .star-rating-picker i.active { color: var(--warning); text-shadow: 2px 2px 0px var(--primary); }
     .rating-row { display: flex; flex-direction: column; align-items: center; width: 100%; border-bottom: 2px solid rgba(34,34,34,0.1); padding-bottom: 10px; }
     .rating-row label { font-weight: 900; text-transform: uppercase; font-size: 0.9rem; margin-top: 10px; }
-    .reward-tag { background: var(--surface); color: var(--success); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 900; border: 2px solid var(--primary); margin-left: 8px; box-shadow: 2px 2px 0px var(--primary); }
+    .reward-tag { background: var(--surface-solid); color: var(--success); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 900; border: 2px solid var(--primary); margin-left: 8px; box-shadow: 2px 2px 0px var(--primary); }
 
     /* Perfiles / Amigos */
     .points-row { display: flex; justify-content: space-between; padding: 16px; border-bottom: 2px dashed var(--primary); font-weight: 800; font-size: 0.95rem; }
     .points-row:last-child { border-bottom: none; }
-    .friend-card { display: flex; align-items: center; gap: 14px; padding: 14px; border: 2px solid var(--primary); border-radius: 16px; margin-bottom: 12px; cursor: pointer; background: var(--surface); transition: var(--transition-fast); }
+    .friend-card { display: flex; align-items: center; gap: 14px; padding: 14px; border: 2px solid var(--primary); border-radius: 16px; margin-bottom: 12px; cursor: pointer; background: var(--surface-solid); transition: var(--transition-fast); }
     .friend-card:active { transform: translateY(2px); box-shadow: var(--shadow-hard); }
 
     /* Toast */
-    .toast { position: fixed; top: 90px; left: 50%; transform: translate(-50%, -150px); background: var(--surface); color: var(--primary); padding: 16px 28px; border-radius: 100px; z-index: 10000; font-weight: 900; transition: transform 0.4s var(--spring); font-size: 1rem; white-space: nowrap; display: flex; align-items: center; gap: 12px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
+    .toast { position: fixed; top: 90px; left: 50%; transform: translate(-50%, -150px); background: var(--surface-solid); color: var(--primary); padding: 16px 28px; border-radius: 100px; z-index: 10000; font-weight: 900; transition: transform 0.4s var(--spring); font-size: 1rem; white-space: nowrap; display: flex; align-items: center; gap: 12px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
     .toast.show { transform: translate(-50%, 0); }
   </style>
 </head>
@@ -230,22 +235,20 @@
   <!-- LIGHTBOX MULTIMEDIA -->
   <div class="lightbox" id="lightbox" onclick="window.closeLightbox(event)">
     <button class="lightbox-close" onclick="window.closeLightbox(event)"><i class="fa-solid fa-xmark"></i></button>
-    <!-- Contenedor para Imagen -->
     <img id="lightbox-img" src="" onclick="event.stopPropagation()">
-    <!-- Contenedor para Video -->
-    <video id="lightbox-video" controls autoplay playsinline style="max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface); display:none;" onclick="event.stopPropagation()"></video>
+    <video id="lightbox-video" controls autoplay playsinline style="max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface-solid); display:none;" onclick="event.stopPropagation()"></video>
   </div>
 
-  <!-- MODAL: LECTOR DE MENÚ PDF -->
+  <!-- MODAL: LECTOR DE MENÚ PDF (SCROLL COMPLETO CORREGIDO) -->
   <div class="modal-overlay" id="modal-pdf" style="z-index: 7000;">
-    <div class="modal-card" style="height: 100vh; max-height: 100vh; border-radius: 20px 20px 0 0; background: var(--surface);">
-      <div class="modal-header" style="background: var(--surface); padding: 16px 24px;">
-        <h3 style="font-size: 1.3rem;">Menú</h3>
+    <div class="modal-card" style="height: 98vh; max-height: 98vh; border-radius: 30px 30px 0 0; background: var(--surface-solid);">
+      <div class="modal-header" style="background: var(--surface-solid); padding: 16px 24px;">
+        <h3 style="font-size: 1.3rem;">Menú Digital</h3>
         <button class="btn-close" onclick="window.closeModal('modal-pdf')"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <!-- Body optimizado para Scroll Nativo -->
-      <div class="modal-body" style="padding: 0; height: calc(100vh - 70px); overflow-y: scroll; -webkit-overflow-scrolling: touch; background: #fff;">
-        <iframe id="pdf-frame" scrolling="yes" style="width:100%; height:100%; min-height:100vh; border:none;"></iframe>
+      <!-- Cuerpo con Scroll Nativo Absoluto -->
+      <div class="modal-body" style="padding: 0; flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; background: #fff;">
+        <iframe id="pdf-frame" style="width:100%; height:100%; min-height: 100vh; border:none; display:block;"></iframe>
       </div>
     </div>
   </div>
@@ -258,7 +261,7 @@
       <button class="btn-close" onclick="window.closeDrawerSafe()"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
-    <div id="drawer-user-profile" class="slide-up" style="text-align:center; margin-bottom:24px; display:none; padding: 24px 20px; background:var(--surface); border-radius:24px; border: 2px solid var(--primary); box-shadow:var(--shadow-hard);">
+    <div id="drawer-user-profile" class="slide-up" style="text-align:center; margin-bottom:24px; display:none; padding: 24px 20px; background:var(--surface-solid); border-radius:24px; border: 2px solid var(--primary); box-shadow:var(--shadow-hard);">
       <img id="drawer-avatar" src="" style="width:76px; height:76px; border-radius:50%; margin:0 auto 14px; object-fit:cover; border:2px solid var(--primary);">
       <div id="drawer-username" style="font-weight:900; font-size:1.25rem; color:var(--primary); text-transform:uppercase;"></div>
       <div id="drawer-level" style="margin-top:6px; font-weight: 800; color:var(--warning);"></div>
@@ -272,7 +275,7 @@
     </div>
   </div>
 
-  <!-- MODAL: MI PERFIL (Puntos, Reseñas, Amigos) -->
+  <!-- MODAL: MI PERFIL (CORREGIDO Y BLINDADO) -->
   <div class="modal-overlay" id="modal-profile" style="z-index: 5400;">
     <div class="modal-card">
       <div class="modal-header">
@@ -281,7 +284,7 @@
       </div>
       <div class="modal-body">
         
-        <div class="slide-up" style="background: var(--surface); padding: 28px; border-radius: 28px; margin-bottom: 20px; display: flex; justify-content: space-around; text-align: center; border: 2px solid var(--primary); box-shadow: var(--shadow-hard);">
+        <div class="slide-up" style="background: var(--surface-solid); padding: 28px; border-radius: 28px; margin-bottom: 20px; display: flex; justify-content: space-around; text-align: center; border: 2px solid var(--primary); box-shadow: var(--shadow-hard);">
           <div style="flex:1;">
             <div style="font-size: 2.4rem; font-family:'Plus Jakarta Sans'; font-weight: 900; line-height: 1;" id="prof-points">0</div>
             <div style="font-size: 0.8rem; text-transform: uppercase; margin-top: 8px; font-weight: 900;">Puntos Totales</div>
@@ -292,24 +295,20 @@
           </div>
         </div>
 
-        <!-- Pestañas de Navegación del Perfil -->
         <div class="tabs">
-          <div id="tab-prof-points" class="tab active" onclick="window.switchProfTab('points')">Mis Puntos</div>
+          <div id="tab-prof-points" class="tab active" onclick="window.switchProfTab('points')">Puntos Locales</div>
           <div id="tab-prof-reviews" class="tab" onclick="window.switchProfTab('reviews')">Reseñas</div>
           <div id="tab-prof-friends" class="tab" onclick="window.switchProfTab('friends')">Amigos</div>
         </div>
 
-        <!-- Lista Puntos Separados -->
         <div id="prof-sec-points" class="form-section active">
-          <div id="prof-points-list" style="display:flex; flex-direction:column; background:var(--surface); border-radius:16px; border:2px solid var(--primary);"></div>
+          <div id="prof-points-list" style="display:flex; flex-direction:column; background:var(--surface-solid); border-radius:16px; border:2px solid var(--primary);"></div>
         </div>
 
-        <!-- Mis Reseñas -->
         <div id="prof-sec-reviews" class="form-section">
           <div id="my-reviews-list" style="display:flex; flex-direction:column; gap:16px;"></div>
         </div>
 
-        <!-- Mis Amigos -->
         <div id="prof-sec-friends" class="form-section">
           <div id="my-friends-list" style="display:flex; flex-direction:column;"></div>
         </div>
@@ -318,16 +317,16 @@
     </div>
   </div>
 
-  <!-- MODAL: PERFIL PÚBLICO (Otros Usuarios) -->
+  <!-- MODAL: PERFIL PÚBLICO -->
   <div class="modal-overlay" id="modal-public-profile" style="z-index: 6500;">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Perfil Público</h3>
+        <h3>Perfil</h3>
         <button class="btn-close" onclick="window.closeModal('modal-public-profile')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body" style="text-align: center;">
-        <img id="pub-avatar" class="user-avatar" style="width:100px; height:100px; margin:0 auto 10px; border-width: 3px;">
-        <h2 id="pub-name" style="font-weight:900; font-size:1.8rem; margin-bottom: 5px;"></h2>
+        <img id="pub-avatar" class="user-avatar" style="width:100px; height:100px; margin:0 auto 10px; border-width: 3px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
+        <h2 id="pub-name" style="font-weight:900; font-size:1.8rem;"></h2>
         <div id="pub-level" style="font-weight:800; margin-bottom: 20px; font-size:1rem;"></div>
         
         <button id="btn-follow" class="btn btn-secondary" style="width:100%; margin-bottom:24px;"></button>
@@ -362,7 +361,7 @@
           <div class="form-group"><input type="text" id="regName" placeholder="Nombre completo"></div>
           <div class="form-group"><input type="email" id="regEmail" placeholder="Correo electrónico"></div>
           <div class="form-group"><input type="password" id="regPassword" placeholder="Contraseña (mín 6)"></div>
-          <label class="btn btn-primary" style="width:100%; margin-bottom:16px; background:var(--surface); color:var(--primary);">
+          <label class="btn btn-primary" style="width:100%; margin-bottom:16px; background:var(--surface-solid); color:var(--primary);">
             <i class="fa-solid fa-camera"></i> Subir Foto de Perfil
             <input type="file" id="regPhoto" accept="image/*" style="display:none;">
           </label>
@@ -372,7 +371,7 @@
     </div>
   </div>
 
-  <!-- MODAL: WIZARD DE EXPERIENCIA -->
+  <!-- MODAL: WIZARD DE EXPERIENCIA (PERSONAL PRIMERO CON CHIPS) -->
   <div class="modal-overlay" id="modal-wizard" style="z-index: 5600;">
     <div class="modal-card">
       <div class="modal-header" style="align-items:flex-start; padding-bottom:10px;">
@@ -385,55 +384,69 @@
 
       <div class="modal-body">
         
+        <!-- PASO 1: RECONOCER AL PERSONAL + BOTONES CHIPS -->
         <div id="wiz-step-1" class="wizard-step active">
-          <!-- Modificado para enfocarse en el Mozo -->
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">¿Puedes reconocer a quien te atendió?</h4>
           <p style="font-size:0.95rem; font-weight:600; color:var(--text-muted); margin-top:-8px;">Toca la foto de tu mesero/a</p>
           <div class="staff-grid" id="wiz-staff-list"></div>
-          <button class="btn btn-primary" style="margin-top:10px;" onclick="window.selectStaff('none', null)">No sé / Otro</button>
+          <button class="btn btn-primary" style="margin-top:10px;" onclick="window.selectStaff('none', 'Personal')">No sé / Otro</button>
+          
+          <div style="width:100%; margin-top:15px;">
+            <label style="font-size:0.85rem; font-weight:800; text-transform:uppercase; display:block; margin-bottom:8px;">¿Cómo describirías su atención?</label>
+            <div class="staff-tags-grid">
+              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Amable')">Amable 😊</span>
+              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Atento')">Atento 🎯</span>
+              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Respetuoso')">Respetuoso 🎩</span>
+              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Rápido')">Rápido ⚡</span>
+              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Simpático')">Simpático 🙌</span>
+            </div>
+          </div>
+          <button class="btn btn-secondary" style="width:100%; margin-top:15px;" onclick="window.nextWizardStep(2)">Siguiente</button>
         </div>
 
+        <!-- PASO 2: CALIFICACIONES (Estrellas) -->
         <div id="wiz-step-2" class="wizard-step">
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Califica el servicio <span class="reward-tag">+10 Pts</span></h4>
+          
           <div class="rating-row">
-            <label>Experiencia General</label>
-            <div class="star-rating-picker" id="star-general"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
+            <label id="label-star-staff">Atención de la persona</label>
+            <div class="star-rating-picker" id="star-staff"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
           </div>
           <div class="rating-row">
             <label>Calidad de la Comida</label>
             <div class="star-rating-picker" id="star-food"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
           </div>
           <div class="rating-row" style="border-bottom:none;">
-            <!-- El nombre cambia dinámicamente si elige un mozo -->
-            <label id="label-star-staff">Atención del Personal</label>
-            <div class="star-rating-picker" id="star-staff"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
+            <label>Experiencia General</label>
+            <div class="star-rating-picker" id="star-general"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
           </div>
+
           <div style="display:flex; gap:12px; width:100%;">
             <button class="btn btn-primary" style="flex:1;" onclick="window.nextWizardStep(1)">Atrás</button>
             <button class="btn btn-secondary" style="flex:1;" onclick="window.validateRatingsAndNext()">Siguiente</button>
           </div>
         </div>
 
+        <!-- PASO 3: COMIDA Y TEXTO -->
         <div id="wiz-step-3" class="wizard-step">
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Detalles <span class="reward-tag">+20 Pts</span></h4>
           <div class="form-group" style="width:100%;">
             <input type="text" id="wiz-food-name" placeholder="¿Qué plato pediste? (Ej: Milanesa)">
           </div>
-          <textarea id="wiz-text" rows="3" placeholder="Cuéntanos más sobre tu experiencia..." style="width:100%; border:2px solid var(--primary); border-radius:20px; padding:16px; font-size:1rem; outline:none; background:var(--surface);"></textarea>
+          <textarea id="wiz-text" rows="3" placeholder="Cuéntanos más sobre tu experiencia..." style="width:100%; border:2px solid var(--primary); border-radius:20px; padding:16px; font-size:1rem; outline:none; background:var(--surface-solid);"></textarea>
           <div style="display:flex; gap:12px; width:100%;">
             <button class="btn btn-primary" style="flex:1;" onclick="window.trySkipWizard(4, 20, 'tu opinión escrita')">Saltar</button>
             <button class="btn btn-secondary" style="flex:1;" onclick="window.tryNextStepText()">Siguiente</button>
           </div>
         </div>
 
+        <!-- PASO 4: FOTO / VIDEO -->
         <div id="wiz-step-4" class="wizard-step">
-          <!-- AHORA ACEPTA FOTO Y VIDEO -->
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Foto / Video Corto <span class="reward-tag">+30 Pts</span></h4>
-          
           <img id="wiz-photo-preview" style="width:100%; max-height:200px; border-radius:20px; display:none; margin-bottom:14px; object-fit:cover; border: 2px solid var(--primary);">
           <video id="wiz-video-preview" autoplay loop muted playsinline style="width:100%; max-height:200px; border-radius:20px; display:none; margin-bottom:14px; object-fit:cover; border: 2px solid var(--primary);"></video>
           
-          <label class="btn btn-primary" style="width:100%; margin-bottom:14px; background:var(--surface); color:var(--primary);">
+          <label class="btn btn-primary" style="width:100%; margin-bottom:14px; background:var(--surface-solid); color:var(--primary);">
             <i class="fa-solid fa-photo-film"></i> Elegir Foto o Video
             <input type="file" id="wiz-media" accept="image/*,video/mp4,video/quicktime" onchange="window.previewWizMedia(event)" style="display:none;">
           </label>
@@ -474,7 +487,6 @@
     };
     window.closeModal = function(id, fromPopState = false) { 
       document.getElementById(id).classList.remove('active'); 
-      // Parar video si cierran PDF o lightbox
       if(id === 'modal-pdf') document.getElementById('pdf-frame').src = "";
       if (!fromPopState && window.location.hash === '#' + id) history.back();
     };
@@ -498,7 +510,7 @@
       if(lb) { lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 300); }
     });
 
-    // === MANEJO LIGHTBOX Y MEDIA (FOTOS / VIDEOS) ===
+    // === LIGHTBOX MULTIMEDIA (FOTOS / VIDEOS) ===
     window.openLightbox = function(src, type = 'image') { 
       const lb = document.getElementById('lightbox');
       const imgEl = document.getElementById('lightbox-img');
@@ -534,9 +546,14 @@
       window.openModal('modal-pdf');
     };
 
+    // === BLINDADO DE APERTURA DE PERFIL ===
     window.handleMenuProfile = function() { 
       window.closeDrawerSafe(); 
-      if(window.globalCurrentUser) window.openMyProfile(); else window.openModal('modal-auth'); 
+      if(window.globalCurrentUser) {
+        window.openMyProfile(); 
+      } else {
+        window.openModal('modal-auth'); 
+      }
     };
 
     window.switchAuthTab = function(tab) { 
@@ -555,7 +572,7 @@
 
     window.showToast = function(msg, icon = 'fa-bell') { 
       const t = document.getElementById('toast'); 
-      t.innerHTML = `<i class="fa-solid ${icon}" style="color:var(--surface);"></i> ${msg}`;
+      t.innerHTML = `<i class="fa-solid ${icon}" style="color:var(--surface-solid);"></i> ${msg}`;
       t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); 
     };
 
@@ -591,11 +608,11 @@
     let selectedBizId = null;
 
     let wizStaffId = null; let wizStaffName = null;
+    let selectedStaffTags = [];
     let wRatings = { general: 0, food: 0, staff: 0 };
     let pendingSkipStep = null;
 
-    // MEDIA STATE
-    let uploadedMediaType = null; // 'image' o 'video'
+    let uploadedMediaType = null;
     let uploadedMediaB64 = null;
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -658,7 +675,7 @@
       const wizPts = document.getElementById('wizard-user-points');
       if(wizPts) {
         const localPts = selectedBizId && ptsData.byBiz[selectedBizId] ? ptsData.byBiz[selectedBizId].points : 0;
-        wizPts.innerText = `🏆 Tienes ${localPts} Puntos aquí`;
+        wizPts.innerText = `🏆 Puntos en este local: ${localPts}`;
       }
       
       const profPts = document.getElementById('prof-points');
@@ -671,7 +688,7 @@
       if(drawerLevel) drawerLevel.innerHTML = `<span style="color:${level.color}; font-size:0.85rem; font-weight:900; text-transform:uppercase;">${level.name}</span>`;
     };
 
-    /* === RED SOCIAL (SEGUIR Y PERFILES PÚBLICOS) === */
+    /* === RED SOCIAL (PERFIL PÚBLICO Y AMIGOS) === */
     window.openPublicProfile = function(uid) {
       if(window.globalCurrentUser && window.globalCurrentUser.uid === uid) return window.openMyProfile();
       
@@ -703,8 +720,8 @@
                   if (r.mediaBase64 || r.photoBase64) {
                     const src = r.mediaBase64 || r.photoBase64;
                     const type = r.mediaType || 'image';
-                    if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary); object-fit:cover;" onclick="window.openLightbox('${src}', 'video')"></video>`;
-                    else media += `<img src="${src}" style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary);" onclick="window.openLightbox('${src}', 'image')">`;
+                    if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary); object-fit:cover;" onclick="window.openLightbox('${src}', 'video')"></video>`;
+                    else media += `<img src="${src}" style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary);" onclick="window.openLightbox('${src}', 'image')">`;
                   }
                   const div = document.createElement('div'); div.className = 'review-card slide-up';
                   div.innerHTML = `
@@ -762,52 +779,53 @@
       container.innerHTML = html;
     };
 
-    /* === PERFIL PERSONAL === */
+    /* === MI PERFIL (BLINDADO) === */
     window.openMyProfile = function() {
-      // 1. Puntos
-      const ptsData = window.calculateUserPointsDetailed(window.globalCurrentUser.uid);
-      let ptsHtml = "";
-      Object.entries(ptsData.byBiz).forEach(([bId, b]) => {
-        ptsHtml += `<div class="points-row"><span>${window.escapeHtml(b.name)}</span><span style="color:var(--success)">${b.points} Pts</span></div>`;
-      });
-      if(ptsHtml === "") ptsHtml = "<p style='color:var(--text-muted); text-align:center; padding:16px; font-weight:600;'>Aún no tienes puntos en ningún local.</p>";
-      document.getElementById('prof-points-list').innerHTML = ptsHtml;
-      document.getElementById('prof-points').innerText = ptsData.total;
+      try {
+        const ptsData = window.calculateUserPointsDetailed(window.globalCurrentUser.uid);
+        let ptsHtml = "";
+        Object.entries(ptsData.byBiz).forEach(([bId, b]) => {
+          ptsHtml += `<div class="points-row"><span>${window.escapeHtml(b.name)}</span><span style="color:var(--success)">${b.points} Pts</span></div>`;
+        });
+        if(ptsHtml === "") ptsHtml = "<p style='color:var(--text-muted); text-align:center; padding:16px; font-weight:600;'>Aún no tienes puntos en ningún local.</p>";
+        document.getElementById('prof-points-list').innerHTML = ptsHtml;
+        document.getElementById('prof-points').innerText = ptsData.total;
 
-      // 2. Reseñas
-      const container = document.getElementById('my-reviews-list'); container.innerHTML = ""; let count = 0;
-      Object.entries(allBusinesses).forEach(([id, b]) => {
-        if (b.reviews) {
-          Object.values(b.reviews).forEach((r, index) => {
-            if (r.authorUid === window.globalCurrentUser.uid) {
-              count++; let media = "";
-              if (r.mediaBase64 || r.photoBase64) {
-                const src = r.mediaBase64 || r.photoBase64;
-                const type = r.mediaType || 'image';
-                if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary); object-fit:cover;" onclick="window.openLightbox('${src}', 'video')"></video>`;
-                else media += `<img src="${src}" style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary);" onclick="window.openLightbox('${src}', 'image')">`;
+        const container = document.getElementById('my-reviews-list'); container.innerHTML = ""; let count = 0;
+        Object.entries(allBusinesses).forEach(([id, b]) => {
+          if (b.reviews) {
+            Object.values(b.reviews).forEach((r, index) => {
+              if (r.authorUid === window.globalCurrentUser.uid) {
+                count++; let media = "";
+                if (r.mediaBase64 || r.photoBase64) {
+                  const src = r.mediaBase64 || r.photoBase64;
+                  const type = r.mediaType || 'image';
+                  if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary); object-fit:cover;"></video>`;
+                  else media += `<img src="${src}" style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary);" onclick="window.openLightbox('${src}', 'image')">`;
+                }
+                const div = document.createElement('div'); div.className = 'review-card slide-up'; div.style.animationDelay = `${index * 0.05}s`;
+                div.innerHTML = `
+                  <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
+                  <div style="color:var(--warning); margin-bottom:8px; font-size:1.1rem;"><i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>
+                  ${r.text ? `<div class="review-text-quote">${window.escapeHtml(r.text)}</div>` : ''}
+                  ${media}`;
+                container.appendChild(div);
               }
-              const div = document.createElement('div'); div.className = 'review-card slide-up'; div.style.animationDelay = `${index * 0.05}s`;
-              div.innerHTML = `
-                <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
-                <div style="color:var(--warning); margin-bottom:8px; font-size:1.1rem;"><i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>
-                ${r.text ? `<div class="review-text-quote">${window.escapeHtml(r.text)}</div>` : ''}
-                ${media}`;
-              container.appendChild(div);
-            }
-          });
-        }
-      });
-      if (count === 0) container.innerHTML = "<p style='color:var(--text-muted); text-align:center; font-weight:600;'>No has publicado experiencias aún.</p>";
-      
-      // 3. Amigos
-      window.loadFriendsList();
-
-      window.switchProfTab('points');
-      window.openModal('modal-profile');
+            });
+          }
+        });
+        if (count === 0) container.innerHTML = "<p style='color:var(--text-muted); text-align:center; font-weight:600;'>No has publicado experiencias aún.</p>";
+        
+        window.loadFriendsList();
+        window.switchProfTab('points');
+        window.openModal('modal-profile');
+      } catch(err) {
+        console.error("Error perfil:", err);
+        window.openModal('modal-profile');
+      }
     };
 
-    /* === VISTA RESTAURANTE Y MENU PDF === */
+    /* === VISTA RESTAURANTE Y MENÚ PDF === */
     window.openRestaurant = function(id) {
       selectedBizId = id; const biz = allBusinesses[id];
       if(!biz) return window.showToast("Local no encontrado", "fa-triangle-exclamation");
@@ -861,7 +879,12 @@
         let starsHtml = `<div style="color:var(--warning); font-size:1rem; margin-top:4px;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>`;
         let detailsHtml = "";
         if(r.foodName) detailsHtml += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:6px;"><i class="fa-solid fa-utensils"></i> Pidió: ${window.escapeHtml(r.foodName)}</div>`;
-        if(r.staffName) detailsHtml += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:4px;"><i class="fa-solid fa-user-tag"></i> Atendido por: ${window.escapeHtml(r.staffName)}</div>`;
+        
+        let staffInfo = "";
+        if(r.staffName) {
+          let tagsStr = r.staffTags && r.staffTags.length > 0 ? ` (${r.staffTags.join(', ')})` : '';
+          staffInfo += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:4px;"><i class="fa-solid fa-user-tag"></i> Atendido por: ${window.escapeHtml(r.staffName)}${tagsStr}</div>`;
+        }
 
         container.innerHTML += `
           <div class="review-card">
@@ -873,22 +896,23 @@
               </div>
             </div>
             ${detailsHtml}
+            ${staffInfo}
             ${r.text ? `<div class="review-text-quote" style="margin-top:10px;">${window.escapeHtml(r.text)}</div>` : ''}
             <div class="review-media">${media}</div>
           </div>`;
       });
     }
 
-    /* === WIZARD DE RESEÑAS GASTRONÓMICAS === */
+    /* === WIZARD DE RESEÑAS (PERSONAL PRIMERO CON CHIPS) === */
     window.startReviewWizard = function() {
       if (!window.globalCurrentUser) { window.showToast("Inicia sesión para calificar", "fa-user-lock"); return window.openModal('modal-auth'); }
       const biz = allBusinesses[selectedBizId]; if(!biz) return;
       
-      wizStaffId = null; wizStaffName = null; wRatings = { general: 0, food: 0, staff: 0 };
+      wizStaffId = null; wizStaffName = null; selectedStaffTags = []; wRatings = { general: 0, food: 0, staff: 0 };
       document.querySelectorAll('.star-rating-picker i').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tag-chip').forEach(c => c.classList.remove('active'));
       document.getElementById('wiz-food-name').value = ''; document.getElementById('wiz-text').value = ''; 
       
-      // Resetear Media
       document.getElementById('wiz-media').value = '';
       document.getElementById('wiz-photo-preview').style.display = 'none';
       document.getElementById('wiz-video-preview').style.display = 'none';
@@ -918,12 +942,20 @@
       if(id !== 'none') {
         const card = document.getElementById('staff-card-'+id); if(card) card.classList.add('active');
         wizStaffId = id; wizStaffName = name;
-        document.getElementById('label-star-staff').innerText = "Atención de " + name; // Cambio Dinámico
+        document.getElementById('label-star-staff').innerText = "Atención de " + name;
       } else { 
         wizStaffId = 'none'; wizStaffName = 'Otro / No especificado'; 
         document.getElementById('label-star-staff').innerText = "Atención del Personal";
       }
-      setTimeout(() => window.nextWizardStep(2), 300);
+    };
+
+    window.toggleStaffTag = function(el, tagName) {
+      el.classList.toggle('active');
+      if(selectedStaffTags.includes(tagName)) {
+        selectedStaffTags = selectedStaffTags.filter(t => t !== tagName);
+      } else {
+        selectedStaffTags.push(tagName);
+      }
     };
 
     function setupMultiStarPickers() { 
@@ -964,13 +996,11 @@
       } 
       pendingSkipStep = null;
     };
-    window.tryNextStepText = function() { if (document.getElementById('wiz-text').value.trim() === '') window.trySkipWizard(4, 20, 'tu opinión escrita'); else window.nextWizardStep(4); };
+    window.tryNextStepText = function() { if (document.getElementById('wiz-text').value.trim() === '') window.trySkipWizard(4, 20, 'tu opinión'); else window.nextWizardStep(4); };
     
-    // MEDIA COMPRESOR Y VALIDACION
     window.previewWizMedia = function(e) { 
       if(e.target.files.length > 0) { 
         const file = e.target.files[0];
-        // Validar tamaño: max 4MB para no trabar Firebase
         if (file.size > 4 * 1024 * 1024) return window.showToast("El archivo pesa más de 4MB. Usa uno más liviano.", "fa-triangle-exclamation");
 
         if(file.type.startsWith('video/')) {
@@ -1003,14 +1033,15 @@
     };
 
     window.processSubmitReview = async function() {
-      const foodName = document.getElementById('wiz-food-name').value.trim(); const text = document.getElementById('wiz-text').value.trim(); 
+      const foodName = document.getElementById('wiz-food-name').value.trim(); 
+      const text = document.getElementById('wiz-text').value.trim(); 
       const btn = document.getElementById('btn-wiz-submit'); btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando...`;
       try {
-        let isGpsVerified = true; // Simulado
+        let isGpsVerified = true; 
         await push(ref(db, `businesses/${selectedBizId}/reviews`), { 
           authorUid: window.globalCurrentUser.uid, authorName: window.globalCurrentUser.name, authorPhoto: window.globalCurrentUser.photo, 
           ratingGeneral: wRatings.general, ratingFood: wRatings.food, ratingStaff: wRatings.staff,
-          staffId: wizStaffId, staffName: wizStaffName,
+          staffId: wizStaffId, staffName: wizStaffName, staffTags: selectedStaffTags,
           foodName: foodName, text: text, 
           mediaBase64: uploadedMediaB64, mediaType: uploadedMediaType,
           gpsVerified: isGpsVerified, timestamp: Date.now() 
