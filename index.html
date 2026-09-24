@@ -88,17 +88,15 @@
     .scan-info-box img { width: 36px; height: 36px; object-fit: contain; }
     .scan-info-box p { font-size: 1rem; font-weight: 600; margin: 0; color: var(--text-main); line-height: 1.5; }
 
-    /* === VISTA DEL LOCAL (Pantalla Nueva Completa) === */
+    /* === VISTA DEL LOCAL === */
     #biz-main { display: none; height: 100%; padding: 100px 20px 40px; overflow-y: auto; background: var(--bg-base); }
     .biz-title-main { font-size: 2.2rem; font-weight: 900; margin-bottom: 8px; line-height: 1.1; }
     .biz-category { font-size: 0.9rem; font-weight: 700; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px; }
     
-    /* Galería Horizontal */
     .gallery-container { display: flex; overflow-x: auto; gap: 12px; padding: 4px 0 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
     .gallery-container::-webkit-scrollbar { display: none; }
     .gallery-img { height: 180px; min-width: 150px; width: 150px; object-fit: cover; border-radius: 20px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); scroll-snap-align: start; cursor: pointer; background: var(--surface); }
 
-    /* Detalles del Local */
     .biz-details-box { background: var(--surface); border: 2px solid var(--primary); border-radius: 24px; padding: 20px; box-shadow: var(--shadow-hard); margin-bottom: 24px; }
     .biz-desc { font-size: 0.95rem; line-height: 1.5; font-weight: 500; margin-bottom: 16px; color: var(--primary); }
     .biz-hours { font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: var(--text-muted); }
@@ -106,14 +104,12 @@
     .social-btn { width: 44px; height: 44px; border-radius: 14px; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--primary); text-decoration: none; transition: var(--transition-fast); }
     .social-btn:active { background: var(--primary); color: var(--surface); }
 
-    /* Botones de Acción Mágicos */
     .btn { padding: 18px 24px; border: 2px solid var(--primary); border-radius: 100px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.1rem; transition: var(--transition-fast); text-decoration: none; width: 100%; margin-bottom: 12px; }
     .btn:active { transform: translateY(2px); box-shadow: 2px 2px 0px var(--color-coal) !important; }
     .btn-primary { background: var(--surface); color: var(--primary); box-shadow: var(--shadow-hard); }
     .btn-secondary { background: var(--primary); color: var(--surface); box-shadow: var(--shadow-hard); }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* Reseñas Integradas */
     .section-title { font-size: 1.5rem; font-weight: 900; margin: 32px 0 16px; }
     .review-card { background: var(--surface); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
     .review-header { display: flex; align-items: center; gap: 14px; cursor: pointer; transition: 0.2s; }
@@ -121,12 +117,14 @@
     .review-header img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
     .review-author { font-weight: 800; font-size: 1.05rem; color: var(--primary); }
     .review-text-quote { font-weight: 500; font-size: 1rem; color: var(--text-main); line-height: 1.5; padding-left: 12px; border-left: 3px solid var(--primary); margin-top: 4px; }
-    .review-media img { width: 100%; height: 180px; border-radius: 16px; margin-top: 8px; object-fit: cover; border: 2px solid var(--primary); cursor: pointer; }
+    
+    /* Videos y Fotos en el Feed */
+    .review-media img, .review-media video { width: 100%; height: 180px; border-radius: 16px; margin-top: 8px; object-fit: cover; border: 2px solid var(--primary); cursor: pointer; background: #000; }
 
-    /* === LIGHTBOX DE IMÁGENES === */
-    .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.9); z-index: 8000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; }
+    /* === LIGHTBOX MULTIMEDIA === */
+    .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.95); z-index: 8000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; }
     .lightbox.active { opacity: 1; }
-    .lightbox img { max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface); }
+    .lightbox img, .lightbox video { max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface); display: none; outline: none; }
     .lightbox-close { position: absolute; top: 30px; right: 30px; background: var(--surface); border: 2px solid var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; z-index: 8001; }
 
     /* === DRAWER MENÚ === */
@@ -147,17 +145,11 @@
     .btn-close { background: var(--surface); border: 2px solid var(--primary); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 2px 2px 0px var(--primary); transition: 0.1s; }
     .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--primary); }
     .modal-body { padding: 0 28px 34px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
-    
-    @media (min-width: 650px) {
-      .modal-overlay { align-items: center; padding: 24px; }
-      .modal-card { max-width: 520px; border-radius: 32px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard-lg); transform: scale(0.95); opacity: 0; }
-      .modal-overlay.active .modal-card { transform: scale(1); opacity: 1; }
-    }
 
-    /* === FORMULARIOS Y WIZARD === */
+    /* === FORMULARIOS Y TABS === */
     .form-group input, .form-group textarea { width: 100%; padding: 18px 24px; border: 2px solid var(--primary); border-radius: 20px; background: var(--surface); font-family: 'Inter', sans-serif; margin-bottom: 8px; font-size: 1rem; color: var(--primary); outline: none; }
-    .tabs { display: flex; gap: 6px; margin-bottom: 10px; background: var(--surface); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); }
-    .tab { flex: 1; text-align: center; padding: 12px; border-radius: 100px; cursor: pointer; font-weight: 800; color: var(--text-muted); font-size: 0.85rem; }
+    .tabs { display: flex; gap: 6px; margin-bottom: 10px; background: var(--surface); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); overflow-x: auto; white-space: nowrap; }
+    .tab { flex: 1; text-align: center; padding: 12px 16px; border-radius: 100px; cursor: pointer; font-weight: 800; color: var(--text-muted); font-size: 0.95rem; }
     .tab.active { background: var(--primary); color: var(--surface); }
     .form-section { display: none; }
     .form-section.active { display: block; animation: slideUpFade 0.3s ease forwards; }
@@ -175,8 +167,9 @@
     .rating-row label { font-weight: 900; text-transform: uppercase; font-size: 0.9rem; margin-top: 10px; }
     .reward-tag { background: var(--surface); color: var(--success); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 900; border: 2px solid var(--primary); margin-left: 8px; box-shadow: 2px 2px 0px var(--primary); }
 
-    /* Listas Perfiles */
+    /* Perfiles / Amigos */
     .points-row { display: flex; justify-content: space-between; padding: 16px; border-bottom: 2px dashed var(--primary); font-weight: 800; font-size: 0.95rem; }
+    .points-row:last-child { border-bottom: none; }
     .friend-card { display: flex; align-items: center; gap: 14px; padding: 14px; border: 2px solid var(--primary); border-radius: 16px; margin-bottom: 12px; cursor: pointer; background: var(--surface); transition: var(--transition-fast); }
     .friend-card:active { transform: translateY(2px); box-shadow: var(--shadow-hard); }
 
@@ -187,7 +180,7 @@
 </head>
 <body>
 
-  <!-- LOADER DE CARGA OPTIMIZADO -->
+  <!-- LOADER GIRATORIO -->
   <div class="global-loader" id="global-loader">
     <i class="fa-solid fa-circle-notch spinner-large"></i>
     <h2 style="color:var(--primary); font-family:'Plus Jakarta Sans'; font-weight:900;">Preparando el menú...</h2>
@@ -195,12 +188,12 @@
 
   <div class="toast" id="toast"></div>
 
-  <!-- HEADER FIJO (SÓLO LAS TRES RAYITAS FLOTANDO) -->
+  <!-- HEADER FIJO -->
   <header class="top-header fade-in" id="main-header">
     <button class="btn-icon" onclick="window.openDrawerSafe()"><i class="fa-solid fa-bars"></i></button>
   </header>
 
-  <!-- HOME HERO (PANTALLA DE ESPERA LIMPIA) -->
+  <!-- HOME HERO -->
   <main class="hero-section fade-in" id="hero-main">
     <h1 class="hero-title">Tu experiencia,<br>tu voz.</h1>
     <div class="scan-info-box">
@@ -222,7 +215,7 @@
       <div class="social-links" id="biz-social-main"></div>
     </div>
 
-    <!-- BOTÓN MENÚ AHORA ABRE EL PDF INTERNO -->
+    <!-- BOTÓN MENÚ PDF -->
     <button id="biz-menu-btn" class="btn btn-primary">
       <i class="fa-solid fa-book-open"></i> VER MENÚ DIGITAL
     </button>
@@ -234,21 +227,25 @@
     <div id="biz-inline-reviews"></div>
   </main>
 
-  <!-- LIGHTBOX PARA FOTOS -->
+  <!-- LIGHTBOX MULTIMEDIA -->
   <div class="lightbox" id="lightbox" onclick="window.closeLightbox(event)">
     <button class="lightbox-close" onclick="window.closeLightbox(event)"><i class="fa-solid fa-xmark"></i></button>
+    <!-- Contenedor para Imagen -->
     <img id="lightbox-img" src="" onclick="event.stopPropagation()">
+    <!-- Contenedor para Video -->
+    <video id="lightbox-video" controls autoplay playsinline style="max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface); display:none;" onclick="event.stopPropagation()"></video>
   </div>
 
   <!-- MODAL: LECTOR DE MENÚ PDF -->
   <div class="modal-overlay" id="modal-pdf" style="z-index: 7000;">
-    <div class="modal-card" style="height: 95vh; border-radius: 20px 20px 0 0; background: var(--surface);">
+    <div class="modal-card" style="height: 100vh; max-height: 100vh; border-radius: 20px 20px 0 0; background: var(--surface);">
       <div class="modal-header" style="background: var(--surface); padding: 16px 24px;">
-        <h3 style="font-size: 1.3rem;">Menú del Local</h3>
+        <h3 style="font-size: 1.3rem;">Menú</h3>
         <button class="btn-close" onclick="window.closeModal('modal-pdf')"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="modal-body" style="padding: 0; height: 100%; overflow: hidden; background: #fff;">
-        <iframe id="pdf-frame" style="width:100%; height:100%; border:none;"></iframe>
+      <!-- Body optimizado para Scroll Nativo -->
+      <div class="modal-body" style="padding: 0; height: calc(100vh - 70px); overflow-y: scroll; -webkit-overflow-scrolling: touch; background: #fff;">
+        <iframe id="pdf-frame" scrolling="yes" style="width:100%; height:100%; min-height:100vh; border:none;"></iframe>
       </div>
     </div>
   </div>
@@ -275,7 +272,7 @@
     </div>
   </div>
 
-  <!-- MODAL: MI PERFIL (Con pestañas de Puntos y Amigos) -->
+  <!-- MODAL: MI PERFIL (Puntos, Reseñas, Amigos) -->
   <div class="modal-overlay" id="modal-profile" style="z-index: 5400;">
     <div class="modal-card">
       <div class="modal-header">
@@ -295,21 +292,24 @@
           </div>
         </div>
 
+        <!-- Pestañas de Navegación del Perfil -->
         <div class="tabs">
-          <div id="tab-prof-points" class="tab active" onclick="window.switchProfTab('points')">Puntos Locales</div>
-          <div id="tab-prof-reviews" class="tab" onclick="window.switchProfTab('reviews')">Mis Reseñas</div>
+          <div id="tab-prof-points" class="tab active" onclick="window.switchProfTab('points')">Mis Puntos</div>
+          <div id="tab-prof-reviews" class="tab" onclick="window.switchProfTab('reviews')">Reseñas</div>
           <div id="tab-prof-friends" class="tab" onclick="window.switchProfTab('friends')">Amigos</div>
         </div>
 
-        <!-- Lista de Puntos Separados por Establecimiento -->
+        <!-- Lista Puntos Separados -->
         <div id="prof-sec-points" class="form-section active">
           <div id="prof-points-list" style="display:flex; flex-direction:column; background:var(--surface); border-radius:16px; border:2px solid var(--primary);"></div>
         </div>
 
+        <!-- Mis Reseñas -->
         <div id="prof-sec-reviews" class="form-section">
           <div id="my-reviews-list" style="display:flex; flex-direction:column; gap:16px;"></div>
         </div>
 
+        <!-- Mis Amigos -->
         <div id="prof-sec-friends" class="form-section">
           <div id="my-friends-list" style="display:flex; flex-direction:column;"></div>
         </div>
@@ -318,16 +318,16 @@
     </div>
   </div>
 
-  <!-- MODAL: PERFIL PÚBLICO DE OTRO USUARIO -->
+  <!-- MODAL: PERFIL PÚBLICO (Otros Usuarios) -->
   <div class="modal-overlay" id="modal-public-profile" style="z-index: 6500;">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Perfil</h3>
+        <h3>Perfil Público</h3>
         <button class="btn-close" onclick="window.closeModal('modal-public-profile')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body" style="text-align: center;">
         <img id="pub-avatar" class="user-avatar" style="width:100px; height:100px; margin:0 auto 10px; border-width: 3px;">
-        <h2 id="pub-name" style="font-weight:900; font-size:1.8rem;"></h2>
+        <h2 id="pub-name" style="font-weight:900; font-size:1.8rem; margin-bottom: 5px;"></h2>
         <div id="pub-level" style="font-weight:800; margin-bottom: 20px; font-size:1rem;"></div>
         
         <button id="btn-follow" class="btn btn-secondary" style="width:100%; margin-bottom:24px;"></button>
@@ -372,7 +372,7 @@
     </div>
   </div>
 
-  <!-- MODAL: WIZARD DE EXPERIENCIA GASTRONÓMICA -->
+  <!-- MODAL: WIZARD DE EXPERIENCIA -->
   <div class="modal-overlay" id="modal-wizard" style="z-index: 5600;">
     <div class="modal-card">
       <div class="modal-header" style="align-items:flex-start; padding-bottom:10px;">
@@ -386,8 +386,9 @@
       <div class="modal-body">
         
         <div id="wiz-step-1" class="wizard-step active">
-          <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">¿Quién te atendió?</h4>
-          <p style="font-size:0.95rem; font-weight:600; color:var(--text-muted); margin-top:-8px;">Selecciona a tu mesero/a</p>
+          <!-- Modificado para enfocarse en el Mozo -->
+          <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">¿Puedes reconocer a quien te atendió?</h4>
+          <p style="font-size:0.95rem; font-weight:600; color:var(--text-muted); margin-top:-8px;">Toca la foto de tu mesero/a</p>
           <div class="staff-grid" id="wiz-staff-list"></div>
           <button class="btn btn-primary" style="margin-top:10px;" onclick="window.selectStaff('none', null)">No sé / Otro</button>
         </div>
@@ -403,7 +404,8 @@
             <div class="star-rating-picker" id="star-food"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
           </div>
           <div class="rating-row" style="border-bottom:none;">
-            <label>Atención del Personal</label>
+            <!-- El nombre cambia dinámicamente si elige un mozo -->
+            <label id="label-star-staff">Atención del Personal</label>
             <div class="star-rating-picker" id="star-staff"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
           </div>
           <div style="display:flex; gap:12px; width:100%;">
@@ -425,9 +427,16 @@
         </div>
 
         <div id="wiz-step-4" class="wizard-step">
-          <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Foto del plato <span class="reward-tag">+30 Pts</span></h4>
+          <!-- AHORA ACEPTA FOTO Y VIDEO -->
+          <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Foto / Video Corto <span class="reward-tag">+30 Pts</span></h4>
+          
           <img id="wiz-photo-preview" style="width:100%; max-height:200px; border-radius:20px; display:none; margin-bottom:14px; object-fit:cover; border: 2px solid var(--primary);">
-          <label class="btn btn-primary" style="width:100%; margin-bottom:14px; background:var(--surface); color:var(--primary);"><i class="fa-solid fa-camera"></i> Tomar / Elegir Foto<input type="file" id="wiz-photo" accept="image/*" onchange="window.previewWizPhoto(event)" style="display:none;"></label>
+          <video id="wiz-video-preview" autoplay loop muted playsinline style="width:100%; max-height:200px; border-radius:20px; display:none; margin-bottom:14px; object-fit:cover; border: 2px solid var(--primary);"></video>
+          
+          <label class="btn btn-primary" style="width:100%; margin-bottom:14px; background:var(--surface); color:var(--primary);">
+            <i class="fa-solid fa-photo-film"></i> Elegir Foto o Video
+            <input type="file" id="wiz-media" accept="image/*,video/mp4,video/quicktime" onchange="window.previewWizMedia(event)" style="display:none;">
+          </label>
           <button class="btn btn-secondary" style="width:100%; margin-top:10px; padding:18px; font-size:1.1rem;" id="btn-wiz-submit" onclick="window.submitWizardReview()">PUBLICAR EXPERIENCIA</button>
         </div>
 
@@ -465,6 +474,8 @@
     };
     window.closeModal = function(id, fromPopState = false) { 
       document.getElementById(id).classList.remove('active'); 
+      // Parar video si cierran PDF o lightbox
+      if(id === 'modal-pdf') document.getElementById('pdf-frame').src = "";
       if (!fromPopState && window.location.hash === '#' + id) history.back();
     };
     window.openDrawerSafe = function() { 
@@ -482,28 +493,40 @@
       document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
       document.getElementById('drawer').classList.remove('active');
       document.getElementById('drawer-overlay').classList.remove('active');
+      document.getElementById('pdf-frame').src = "";
       const lb = document.getElementById('lightbox');
       if(lb) { lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 300); }
     });
 
-    // === MANEJO LIGHTBOX Y PDF ===
-    window.openLightbox = function(src) { 
-      document.getElementById('lightbox-img').src = src; 
+    // === MANEJO LIGHTBOX Y MEDIA (FOTOS / VIDEOS) ===
+    window.openLightbox = function(src, type = 'image') { 
       const lb = document.getElementById('lightbox');
+      const imgEl = document.getElementById('lightbox-img');
+      const vidEl = document.getElementById('lightbox-video');
+      
+      if(type === 'video') {
+        imgEl.style.display = 'none';
+        vidEl.src = src; vidEl.style.display = 'block'; vidEl.play();
+      } else {
+        vidEl.style.display = 'none'; vidEl.pause(); vidEl.src = "";
+        imgEl.src = src; imgEl.style.display = 'block';
+      }
+      
       lb.style.display = 'flex'; setTimeout(() => lb.classList.add('active'), 10);
       history.pushState({ lightbox: true }, '', '#lightbox');
     };
     window.closeLightbox = function(e) { 
       if (e) e.stopPropagation();
       const lb = document.getElementById('lightbox');
+      const vidEl = document.getElementById('lightbox-video');
+      vidEl.pause(); vidEl.src = "";
       lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 300);
       if (window.location.hash === '#lightbox') history.back();
     };
 
     window.openPdfViewer = function(url) {
       const iframe = document.getElementById('pdf-frame');
-      // Asegurar compatibilidad de PDFs en móviles (Google Docs Viewer)
-      if (url.toLowerCase().endsWith('.pdf')) {
+      if (url.toLowerCase().endsWith('.pdf') || url.includes('.pdf')) {
         iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
       } else {
         iframe.src = url;
@@ -543,7 +566,7 @@
 
     window.escapeHtml = function(s) { return s ? s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : ""; };
 
-    // === FIREBASE CONFIG E IMPORTS ACTUALIZADOS ===
+    // === FIREBASE IMPORTS ===
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
     import { getDatabase, ref, set, push, onValue, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
@@ -571,6 +594,10 @@
     let wRatings = { general: 0, food: 0, staff: 0 };
     let pendingSkipStep = null;
 
+    // MEDIA STATE
+    let uploadedMediaType = null; // 'image' o 'video'
+    let uploadedMediaB64 = null;
+
     window.addEventListener('DOMContentLoaded', () => {
       setupMultiStarPickers();
       
@@ -593,7 +620,7 @@
       });
     });
 
-    /* === GAMIFICACIÓN Y NIVELES DETALLADOS (Puntos Per Venue) === */
+    /* === GAMIFICACIÓN SEPARADA POR LOCAL === */
     window.calculateUserPointsDetailed = function(uid) {
       let pts = { total: 0, byBiz: {} };
       Object.entries(allBusinesses).forEach(([bizId, biz]) => {
@@ -603,7 +630,7 @@
             if(r.authorUid === uid) {
               if(r.ratingGeneral) bizPts += 10;
               if(r.text && r.text.trim() !== '') bizPts += 20;
-              if(r.photoBase64) bizPts += 30;
+              if(r.mediaBase64 || r.photoBase64) bizPts += 30;
               if(r.gpsVerified) bizPts += 50; 
             }
           });
@@ -630,9 +657,8 @@
       
       const wizPts = document.getElementById('wizard-user-points');
       if(wizPts) {
-        // En el wizard, mostrar los puntos que tiene EXCLUSIVAMENTE en este local
         const localPts = selectedBizId && ptsData.byBiz[selectedBizId] ? ptsData.byBiz[selectedBizId].points : 0;
-        wizPts.innerText = `🏆 Puntos en este local: ${localPts}`;
+        wizPts.innerText = `🏆 Tienes ${localPts} Puntos aquí`;
       }
       
       const profPts = document.getElementById('prof-points');
@@ -645,7 +671,7 @@
       if(drawerLevel) drawerLevel.innerHTML = `<span style="color:${level.color}; font-size:0.85rem; font-weight:900; text-transform:uppercase;">${level.name}</span>`;
     };
 
-    /* === RED SOCIAL: PERFIL PÚBLICO Y AMIGOS === */
+    /* === RED SOCIAL (SEGUIR Y PERFILES PÚBLICOS) === */
     window.openPublicProfile = function(uid) {
       if(window.globalCurrentUser && window.globalCurrentUser.uid === uid) return window.openMyProfile();
       
@@ -659,7 +685,6 @@
           const level = window.getUserLevel(ptsData.total);
           document.getElementById('pub-level').innerHTML = `<span style="color:${level.color}">${level.name}</span> - ${ptsData.total} Pts Totales`;
           
-          // Lógica Botón de Seguir
           const btn = document.getElementById('btn-follow');
           if(window.globalCurrentUser && window.globalCurrentUser.following && window.globalCurrentUser.following[uid]) {
             btn.innerHTML = `<i class="fa-solid fa-user-check"></i> Siguiendo`;
@@ -669,14 +694,18 @@
             btn.onclick = () => window.toggleFollow(uid, true);
           }
           
-          // Reseñas de este usuario
           const container = document.getElementById('pub-reviews-list'); container.innerHTML = ""; let count = 0;
           Object.entries(allBusinesses).forEach(([bId, b]) => {
             if (b.reviews) {
               Object.values(b.reviews).forEach(r => {
                 if (r.authorUid === uid) {
                   count++; let media = "";
-                  if (r.photoBase64) media += `<img src="${r.photoBase64}" style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary);" onclick="window.openLightbox('${r.photoBase64}')">`;
+                  if (r.mediaBase64 || r.photoBase64) {
+                    const src = r.mediaBase64 || r.photoBase64;
+                    const type = r.mediaType || 'image';
+                    if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary); object-fit:cover;" onclick="window.openLightbox('${src}', 'video')"></video>`;
+                    else media += `<img src="${src}" style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary);" onclick="window.openLightbox('${src}', 'image')">`;
+                  }
                   const div = document.createElement('div'); div.className = 'review-card slide-up';
                   div.innerHTML = `
                     <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
@@ -704,11 +733,11 @@
         window.globalCurrentUser.following[uid] = true;
         window.showToast("Usuario seguido", "fa-user-check");
       } else {
-        await set(followRef, null); // Usamos set null en vez de remove para no requerir import extra
+        await set(followRef, null);
         delete window.globalCurrentUser.following[uid];
         window.showToast("Dejaste de seguir", "fa-user-minus");
       }
-      window.openPublicProfile(uid); // Refresca vista
+      window.openPublicProfile(uid);
     };
 
     window.loadFriendsList = async function() {
@@ -735,7 +764,7 @@
 
     /* === PERFIL PERSONAL === */
     window.openMyProfile = function() {
-      // 1. Mostrar Puntos Separados por Restaurante
+      // 1. Puntos
       const ptsData = window.calculateUserPointsDetailed(window.globalCurrentUser.uid);
       let ptsHtml = "";
       Object.entries(ptsData.byBiz).forEach(([bId, b]) => {
@@ -745,14 +774,19 @@
       document.getElementById('prof-points-list').innerHTML = ptsHtml;
       document.getElementById('prof-points').innerText = ptsData.total;
 
-      // 2. Mis Reseñas
+      // 2. Reseñas
       const container = document.getElementById('my-reviews-list'); container.innerHTML = ""; let count = 0;
       Object.entries(allBusinesses).forEach(([id, b]) => {
         if (b.reviews) {
           Object.values(b.reviews).forEach((r, index) => {
             if (r.authorUid === window.globalCurrentUser.uid) {
               count++; let media = "";
-              if (r.photoBase64) media += `<img src="${r.photoBase64}" style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary);" onclick="window.openLightbox('${r.photoBase64}')">`;
+              if (r.mediaBase64 || r.photoBase64) {
+                const src = r.mediaBase64 || r.photoBase64;
+                const type = r.mediaType || 'image';
+                if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary); object-fit:cover;" onclick="window.openLightbox('${src}', 'video')"></video>`;
+                else media += `<img src="${src}" style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary);" onclick="window.openLightbox('${src}', 'image')">`;
+              }
               const div = document.createElement('div'); div.className = 'review-card slide-up'; div.style.animationDelay = `${index * 0.05}s`;
               div.innerHTML = `
                 <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
@@ -766,7 +800,7 @@
       });
       if (count === 0) container.innerHTML = "<p style='color:var(--text-muted); text-align:center; font-weight:600;'>No has publicado experiencias aún.</p>";
       
-      // 3. Cargar Amigos
+      // 3. Amigos
       window.loadFriendsList();
 
       window.switchProfTab('points');
@@ -779,7 +813,6 @@
       if(!biz) return window.showToast("Local no encontrado", "fa-triangle-exclamation");
       
       document.getElementById('hero-main').style.display = 'none'; document.getElementById('biz-main').style.display = 'block';
-
       document.getElementById('biz-title-main').innerText = biz.name;
       document.getElementById('biz-category-main').innerText = biz.category || "Gastronomía";
       document.getElementById('biz-desc-main').innerText = biz.desc || "Sin descripción.";
@@ -797,7 +830,6 @@
       if (photos.length > 0) { photos.forEach(src => { gallery.innerHTML += `<img src="${src}" class="gallery-img" onclick="window.openLightbox('${src}')">`; }); } 
       else { gallery.innerHTML = `<img src="https://via.placeholder.com/600x400/e8eee8/222222?text=FOTO+DEL+LOCAL" class="gallery-img">`; }
       
-      // NUEVO: El Botón de menú abre el Modal Lector de PDF
       const menuBtn = document.getElementById('biz-menu-btn');
       if(biz.menu && biz.menu.trim() !== '') {
         menuBtn.style.display = 'inline-flex';
@@ -816,7 +848,15 @@
 
       reviewsArr.forEach(r => {
         let media = "";
-        if (r.photoBase64) media += `<img src="${r.photoBase64}" onclick="window.openLightbox('${r.photoBase64}')">`;
+        if (r.mediaBase64 || r.photoBase64) {
+          const src = r.mediaBase64 || r.photoBase64;
+          const type = r.mediaType || 'image';
+          if (type === 'video') {
+            media += `<video src="${src}" autoplay loop muted playsinline class="review-media" onclick="window.openLightbox('${src}', 'video')"></video>`;
+          } else {
+            media += `<img src="${src}" class="review-media" onclick="window.openLightbox('${src}', 'image')">`;
+          }
+        }
         
         let starsHtml = `<div style="color:var(--warning); font-size:1rem; margin-top:4px;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>`;
         let detailsHtml = "";
@@ -825,7 +865,6 @@
 
         container.innerHTML += `
           <div class="review-card">
-            <!-- AGREGADO: Al hacer click en el header (foto o nombre) se abre su perfil público -->
             <div class="review-header" onclick="window.openPublicProfile('${r.authorUid}')">
               <img src="${r.authorPhoto || defaultImg}">
               <div>
@@ -848,7 +887,13 @@
       wizStaffId = null; wizStaffName = null; wRatings = { general: 0, food: 0, staff: 0 };
       document.querySelectorAll('.star-rating-picker i').forEach(s => s.classList.remove('active'));
       document.getElementById('wiz-food-name').value = ''; document.getElementById('wiz-text').value = ''; 
-      document.getElementById('wiz-photo').value = ''; document.getElementById('wiz-photo-preview').style.display = 'none';
+      
+      // Resetear Media
+      document.getElementById('wiz-media').value = '';
+      document.getElementById('wiz-photo-preview').style.display = 'none';
+      document.getElementById('wiz-video-preview').style.display = 'none';
+      uploadedMediaType = null; uploadedMediaB64 = null;
+      document.getElementById('label-star-staff').innerText = "Atención del Personal";
 
       const staffContainer = document.getElementById('wiz-staff-list'); staffContainer.innerHTML = "";
       if (biz && biz.staff) {
@@ -873,7 +918,11 @@
       if(id !== 'none') {
         const card = document.getElementById('staff-card-'+id); if(card) card.classList.add('active');
         wizStaffId = id; wizStaffName = name;
-      } else { wizStaffId = 'none'; wizStaffName = 'Otro / No especificado'; }
+        document.getElementById('label-star-staff').innerText = "Atención de " + name; // Cambio Dinámico
+      } else { 
+        wizStaffId = 'none'; wizStaffName = 'Otro / No especificado'; 
+        document.getElementById('label-star-staff').innerText = "Atención del Personal";
+      }
       setTimeout(() => window.nextWizardStep(2), 300);
     };
 
@@ -902,25 +951,70 @@
     window.cancelSkip = function() { window.closeModal('modal-guilt'); pendingSkipStep = null; };
     window.confirmSkip = function() {
       window.closeModal('modal-guilt'); window.showToast("Paso omitido. No sumarás esos puntos.", "fa-forward-step");
-      if (pendingSkipStep === 'submit') { document.getElementById('wiz-photo').value = ""; document.getElementById('wiz-photo-preview').src = ""; document.getElementById('wiz-photo-preview').style.display = 'none'; window.processSubmitReview(); } 
-      else if (pendingSkipStep !== null) { if (pendingSkipStep === 4) { document.getElementById('wiz-text').value = ""; document.getElementById('wiz-food-name').value = ""; } window.nextWizardStep(pendingSkipStep); } 
+      if (pendingSkipStep === 'submit') { 
+        document.getElementById('wiz-media').value = ""; 
+        uploadedMediaType = null; uploadedMediaB64 = null; 
+        document.getElementById('wiz-photo-preview').style.display = 'none'; 
+        document.getElementById('wiz-video-preview').style.display = 'none'; 
+        window.processSubmitReview(); 
+      } 
+      else if (pendingSkipStep !== null) { 
+        if (pendingSkipStep === 4) { document.getElementById('wiz-text').value = ""; document.getElementById('wiz-food-name').value = ""; } 
+        window.nextWizardStep(pendingSkipStep); 
+      } 
       pendingSkipStep = null;
     };
-    window.tryNextStepText = function() { if (document.getElementById('wiz-text').value.trim() === '') window.trySkipWizard(4, 20, 'tu opinión'); else window.nextWizardStep(4); };
-    window.previewWizPhoto = function(e) { if(e.target.files.length>0){ fileToBase64Compress(e.target.files[0]).then(b64 => { document.getElementById('wiz-photo-preview').src = b64; document.getElementById('wiz-photo-preview').style.display = 'block'; }); } };
+    window.tryNextStepText = function() { if (document.getElementById('wiz-text').value.trim() === '') window.trySkipWizard(4, 20, 'tu opinión escrita'); else window.nextWizardStep(4); };
+    
+    // MEDIA COMPRESOR Y VALIDACION
+    window.previewWizMedia = function(e) { 
+      if(e.target.files.length > 0) { 
+        const file = e.target.files[0];
+        // Validar tamaño: max 4MB para no trabar Firebase
+        if (file.size > 4 * 1024 * 1024) return window.showToast("El archivo pesa más de 4MB. Usa uno más liviano.", "fa-triangle-exclamation");
+
+        if(file.type.startsWith('video/')) {
+          uploadedMediaType = 'video';
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            uploadedMediaB64 = ev.target.result;
+            document.getElementById('wiz-photo-preview').style.display = 'none';
+            const vidPreview = document.getElementById('wiz-video-preview');
+            vidPreview.src = uploadedMediaB64;
+            vidPreview.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        } else {
+          uploadedMediaType = 'image';
+          fileToBase64Compress(file).then(b64 => { 
+            uploadedMediaB64 = b64;
+            document.getElementById('wiz-video-preview').style.display = 'none';
+            const imgPreview = document.getElementById('wiz-photo-preview');
+            imgPreview.src = b64; 
+            imgPreview.style.display = 'block'; 
+          });
+        }
+      } 
+    };
+    
     window.submitWizardReview = async function() {
-      const photoInput = document.getElementById('wiz-photo');
-      if (photoInput.files.length === 0) { pendingSkipStep = 'submit'; window.openModal('modal-guilt'); return; }
+      if (!uploadedMediaB64) { pendingSkipStep = 'submit'; window.openModal('modal-guilt'); return; }
       await window.processSubmitReview();
     };
 
     window.processSubmitReview = async function() {
-      const foodName = document.getElementById('wiz-food-name').value.trim(); const text = document.getElementById('wiz-text').value.trim(); const photoInput = document.getElementById('wiz-photo');
+      const foodName = document.getElementById('wiz-food-name').value.trim(); const text = document.getElementById('wiz-text').value.trim(); 
       const btn = document.getElementById('btn-wiz-submit'); btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando...`;
       try {
-        let photoB64 = null; if (photoInput.files.length > 0) photoB64 = await fileToBase64Compress(photoInput.files[0]);
-        let isGpsVerified = true; 
-        await push(ref(db, `businesses/${selectedBizId}/reviews`), { authorUid: window.globalCurrentUser.uid, authorName: window.globalCurrentUser.name, authorPhoto: window.globalCurrentUser.photo, ratingGeneral: wRatings.general, ratingFood: wRatings.food, ratingStaff: wRatings.staff, staffId: wizStaffId, staffName: wizStaffName, foodName: foodName, text: text, photoBase64: photoB64, gpsVerified: isGpsVerified, timestamp: Date.now() });
+        let isGpsVerified = true; // Simulado
+        await push(ref(db, `businesses/${selectedBizId}/reviews`), { 
+          authorUid: window.globalCurrentUser.uid, authorName: window.globalCurrentUser.name, authorPhoto: window.globalCurrentUser.photo, 
+          ratingGeneral: wRatings.general, ratingFood: wRatings.food, ratingStaff: wRatings.staff,
+          staffId: wizStaffId, staffName: wizStaffName,
+          foodName: foodName, text: text, 
+          mediaBase64: uploadedMediaB64, mediaType: uploadedMediaType,
+          gpsVerified: isGpsVerified, timestamp: Date.now() 
+        });
         window.closeModal('modal-wizard'); window.showToast("¡Experiencia publicada!", "fa-award"); window.updateUserPointsDisplay();
       } catch(err) { window.showToast("Error al publicar", "fa-triangle-exclamation"); } finally { btn.disabled = false; btn.innerHTML = `PUBLICAR EXPERIENCIA`; }
     };
@@ -931,7 +1025,8 @@
     onAuthStateChanged(auth, user => {
       if (user) { 
         onValue(ref(db, 'users/' + user.uid), s => { 
-          if(s.exists()){ window.globalCurrentUser = {uid:user.uid, email:user.email, ...s.val()}; } else { window.globalCurrentUser = {uid:user.uid, email:user.email, name:"Usuario", photo:defaultImg}; }
+          if(s.exists()){ window.globalCurrentUser = {uid:user.uid, email:user.email, ...s.val()}; } 
+          else { window.globalCurrentUser = {uid:user.uid, email:user.email, name:"Usuario", photo:defaultImg}; }
           updateAuthUI(); 
         }); 
       } else { window.globalCurrentUser = null; updateAuthUI(); }
