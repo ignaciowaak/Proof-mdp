@@ -97,7 +97,7 @@
     
     .gallery-container { display: flex; overflow-x: auto; gap: 12px; padding: 4px 0 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
     .gallery-container::-webkit-scrollbar { display: none; }
-    .gallery-img { height: 180px; min-width: 150px; width: 150px; object-fit: cover; border-radius: 20px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); scroll-snap-align: start; cursor: pointer; background: var(--surface-solid); }
+    .gallery-media { height: 180px; min-width: 150px; width: 150px; object-fit: cover; border-radius: 20px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); scroll-snap-align: start; cursor: pointer; background: var(--surface-solid); }
 
     .biz-details-box { background: var(--surface); backdrop-filter: blur(12px); border: 2px solid var(--primary); border-radius: 24px; padding: 20px; box-shadow: var(--shadow-hard); margin-bottom: 24px; }
     .biz-desc { font-size: 0.95rem; line-height: 1.5; font-weight: 500; margin-bottom: 16px; color: var(--primary); }
@@ -120,8 +120,9 @@
     .review-author { font-weight: 800; font-size: 1.05rem; color: var(--primary); }
     .review-text-quote { font-weight: 500; font-size: 1rem; color: var(--text-main); line-height: 1.5; padding-left: 12px; border-left: 3px solid var(--primary); margin-top: 4px; }
     
-    .review-media img, .review-media video { width: 100%; height: 180px; border-radius: 16px; margin-top: 8px; object-fit: cover; border: 2px solid var(--primary); cursor: pointer; background: #000; }
-
+    /* Media en reseñas (miniaturas sin sonido) */
+    .review-media { width: 100%; height: 180px; border-radius: 16px; margin-top: 8px; object-fit: cover; border: 2px solid var(--primary); cursor: pointer; background: #000; display: block; }
+    
     /* === LIGHTBOX MULTIMEDIA === */
     .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20,20,20,0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 8000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; }
     .lightbox.active { opacity: 1; }
@@ -242,7 +243,7 @@
     </div>
 
     <!-- BOTÓN MENÚ PDF -->
-    <button id="biz-menu-btn" class="btn btn-primary">
+    <button id="biz-menu-btn" class="btn btn-primary" style="display:none;">
       <i class="fa-solid fa-book-open"></i> VER MENÚ DIGITAL
     </button>
     <button class="btn btn-secondary" onclick="window.startReviewWizard()">
@@ -260,7 +261,7 @@
     <video id="lightbox-video" controls autoplay playsinline onclick="event.stopPropagation()"></video>
   </div>
 
-  <!-- MODAL: LECTOR DE MENÚ PDF (ALTURA SEGURA Y SCROLL NATIVO FLUIDO) -->
+  <!-- MODAL: LECTOR DE MENÚ PDF -->
   <div class="modal-overlay" id="modal-pdf" style="z-index: 7000;">
     <div class="modal-card" style="height: 85vh; max-height: 85vh; border-radius: 30px 30px 0 0; background: var(--surface-solid);">
       <div class="modal-header" style="background: var(--surface-solid); padding: 16px 24px;">
@@ -296,7 +297,7 @@
     </div>
   </div>
 
-  <!-- MODAL: MI PERFIL (CORREGIDO PARA NO COLAPSAR PESTAÑAS Y ESTRELLAS) -->
+  <!-- MODAL: MI PERFIL -->
   <div class="modal-overlay" id="modal-profile" style="z-index: 5400;">
     <div class="modal-card">
       <div class="modal-header">
@@ -392,7 +393,7 @@
     </div>
   </div>
 
-  <!-- MODAL: WIZARD DE EXPERIENCIA (COMPACTO Y ORDENADO) -->
+  <!-- MODAL: WIZARD DE EXPERIENCIA -->
   <div class="modal-overlay" id="modal-wizard" style="z-index: 5600;">
     <div class="modal-card">
       <div class="modal-header" style="align-items:flex-start; padding-bottom:10px;">
@@ -425,7 +426,7 @@
           <button class="btn btn-secondary" style="width:100%; margin-top:12px; padding:14px;" onclick="window.nextWizardStep(2)">Continuar</button>
         </div>
 
-        <!-- PASO 2: CALIFICACIONES GENERALES (Fijas) -->
+        <!-- PASO 2: CALIFICACIONES GENERALES -->
         <div id="wiz-step-2" class="wizard-step">
           <h4 style="font-size:1.25rem; font-weight:900; text-transform:uppercase;">Califica el servicio <span class="reward-tag">+10 Pts</span></h4>
           
@@ -555,6 +556,7 @@
       if (window.location.hash === '#lightbox') history.back();
     };
 
+    // Abre el PDF en el modal.
     window.openPdfViewer = function(url) {
       const iframe = document.getElementById('pdf-frame');
       if (url.toLowerCase().endsWith('.pdf') || url.includes('.pdf')) {
@@ -568,7 +570,6 @@
     // === BLINDADO DE APERTURA DE PERFIL CON SETTIMEOUT ===
     window.handleMenuProfile = function() { 
       window.closeDrawerSafe(); 
-      // Se da un leve margen para evitar conflictos de animación/historial en iOS Safari
       setTimeout(() => {
         if(window.globalCurrentUser) {
           window.openMyProfile(); 
@@ -742,8 +743,8 @@
                   if (r.mediaBase64 || r.photoBase64) {
                     const src = r.mediaBase64 || r.photoBase64;
                     const type = r.mediaType || 'image';
-                    if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary); object-fit:cover;" onclick="window.openLightbox('${src}', 'video')"></video>`;
-                    else media += `<img src="${src}" style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary);" onclick="window.openLightbox('${src}', 'image')">`;
+                    if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline class="review-media" onclick="window.openLightbox('${src}', 'video')"></video>`;
+                    else media += `<img src="${src}" class="review-media" onclick="window.openLightbox('${src}', 'image')">`;
                   }
                   const div = document.createElement('div'); div.className = 'review-card slide-up';
                   div.innerHTML = `
@@ -867,12 +868,27 @@
 
       const gallery = document.getElementById('biz-gallery'); gallery.innerHTML = "";
       const photos = biz.photos && biz.photos.length > 0 ? biz.photos : (biz.photoBase64 ? [biz.photoBase64] : []);
-      if (photos.length > 0) { photos.forEach(src => { gallery.innerHTML += `<img src="${src}" class="gallery-img" onclick="window.openLightbox('${src}')">`; }); } 
-      else { gallery.innerHTML = `<img src="https://via.placeholder.com/600x400/e8eee8/222222?text=FOTO+DEL+LOCAL" class="gallery-img">`; }
+      if (photos.length > 0) { 
+        photos.forEach(src => { 
+          // Determinamos si es un video (rudimentariamente por si incluye .mp4 o si fue guardado como video)
+          const isVideo = src.includes('video/mp4') || src.includes('video/quicktime');
+          if(isVideo) {
+            gallery.innerHTML += `<video src="${src}" autoplay loop muted playsinline class="gallery-media" onclick="window.openLightbox('${src}', 'video')"></video>`;
+          } else {
+            gallery.innerHTML += `<img src="${src}" class="gallery-media" onclick="window.openLightbox('${src}')">`; 
+          }
+        }); 
+      } else { 
+        gallery.innerHTML = `<img src="https://via.placeholder.com/600x400/e8eee8/222222?text=FOTO+DEL+LOCAL" class="gallery-media">`; 
+      }
       
       const menuBtn = document.getElementById('biz-menu-btn');
       if(biz.menu && biz.menu.trim() !== '') {
         menuBtn.style.display = 'inline-flex';
+        // Automáticamente abrimos el PDF si se ingresa a través del enlace de un negocio
+        if (urlParamsFast.has('biz') && window.deepLinkOpened) {
+           window.openPdfViewer(biz.menu);
+        }
         menuBtn.onclick = () => window.openPdfViewer(biz.menu);
       } else {
         menuBtn.style.display = 'none';
@@ -1021,7 +1037,7 @@
     window.previewWizMedia = function(e) { 
       if(e.target.files.length > 0) { 
         const file = e.target.files[0];
-        if (file.size > 4 * 1024 * 1024) return window.showToast("El archivo pesa más de 4MB. Usa uno más liviano.", "fa-triangle-exclamation");
+        if (file.size > 15 * 1024 * 1024) return window.showToast("El archivo pesa más de 15MB. Usa uno más liviano.", "fa-triangle-exclamation");
 
         if(file.type.startsWith('video/')) {
           uploadedMediaType = 'video';
