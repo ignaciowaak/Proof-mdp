@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Proof</title>
+  <title>Proof - Experiencia Gastronómica</title>
 
   <!-- FontAwesome Iconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -120,7 +120,6 @@
     .review-author { font-weight: 800; font-size: 1.05rem; color: var(--primary); }
     .review-text-quote { font-weight: 500; font-size: 1rem; color: var(--text-main); line-height: 1.5; padding-left: 12px; border-left: 3px solid var(--primary); margin-top: 4px; }
     
-    /* Media en reseñas (miniaturas sin sonido) */
     .review-media { width: 100%; height: 180px; border-radius: 16px; margin-top: 8px; object-fit: cover; border: 2px solid var(--primary); cursor: pointer; background: #000; display: block; }
     
     /* === LIGHTBOX MULTIMEDIA === */
@@ -160,16 +159,15 @@
     .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--primary); }
     .modal-body { padding: 0 28px 34px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
 
-    /* === FORMULARIOS Y TABS A PRUEBA DE BUGS === */
+    /* === FORMULARIOS Y TABS === */
     .form-group input, .form-group textarea { width: 100%; padding: 18px 24px; border: 2px solid var(--primary); border-radius: 20px; background: var(--surface-solid); font-family: 'Inter', sans-serif; margin-bottom: 8px; font-size: 1rem; color: var(--primary); outline: none; }
-    /* Tabs protegidas para no achicarse */
     .tabs { display: flex; gap: 6px; margin-bottom: 10px; background: var(--surface-solid); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); overflow-x: auto; white-space: nowrap; flex-shrink: 0; min-height: 52px; }
     .tab { flex: 1; text-align: center; padding: 12px 16px; border-radius: 100px; cursor: pointer; font-weight: 800; color: var(--text-muted); font-size: 0.95rem; transition: var(--transition-fast); }
     .tab.active { background: var(--primary); color: var(--surface-solid); }
     .form-section { display: none; }
     .form-section.active { display: block; animation: slideUpFade 0.3s ease forwards; }
     
-    /* === WIZARD COMPACTO (UNA SOLA PANTALLA) === */
+    /* === WIZARD COMPACTO === */
     .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding-bottom: 5px; }
     .wizard-step.active { display: flex; animation: fadeIn 0.3s ease forwards; }
     
@@ -180,7 +178,7 @@
     .staff-card img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 6px; }
     .staff-card.active { background: var(--primary); color: var(--surface-solid); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
     
-    /* Chips de Actitud Sin Emojis */
+    /* Chips de Actitud */
     .staff-tags-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; justify-content: center; }
     .tag-chip { background: var(--surface-solid); border: 2px solid var(--primary); padding: 8px 14px; border-radius: 100px; font-weight: 800; font-size: 0.8rem; cursor: pointer; transition: var(--transition-fast); display: inline-block; color: var(--primary); }
     .tag-chip.active { background: var(--primary); color: var(--surface-solid); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
@@ -207,7 +205,7 @@
 </head>
 <body>
 
-  <!-- LOADER GIRATORIO GLOBAL -->
+  <!-- LOADER GIRATORIO -->
   <div class="global-loader" id="global-loader">
     <i class="fa-solid fa-circle-notch spinner-large"></i>
     <h2 style="color:var(--primary); font-family:'Plus Jakarta Sans'; font-weight:900;">Cargando experiencia...</h2>
@@ -261,16 +259,19 @@
     <video id="lightbox-video" controls autoplay playsinline onclick="event.stopPropagation()"></video>
   </div>
 
-  <!-- MODAL: LECTOR DE MENÚ PDF (CORREGIDO PARA EVITAR ZOOM Y BUGS VISUALES) -->
+  <!-- MODAL: LECTOR DE MENÚ PDF (AISLADO PARA SCROLL PERFECTO) -->
   <div class="modal-overlay" id="modal-pdf" style="z-index: 7000;">
-    <div class="modal-card" style="height: 85vh; max-height: 70vh; border-radius: 30px 30px 0 0; background: var(--surface-solid);">
-      <div class="modal-header" style="background: var(--surface-solid); padding: 16px 24px;">
+    <div class="modal-card" style="height: 85vh; max-height: 85vh; border-radius: 30px 30px 0 0; background: var(--surface-solid);">
+      <div class="modal-header" style="background: var(--surface-solid); padding: 16px 24px; z-index: 10;">
         <h3 style="font-size: 1.3rem;">Menú Digital</h3>
-        <button class="btn-close" onclick="window.closeModal('modal-pdf')"><i class="fa-solid fa-xmark"></i></button>
+        <div style="display: flex; gap: 8px;">
+          <a id="pdf-ext-link" href="#" target="_blank" class="btn-close" style="text-decoration: none;" title="Abrir menú original"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.9rem;"></i></a>
+          <button class="btn-close" onclick="window.closeModal('modal-pdf')"><i class="fa-solid fa-xmark"></i></button>
+        </div>
       </div>
-      <div class="modal-body" style="padding: 0; flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; background: #fff;">
-        <!-- Se eliminó el min-height 100vh que rompía el PDF -->
-        <iframe id="pdf-frame" style="width:100%; height:100%; border:none; display:block;"></iframe>
+      <div class="modal-body" style="padding: 0; flex: 1; position: relative; background: #fff; overflow: hidden; -webkit-overflow-scrolling: touch;">
+        <!-- Position absolute para aislar las dimensiones y evitar recortes o zoom forzado -->
+        <iframe id="pdf-frame" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; display: block;" allowfullscreen webkitallowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -289,7 +290,6 @@
       <div id="drawer-level" style="margin-top:6px; font-weight: 800; color:var(--warning);"></div>
     </div>
 
-    <!-- EL BOTÓN ESTÁ CONECTADO A handleMenuProfile() -->
     <div class="drawer-item" onclick="window.handleMenuProfile()">
       <i class="fa-solid fa-user-circle" style="font-size:1.4rem;"></i> <span id="menu-text-auth">Mi Perfil</span>
     </div>
@@ -409,12 +409,18 @@
         
         <!-- PASO 1: RECONOCER AL PERSONAL + BOTONES CHIPS -->
         <div id="wiz-step-1" class="wizard-step active">
-          <h4 style="font-size:1.15rem; font-weight:900; text-transform:uppercase; margin-bottom:4px;">¿Reconoces a quien te atendió?</h4>
+          <h4 style="font-size:1.15rem; font-weight:900; text-transform:uppercase; margin-bottom:4px;">¿Quién te atendió?</h4>
           
-          <div class="staff-grid" id="wiz-staff-list"></div>
-          <button class="btn btn-primary btn-sm" style="margin-top:6px; padding: 10px 16px; font-size:0.9rem;" onclick="window.selectStaff('none', 'Personal')">No sé / Otro</button>
+          <div id="wiz-staff-list" style="width: 100%;"></div>
           
-          <div style="width:100%; margin-top:12px;">
+          <button class="btn btn-primary btn-sm" style="margin-top:6px; padding: 10px 16px; font-size:0.9rem;" onclick="window.selectStaff('none', 'Personal General')">No sé / Otro</button>
+          
+          <div style="width:100%; margin-top:16px; border-top: 2px dashed rgba(34,34,34,0.1); padding-top: 16px;">
+            <label style="font-size:0.85rem; font-weight:900; text-transform:uppercase; display:block; margin-bottom:4px;">Califica su atención</label>
+            <div class="star-rating-picker" id="star-staff" style="justify-content: center; margin-bottom: 16px;">
+              <i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i>
+            </div>
+
             <label style="font-size:0.8rem; font-weight:800; text-transform:uppercase; display:block; margin-bottom:6px;">¿Cómo fue su trato?</label>
             <div class="staff-tags-grid">
               <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Amable')">Amable</span>
@@ -424,17 +430,13 @@
               <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Simpático')">Simpático</span>
             </div>
           </div>
-          <button class="btn btn-secondary" style="width:100%; margin-top:12px; padding:14px;" onclick="window.nextWizardStep(2)">Continuar</button>
+          <button class="btn btn-secondary" style="width:100%; margin-top:16px; padding:14px;" onclick="window.validateStaffAndNext()">Continuar</button>
         </div>
 
         <!-- PASO 2: CALIFICACIONES GENERALES -->
         <div id="wiz-step-2" class="wizard-step">
           <h4 style="font-size:1.25rem; font-weight:900; text-transform:uppercase;">Califica el servicio <span class="reward-tag">+10 Pts</span></h4>
           
-          <div class="rating-row">
-            <label>Atención del Personal</label>
-            <div class="star-rating-picker" id="star-staff"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
-          </div>
           <div class="rating-row">
             <label>Calidad de la Comida</label>
             <div class="star-rating-picker" id="star-food"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
@@ -557,14 +559,20 @@
       if (window.location.hash === '#lightbox') history.back();
     };
 
-    // Abre el PDF en el modal de forma estándar (sin height forzado)
+    // Abre el PDF en el modal. Aísla el diseño del documento.
     window.openPdfViewer = function(url) {
       const iframe = document.getElementById('pdf-frame');
+      const extLinkBtn = document.getElementById('pdf-ext-link');
+      
       if (url.toLowerCase().endsWith('.pdf') || url.includes('.pdf')) {
         iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
       } else {
         iframe.src = url;
       }
+      
+      // Permitimos abrir el enlace original en una nueva ventana si el visor embebido da problemas
+      if(extLinkBtn) extLinkBtn.href = url;
+      
       window.openModal('modal-pdf');
     };
 
@@ -871,7 +879,6 @@
       const photos = biz.photos && biz.photos.length > 0 ? biz.photos : (biz.photoBase64 ? [biz.photoBase64] : []);
       if (photos.length > 0) { 
         photos.forEach(src => { 
-          // Determinamos si es un video
           const isVideo = src.includes('video/mp4') || src.includes('video/quicktime');
           if(isVideo) {
             gallery.innerHTML += `<video src="${src}" autoplay loop muted playsinline class="gallery-media" onclick="window.openLightbox('${src}', 'video')"></video>`;
@@ -885,8 +892,6 @@
       
       const menuBtn = document.getElementById('biz-menu-btn');
       
-      // ==== AQUÍ ESTÁ LA CORRECCIÓN ====
-      // Se eliminó la lógica que abría automáticamente el PDF
       if(biz.menu && biz.menu.trim() !== '') {
         menuBtn.style.display = 'inline-flex';
         // Solo se abrirá cuando el usuario presione el botón explícitamente
@@ -894,7 +899,6 @@
       } else {
         menuBtn.style.display = 'none';
       }
-      // ==================================
 
       renderInlineReviews(biz.reviews || {});
     };
@@ -943,7 +947,7 @@
       });
     }
 
-    /* === WIZARD DE RESEÑAS === */
+    /* === WIZARD DE RESEÑAS CON STAFF AGRUPADO === */
     window.startReviewWizard = function() {
       if (!window.globalCurrentUser) { window.showToast("Inicia sesión para calificar", "fa-user-lock"); return window.openModal('modal-auth'); }
       const biz = allBusinesses[selectedBizId]; if(!biz) return;
@@ -958,19 +962,41 @@
       document.getElementById('wiz-video-preview').style.display = 'none';
       uploadedMediaType = null; uploadedMediaB64 = null;
 
-      const staffContainer = document.getElementById('wiz-staff-list'); staffContainer.innerHTML = "";
+      const staffContainer = document.getElementById('wiz-staff-list'); 
+      staffContainer.innerHTML = "";
+      
       if (biz && biz.staff) {
+        // Agrupar personal por rol
+        const staffByRole = {};
         Object.entries(biz.staff).forEach(([sId, sData]) => {
-          const sImg = sData.photo || defaultImg;
-          const sRole = sData.role ? `<div style="font-size:0.75rem; color:var(--success); font-weight:900; margin-top:4px; text-transform:uppercase;">${window.escapeHtml(sData.role)}</div>` : '';
-          staffContainer.innerHTML += `
-            <div class="staff-card" id="staff-card-${sId}" onclick="window.selectStaff('${sId}', '${window.escapeHtml(sData.name)}')">
-              <img src="${sImg}">
-              <div style="font-weight:900; font-size:0.85rem;">${window.escapeHtml(sData.name)}</div>
-              ${sRole}
-            </div>`;
+          const role = sData.role || 'Otros';
+          if(!staffByRole[role]) staffByRole[role] = [];
+          staffByRole[role].push({id: sId, ...sData});
         });
-      } else { staffContainer.innerHTML = "<p style='min-width:100%; font-size:0.9rem; color:var(--text-muted); font-weight:600;'>No hay personal registrado.</p>"; }
+
+        // Renderizar el personal agrupado por rol
+        let staffHtml = "";
+        Object.entries(staffByRole).forEach(([role, members]) => {
+          staffHtml += `<div style="text-align: left; width: 100%; margin-bottom: 12px;">`;
+          staffHtml += `<div style="font-size:0.8rem; font-weight:900; color:var(--primary); text-transform:uppercase; margin-bottom:4px; padding-left:4px;">${window.escapeHtml(role)}</div>`;
+          staffHtml += `<div class="staff-grid" style="margin-top:0;">`;
+          
+          members.forEach(s => {
+            const sImg = s.photo || defaultImg;
+            staffHtml += `
+              <div class="staff-card" id="staff-card-${s.id}" onclick="window.selectStaff('${s.id}', '${window.escapeHtml(s.name)}')">
+                <img src="${sImg}">
+                <div style="font-weight:900; font-size:0.85rem;">${window.escapeHtml(s.name)}</div>
+              </div>`;
+          });
+          
+          staffHtml += `</div></div>`;
+        });
+        staffContainer.innerHTML = staffHtml;
+
+      } else { 
+        staffContainer.innerHTML = "<p style='min-width:100%; font-size:0.9rem; color:var(--text-muted); font-weight:600;'>No hay personal registrado.</p>"; 
+      }
 
       window.updateUserPointsDisplay();
       window.nextWizardStep(1); window.openModal('modal-wizard');
@@ -1004,8 +1030,15 @@
       });
     }
 
+    window.validateStaffAndNext = function() {
+        if(wRatings.staff === 0) {
+            return window.showToast("Por favor califica la atención del personal", "fa-star");
+        }
+        window.nextWizardStep(2);
+    };
+
     window.validateRatingsAndNext = function() {
-      if(wRatings.general === 0 || wRatings.food === 0 || wRatings.staff === 0) return window.showToast("Por favor califica las 3 áreas", "fa-star");
+      if(wRatings.general === 0 || wRatings.food === 0) return window.showToast("Por favor califica la Comida y la Experiencia General", "fa-star");
       window.nextWizardStep(3);
     };
 
