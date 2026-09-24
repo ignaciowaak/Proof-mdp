@@ -123,24 +123,36 @@
     .review-media img, .review-media video { width: 100%; height: 180px; border-radius: 16px; margin-top: 8px; object-fit: cover; border: 2px solid var(--primary); cursor: pointer; background: #000; }
 
     /* === LIGHTBOX MULTIMEDIA === */
-    .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.95); z-index: 8000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; backdrop-filter: blur(10px); }
+    .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20,20,20,0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 8000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; }
     .lightbox.active { opacity: 1; }
     .lightbox img, .lightbox video { max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface-solid); display: none; outline: none; }
     .lightbox-close { position: absolute; top: 30px; right: 30px; background: var(--surface-solid); border: 2px solid var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; z-index: 8001; }
 
-    /* === DRAWER MENÚ CON BLUR === */
-    .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.5); backdrop-filter: blur(8px); z-index: 5200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    /* === DRAWER MENÚ === */
+    .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20,20,20,0.6); backdrop-filter: blur(8px); z-index: 5200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .drawer-overlay.active { opacity: 1; pointer-events: all; }
     .drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: rgba(197, 215, 198, 0.95); backdrop-filter: blur(16px); z-index: 5300; transition: left 0.4s var(--spring); display: flex; flex-direction: column; padding: 30px 24px; border-right: 2px solid var(--primary); box-shadow: var(--shadow-hard-lg); }
     .drawer.active { left: 0; } 
     .drawer-item { padding: 16px; border-radius: 16px; font-weight: 800; display: flex; align-items: center; gap: 14px; color: var(--primary); cursor: pointer; font-size: 1.05rem; transition: var(--transition-fast); border: 2px solid transparent; }
     .drawer-item:active { background: var(--surface); border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
 
-    /* === MODALES (BLUR Y AJUSTES) === */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.6); backdrop-filter: blur(10px); z-index: 5000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+    /* === MODALES (BLUR Y AJUSTES "VENTANA FLOTANTE") === */
+    .modal-overlay { 
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      background: rgba(20, 20, 20, 0.65); 
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+      z-index: 5000; display: flex; justify-content: center; align-items: flex-end; 
+      opacity: 0; pointer-events: none; transition: opacity 0.4s ease; 
+    }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
-    .modal-card { width: 100%; max-height: 92vh; border-radius: 36px 36px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.5s var(--spring); background: var(--bg-base); border-top: 2px solid var(--primary); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); }
-    .modal-overlay.active .modal-card { transform: translateY(0); }
+    
+    .modal-card { 
+      width: 100%; max-height: 92vh; border-radius: 36px 36px 0 0; display: flex; flex-direction: column; 
+      transform: translateY(100%) scale(0.95); transition: transform 0.4s var(--spring); 
+      background: var(--bg-base); border-top: 2px solid var(--primary); box-shadow: 0 -10px 40px rgba(0,0,0,0.3); 
+    }
+    .modal-overlay.active .modal-card { transform: translateY(0) scale(1); }
+    
     .modal-header { padding: 24px 28px 16px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
     .modal-header h3 { font-size: 1.5rem; font-weight: 900; color: var(--primary); margin:0; }
     .btn-close { background: var(--surface-solid); border: 2px solid var(--primary); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; box-shadow: 2px 2px 0px var(--primary); transition: 0.1s; }
@@ -151,19 +163,18 @@
     .form-group input, .form-group textarea { width: 100%; padding: 18px 24px; border: 2px solid var(--primary); border-radius: 20px; background: var(--surface-solid); font-family: 'Inter', sans-serif; margin-bottom: 8px; font-size: 1rem; color: var(--primary); outline: none; }
     /* Tabs protegidas para no achicarse */
     .tabs { display: flex; gap: 6px; margin-bottom: 10px; background: var(--surface-solid); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); overflow-x: auto; white-space: nowrap; flex-shrink: 0; min-height: 52px; }
-    .tab { flex: 1; text-align: center; padding: 12px 16px; border-radius: 100px; cursor: pointer; font-weight: 800; color: var(--text-muted); font-size: 0.95rem; }
+    .tab { flex: 1; text-align: center; padding: 12px 16px; border-radius: 100px; cursor: pointer; font-weight: 800; color: var(--text-muted); font-size: 0.95rem; transition: var(--transition-fast); }
     .tab.active { background: var(--primary); color: var(--surface-solid); }
     .form-section { display: none; }
     .form-section.active { display: block; animation: slideUpFade 0.3s ease forwards; }
     
     /* === WIZARD COMPACTO (UNA SOLA PANTALLA) === */
-    .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding-bottom: 10px; }
+    .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding-bottom: 5px; }
     .wizard-step.active { display: flex; animation: fadeIn 0.3s ease forwards; }
     
     /* Carrusel de Personal */
     .staff-grid { display: flex; overflow-x: auto; gap: 12px; margin-top: 5px; padding-bottom: 8px; width: 100%; -webkit-overflow-scrolling: touch; }
-    .staff-grid::-webkit-scrollbar { height: 6px; }
-    .staff-grid::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+    .staff-grid::-webkit-scrollbar { display: none; }
     .staff-card { min-width: 85px; flex-shrink: 0; background: var(--surface-solid); border: 2px solid var(--primary); border-radius: 16px; padding: 10px 6px; text-align: center; cursor: pointer; transition: 0.2s; }
     .staff-card img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 6px; }
     .staff-card.active { background: var(--primary); color: var(--surface-solid); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
@@ -173,11 +184,11 @@
     .tag-chip { background: var(--surface-solid); border: 2px solid var(--primary); padding: 8px 14px; border-radius: 100px; font-weight: 800; font-size: 0.8rem; cursor: pointer; transition: var(--transition-fast); display: inline-block; color: var(--primary); }
     .tag-chip.active { background: var(--primary); color: var(--surface-solid); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
 
-    .star-rating-picker { font-size: 2.3rem; color: rgba(34, 34, 34, 0.2); display: flex; gap: 8px; margin: 4px 0 14px; }
-    .star-rating-picker i { cursor: pointer; }
-    .star-rating-picker i.active { color: var(--warning); text-shadow: 2px 2px 0px var(--primary); }
-    .rating-row { display: flex; flex-direction: column; align-items: center; width: 100%; border-bottom: 2px solid rgba(34,34,34,0.1); padding-bottom: 4px; }
-    .rating-row label { font-weight: 900; text-transform: uppercase; font-size: 0.9rem; margin-top: 10px; }
+    .star-rating-picker { font-size: 2.3rem; color: rgba(34, 34, 34, 0.2); display: flex; gap: 8px; margin: 2px 0 10px; }
+    .star-rating-picker i { cursor: pointer; transition: 0.2s; }
+    .star-rating-picker i.active { color: var(--warning); text-shadow: 2px 2px 0px var(--primary); transform: scale(1.1); }
+    .rating-row { display: flex; flex-direction: column; align-items: center; width: 100%; border-bottom: 2px solid rgba(34,34,34,0.1); padding-bottom: 2px; }
+    .rating-row label { font-weight: 900; text-transform: uppercase; font-size: 0.9rem; margin-top: 6px; }
     
     .reward-tag { background: var(--surface-solid); color: var(--success); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 900; border: 2px solid var(--primary); margin-left: 8px; box-shadow: 2px 2px 0px var(--primary); }
 
@@ -249,9 +260,9 @@
     <video id="lightbox-video" controls autoplay playsinline onclick="event.stopPropagation()"></video>
   </div>
 
-  <!-- MODAL: LECTOR DE MENÚ PDF (SCROLL NATIVO FLUIDO) -->
+  <!-- MODAL: LECTOR DE MENÚ PDF (ALTURA SEGURA Y SCROLL NATIVO FLUIDO) -->
   <div class="modal-overlay" id="modal-pdf" style="z-index: 7000;">
-    <div class="modal-card" style="height: 98vh; max-height: 98vh; border-radius: 30px 30px 0 0; background: var(--surface-solid);">
+    <div class="modal-card" style="height: 85vh; max-height: 85vh; border-radius: 30px 30px 0 0; background: var(--surface-solid);">
       <div class="modal-header" style="background: var(--surface-solid); padding: 16px 24px;">
         <h3 style="font-size: 1.3rem;">Menú Digital</h3>
         <button class="btn-close" onclick="window.closeModal('modal-pdf')"><i class="fa-solid fa-xmark"></i></button>
@@ -276,6 +287,7 @@
       <div id="drawer-level" style="margin-top:6px; font-weight: 800; color:var(--warning);"></div>
     </div>
 
+    <!-- EL BOTÓN ESTÁ CONECTADO A handleMenuProfile() -->
     <div class="drawer-item" onclick="window.handleMenuProfile()">
       <i class="fa-solid fa-user-circle" style="font-size:1.4rem;"></i> <span id="menu-text-auth">Mi Perfil</span>
     </div>
@@ -413,7 +425,7 @@
           <button class="btn btn-secondary" style="width:100%; margin-top:12px; padding:14px;" onclick="window.nextWizardStep(2)">Continuar</button>
         </div>
 
-        <!-- PASO 2: CALIFICACIONES (Nombres Fijos) -->
+        <!-- PASO 2: CALIFICACIONES GENERALES (Fijas) -->
         <div id="wiz-step-2" class="wizard-step">
           <h4 style="font-size:1.25rem; font-weight:900; text-transform:uppercase;">Califica el servicio <span class="reward-tag">+10 Pts</span></h4>
           
@@ -464,7 +476,7 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="modal-guilt" style="z-index: 6000; align-items: center; background: rgba(34,34,34, 0.8);">
+  <div class="modal-overlay" id="modal-guilt" style="z-index: 6000; align-items: center;">
     <div class="modal-card pop-in" style="max-width: 340px; background: transparent; box-shadow: none; border: none;">
       <div class="modal-body" style="padding: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px; width:100%;">
         <div style="display: flex; flex-direction: column; gap: 14px; width: 100%; background: var(--bg-base); padding: 24px; border-radius: 30px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard-lg);">
@@ -553,14 +565,17 @@
       window.openModal('modal-pdf');
     };
 
-    // === BLINDADO DE APERTURA DE PERFIL ===
+    // === BLINDADO DE APERTURA DE PERFIL CON SETTIMEOUT ===
     window.handleMenuProfile = function() { 
       window.closeDrawerSafe(); 
-      if(window.globalCurrentUser) {
-        window.openMyProfile(); 
-      } else {
-        window.openModal('modal-auth'); 
-      }
+      // Se da un leve margen para evitar conflictos de animación/historial en iOS Safari
+      setTimeout(() => {
+        if(window.globalCurrentUser) {
+          window.openMyProfile(); 
+        } else {
+          window.openModal('modal-auth'); 
+        }
+      }, 150);
     };
 
     window.switchAuthTab = function(tab) { 
@@ -727,17 +742,15 @@
                   if (r.mediaBase64 || r.photoBase64) {
                     const src = r.mediaBase64 || r.photoBase64;
                     const type = r.mediaType || 'image';
-                    if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline class="review-media" onclick="window.openLightbox('${src}', 'video')"></video>`;
-                    else media += `<img src="${src}" class="review-media" onclick="window.openLightbox('${src}', 'image')">`;
+                    if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary); object-fit:cover;" onclick="window.openLightbox('${src}', 'video')"></video>`;
+                    else media += `<img src="${src}" style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary);" onclick="window.openLightbox('${src}', 'image')">`;
                   }
                   const div = document.createElement('div'); div.className = 'review-card slide-up';
                   div.innerHTML = `
-                    <div class="review-header">
-                       <div class="review-author" style="margin-bottom:4px;">${window.escapeHtml(b.name)}</div>
-                       <div style="color:var(--warning); font-size:1rem;">${'<i class="fa-solid fa-star"></i>'.repeat(r.ratingGeneral || 5)}</div>
-                    </div>
-                    ${r.text ? `<div class="review-text-quote" style="margin-top:10px;">${window.escapeHtml(r.text)}</div>` : ''}
-                    <div class="review-media">${media}</div>`;
+                    <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
+                    <div style="color:var(--warning); margin-bottom:8px; font-size:1.1rem;"><i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>
+                    ${r.text ? `<div class="review-text-quote">${window.escapeHtml(r.text)}</div>` : ''}
+                    ${media}`;
                   container.appendChild(div);
                 }
               });
@@ -814,12 +827,10 @@
                 }
                 const div = document.createElement('div'); div.className = 'review-card slide-up'; div.style.animationDelay = `${index * 0.05}s`;
                 div.innerHTML = `
-                  <div class="review-header">
-                     <div class="review-author" style="margin-bottom:4px;">${window.escapeHtml(b.name)}</div>
-                     <div style="color:var(--warning); font-size:1rem;">${'<i class="fa-solid fa-star"></i>'.repeat(r.ratingGeneral || 5)}</div>
-                  </div>
-                  ${r.text ? `<div class="review-text-quote" style="margin-top:10px;">${window.escapeHtml(r.text)}</div>` : ''}
-                  <div class="review-media">${media}</div>`;
+                  <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
+                  <div style="color:var(--warning); margin-bottom:8px; font-size:1.1rem;"><i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>
+                  ${r.text ? `<div class="review-text-quote">${window.escapeHtml(r.text)}</div>` : ''}
+                  ${media}`;
                 container.appendChild(div);
               }
             });
