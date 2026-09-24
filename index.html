@@ -22,7 +22,7 @@
 
       /* Asignación UX/UI con Glassmorphism */
       --bg-base: var(--color-matcha); 
-      --surface: rgba(232, 238, 232, 0.90);
+      --surface: rgba(232, 238, 232, 0.92);
       --surface-solid: #E8EEE8;
       --primary: var(--color-coal); 
       --text-main: var(--color-coal);
@@ -32,6 +32,7 @@
       --danger: #a84646;  
       --warning: var(--color-gold);
       
+      /* Sombras Neo-Brutalistas */
       --shadow-hard: 4px 4px 0px var(--color-coal);
       --shadow-hard-lg: 6px 6px 0px var(--color-coal);
       
@@ -66,7 +67,7 @@
       display: flex; justify-content: flex-end; align-items: center; 
     }
     .btn-icon { 
-      background: var(--surface); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      background: var(--surface); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       border: 2px solid var(--primary); color: var(--primary); 
       width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; 
       cursor: pointer; font-size: 1.3rem; transition: var(--transition-fast); border-radius: 14px; 
@@ -82,7 +83,7 @@
     .hero-title { font-size: 2.8rem; font-weight: 900; color: var(--primary); margin-bottom: 30px; line-height: 1.1; }
     
     .scan-info-box { 
-      background: var(--surface); backdrop-filter: blur(8px); border: 2px solid var(--primary); padding: 24px; 
+      background: var(--surface); backdrop-filter: blur(12px); border: 2px solid var(--primary); padding: 24px; 
       border-radius: 24px; display: flex; align-items: flex-start; gap: 16px; text-align: left; 
       box-shadow: var(--shadow-hard); max-width: 400px; 
     }
@@ -98,7 +99,7 @@
     .gallery-container::-webkit-scrollbar { display: none; }
     .gallery-img { height: 180px; min-width: 150px; width: 150px; object-fit: cover; border-radius: 20px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); scroll-snap-align: start; cursor: pointer; background: var(--surface-solid); }
 
-    .biz-details-box { background: var(--surface); backdrop-filter: blur(8px); border: 2px solid var(--primary); border-radius: 24px; padding: 20px; box-shadow: var(--shadow-hard); margin-bottom: 24px; }
+    .biz-details-box { background: var(--surface); backdrop-filter: blur(12px); border: 2px solid var(--primary); border-radius: 24px; padding: 20px; box-shadow: var(--shadow-hard); margin-bottom: 24px; }
     .biz-desc { font-size: 0.95rem; line-height: 1.5; font-weight: 500; margin-bottom: 16px; color: var(--primary); }
     .biz-hours { font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: var(--text-muted); }
     .social-links { display: flex; gap: 12px; }
@@ -112,31 +113,31 @@
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .section-title { font-size: 1.5rem; font-weight: 900; margin: 32px 0 16px; }
-    .review-card { background: var(--surface); backdrop-filter: blur(6px); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
+    .review-card { background: var(--surface); backdrop-filter: blur(10px); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
     .review-header { display: flex; align-items: center; gap: 14px; cursor: pointer; transition: 0.2s; }
     .review-header:active { opacity: 0.7; }
-    .review-header img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+    .review-header img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); flex-shrink: 0; }
     .review-author { font-weight: 800; font-size: 1.05rem; color: var(--primary); }
     .review-text-quote { font-weight: 500; font-size: 1rem; color: var(--text-main); line-height: 1.5; padding-left: 12px; border-left: 3px solid var(--primary); margin-top: 4px; }
     
     .review-media img, .review-media video { width: 100%; height: 180px; border-radius: 16px; margin-top: 8px; object-fit: cover; border: 2px solid var(--primary); cursor: pointer; background: #000; }
 
     /* === LIGHTBOX MULTIMEDIA === */
-    .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.95); z-index: 8000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; }
+    .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.95); z-index: 8000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; backdrop-filter: blur(10px); }
     .lightbox.active { opacity: 1; }
     .lightbox img, .lightbox video { max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface-solid); display: none; outline: none; }
     .lightbox-close { position: absolute; top: 30px; right: 30px; background: var(--surface-solid); border: 2px solid var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; z-index: 8001; }
 
     /* === DRAWER MENÚ CON BLUR === */
-    .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.4); backdrop-filter: blur(6px); z-index: 5200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.5); backdrop-filter: blur(8px); z-index: 5200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .drawer-overlay.active { opacity: 1; pointer-events: all; }
     .drawer { position: fixed; top: 0; left: -320px; width: 300px; height: 100%; background: rgba(197, 215, 198, 0.95); backdrop-filter: blur(16px); z-index: 5300; transition: left 0.4s var(--spring); display: flex; flex-direction: column; padding: 30px 24px; border-right: 2px solid var(--primary); box-shadow: var(--shadow-hard-lg); }
     .drawer.active { left: 0; } 
     .drawer-item { padding: 16px; border-radius: 16px; font-weight: 800; display: flex; align-items: center; gap: 14px; color: var(--primary); cursor: pointer; font-size: 1.05rem; transition: var(--transition-fast); border: 2px solid transparent; }
     .drawer-item:active { background: var(--surface); border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
 
-    /* === MODALES === */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.5); backdrop-filter: blur(8px); z-index: 5000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+    /* === MODALES (BLUR Y AJUSTES) === */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.6); backdrop-filter: blur(10px); z-index: 5000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
     .modal-card { width: 100%; max-height: 92vh; border-radius: 36px 36px 0 0; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.5s var(--spring); background: var(--bg-base); border-top: 2px solid var(--primary); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); }
     .modal-overlay.active .modal-card { transform: translateY(0); }
@@ -146,37 +147,46 @@
     .btn-close:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--primary); }
     .modal-body { padding: 0 28px 34px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
 
-    /* === CHIPS / BOTONES DE PERSONALIDAD === */
-    .staff-tags-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; justify-content: center; }
-    .tag-chip { background: var(--surface-solid); border: 2px solid var(--primary); padding: 8px 14px; border-radius: 100px; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: var(--transition-fast); display: inline-block; color: var(--primary); }
-    .tag-chip.active { background: var(--primary); color: var(--surface-solid); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
-
-    /* === FORMULARIOS Y TABS === */
+    /* === FORMULARIOS Y TABS A PRUEBA DE BUGS === */
     .form-group input, .form-group textarea { width: 100%; padding: 18px 24px; border: 2px solid var(--primary); border-radius: 20px; background: var(--surface-solid); font-family: 'Inter', sans-serif; margin-bottom: 8px; font-size: 1rem; color: var(--primary); outline: none; }
-    .tabs { display: flex; gap: 6px; margin-bottom: 10px; background: var(--surface-solid); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); overflow-x: auto; white-space: nowrap; }
+    /* Tabs protegidas para no achicarse */
+    .tabs { display: flex; gap: 6px; margin-bottom: 10px; background: var(--surface-solid); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); overflow-x: auto; white-space: nowrap; flex-shrink: 0; min-height: 52px; }
     .tab { flex: 1; text-align: center; padding: 12px 16px; border-radius: 100px; cursor: pointer; font-weight: 800; color: var(--text-muted); font-size: 0.95rem; }
     .tab.active { background: var(--primary); color: var(--surface-solid); }
     .form-section { display: none; }
     .form-section.active { display: block; animation: slideUpFade 0.3s ease forwards; }
     
-    .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+    /* === WIZARD COMPACTO (UNA SOLA PANTALLA) === */
+    .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding-bottom: 10px; }
     .wizard-step.active { display: flex; animation: fadeIn 0.3s ease forwards; }
-    .staff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
-    .staff-card { background: var(--surface-solid); border: 2px solid var(--primary); border-radius: 16px; padding: 12px 8px; text-align: center; cursor: pointer; transition: 0.2s; }
-    .staff-card img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 6px; }
+    
+    /* Carrusel de Personal */
+    .staff-grid { display: flex; overflow-x: auto; gap: 12px; margin-top: 5px; padding-bottom: 8px; width: 100%; -webkit-overflow-scrolling: touch; }
+    .staff-grid::-webkit-scrollbar { height: 6px; }
+    .staff-grid::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+    .staff-card { min-width: 85px; flex-shrink: 0; background: var(--surface-solid); border: 2px solid var(--primary); border-radius: 16px; padding: 10px 6px; text-align: center; cursor: pointer; transition: 0.2s; }
+    .staff-card img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 6px; }
     .staff-card.active { background: var(--primary); color: var(--surface-solid); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
-    .star-rating-picker { font-size: 2.5rem; color: rgba(34, 34, 34, 0.2); display: flex; gap: 8px; margin: 10px 0 20px; }
+    
+    /* Chips de Actitud Sin Emojis */
+    .staff-tags-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; justify-content: center; }
+    .tag-chip { background: var(--surface-solid); border: 2px solid var(--primary); padding: 8px 14px; border-radius: 100px; font-weight: 800; font-size: 0.8rem; cursor: pointer; transition: var(--transition-fast); display: inline-block; color: var(--primary); }
+    .tag-chip.active { background: var(--primary); color: var(--surface-solid); box-shadow: var(--shadow-hard); transform: translateY(-2px); }
+
+    .star-rating-picker { font-size: 2.3rem; color: rgba(34, 34, 34, 0.2); display: flex; gap: 8px; margin: 4px 0 14px; }
     .star-rating-picker i { cursor: pointer; }
     .star-rating-picker i.active { color: var(--warning); text-shadow: 2px 2px 0px var(--primary); }
-    .rating-row { display: flex; flex-direction: column; align-items: center; width: 100%; border-bottom: 2px solid rgba(34,34,34,0.1); padding-bottom: 10px; }
+    .rating-row { display: flex; flex-direction: column; align-items: center; width: 100%; border-bottom: 2px solid rgba(34,34,34,0.1); padding-bottom: 4px; }
     .rating-row label { font-weight: 900; text-transform: uppercase; font-size: 0.9rem; margin-top: 10px; }
+    
     .reward-tag { background: var(--surface-solid); color: var(--success); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 900; border: 2px solid var(--primary); margin-left: 8px; box-shadow: 2px 2px 0px var(--primary); }
 
-    /* Perfiles / Amigos */
+    /* Perfiles / Puntos / Amigos */
     .points-row { display: flex; justify-content: space-between; padding: 16px; border-bottom: 2px dashed var(--primary); font-weight: 800; font-size: 0.95rem; }
     .points-row:last-child { border-bottom: none; }
     .friend-card { display: flex; align-items: center; gap: 14px; padding: 14px; border: 2px solid var(--primary); border-radius: 16px; margin-bottom: 12px; cursor: pointer; background: var(--surface-solid); transition: var(--transition-fast); }
     .friend-card:active { transform: translateY(2px); box-shadow: var(--shadow-hard); }
+    .prof-stats-box { background: var(--surface-solid); padding: 24px; border-radius: 28px; margin-bottom: 20px; display: flex; justify-content: space-around; text-align: center; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); flex-shrink: 0; }
 
     /* Toast */
     .toast { position: fixed; top: 90px; left: 50%; transform: translate(-50%, -150px); background: var(--surface-solid); color: var(--primary); padding: 16px 28px; border-radius: 100px; z-index: 10000; font-weight: 900; transition: transform 0.4s var(--spring); font-size: 1rem; white-space: nowrap; display: flex; align-items: center; gap: 12px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
@@ -236,17 +246,16 @@
   <div class="lightbox" id="lightbox" onclick="window.closeLightbox(event)">
     <button class="lightbox-close" onclick="window.closeLightbox(event)"><i class="fa-solid fa-xmark"></i></button>
     <img id="lightbox-img" src="" onclick="event.stopPropagation()">
-    <video id="lightbox-video" controls autoplay playsinline style="max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface-solid); display:none;" onclick="event.stopPropagation()"></video>
+    <video id="lightbox-video" controls autoplay playsinline onclick="event.stopPropagation()"></video>
   </div>
 
-  <!-- MODAL: LECTOR DE MENÚ PDF (SCROLL COMPLETO CORREGIDO) -->
+  <!-- MODAL: LECTOR DE MENÚ PDF (SCROLL NATIVO FLUIDO) -->
   <div class="modal-overlay" id="modal-pdf" style="z-index: 7000;">
     <div class="modal-card" style="height: 98vh; max-height: 98vh; border-radius: 30px 30px 0 0; background: var(--surface-solid);">
       <div class="modal-header" style="background: var(--surface-solid); padding: 16px 24px;">
         <h3 style="font-size: 1.3rem;">Menú Digital</h3>
         <button class="btn-close" onclick="window.closeModal('modal-pdf')"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <!-- Cuerpo con Scroll Nativo Absoluto -->
       <div class="modal-body" style="padding: 0; flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; background: #fff;">
         <iframe id="pdf-frame" style="width:100%; height:100%; min-height: 100vh; border:none; display:block;"></iframe>
       </div>
@@ -275,7 +284,7 @@
     </div>
   </div>
 
-  <!-- MODAL: MI PERFIL (CORREGIDO Y BLINDADO) -->
+  <!-- MODAL: MI PERFIL (CORREGIDO PARA NO COLAPSAR PESTAÑAS Y ESTRELLAS) -->
   <div class="modal-overlay" id="modal-profile" style="z-index: 5400;">
     <div class="modal-card">
       <div class="modal-header">
@@ -284,7 +293,7 @@
       </div>
       <div class="modal-body">
         
-        <div class="slide-up" style="background: var(--surface-solid); padding: 28px; border-radius: 28px; margin-bottom: 20px; display: flex; justify-content: space-around; text-align: center; border: 2px solid var(--primary); box-shadow: var(--shadow-hard);">
+        <div class="prof-stats-box slide-up">
           <div style="flex:1;">
             <div style="font-size: 2.4rem; font-family:'Plus Jakarta Sans'; font-weight: 900; line-height: 1;" id="prof-points">0</div>
             <div style="font-size: 0.8rem; text-transform: uppercase; margin-top: 8px; font-weight: 900;">Puntos Totales</div>
@@ -321,12 +330,12 @@
   <div class="modal-overlay" id="modal-public-profile" style="z-index: 6500;">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Perfil</h3>
+        <h3>Perfil Público</h3>
         <button class="btn-close" onclick="window.closeModal('modal-public-profile')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body" style="text-align: center;">
         <img id="pub-avatar" class="user-avatar" style="width:100px; height:100px; margin:0 auto 10px; border-width: 3px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
-        <h2 id="pub-name" style="font-weight:900; font-size:1.8rem;"></h2>
+        <h2 id="pub-name" style="font-weight:900; font-size:1.8rem; margin-bottom: 5px;"></h2>
         <div id="pub-level" style="font-weight:800; margin-bottom: 20px; font-size:1rem;"></div>
         
         <button id="btn-follow" class="btn btn-secondary" style="width:100%; margin-bottom:24px;"></button>
@@ -371,7 +380,7 @@
     </div>
   </div>
 
-  <!-- MODAL: WIZARD DE EXPERIENCIA (PERSONAL PRIMERO CON CHIPS) -->
+  <!-- MODAL: WIZARD DE EXPERIENCIA (COMPACTO Y ORDENADO) -->
   <div class="modal-overlay" id="modal-wizard" style="z-index: 5600;">
     <div class="modal-card">
       <div class="modal-header" style="align-items:flex-start; padding-bottom:10px;">
@@ -382,34 +391,34 @@
         <button class="btn-close" onclick="window.closeModal('modal-wizard')"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body" style="padding-bottom: 20px;">
         
         <!-- PASO 1: RECONOCER AL PERSONAL + BOTONES CHIPS -->
         <div id="wiz-step-1" class="wizard-step active">
-          <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">¿Puedes reconocer a quien te atendió?</h4>
-          <p style="font-size:0.95rem; font-weight:600; color:var(--text-muted); margin-top:-8px;">Toca la foto de tu mesero/a</p>
-          <div class="staff-grid" id="wiz-staff-list"></div>
-          <button class="btn btn-primary" style="margin-top:10px;" onclick="window.selectStaff('none', 'Personal')">No sé / Otro</button>
+          <h4 style="font-size:1.15rem; font-weight:900; text-transform:uppercase; margin-bottom:4px;">¿Reconoces a quien te atendió?</h4>
           
-          <div style="width:100%; margin-top:15px;">
-            <label style="font-size:0.85rem; font-weight:800; text-transform:uppercase; display:block; margin-bottom:8px;">¿Cómo describirías su atención?</label>
+          <div class="staff-grid" id="wiz-staff-list"></div>
+          <button class="btn btn-primary btn-sm" style="margin-top:6px; padding: 10px 16px; font-size:0.9rem;" onclick="window.selectStaff('none', 'Personal')">No sé / Otro</button>
+          
+          <div style="width:100%; margin-top:12px;">
+            <label style="font-size:0.8rem; font-weight:800; text-transform:uppercase; display:block; margin-bottom:6px;">¿Cómo fue su trato?</label>
             <div class="staff-tags-grid">
-              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Amable')">Amable 😊</span>
-              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Atento')">Atento 🎯</span>
-              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Respetuoso')">Respetuoso 🎩</span>
-              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Rápido')">Rápido ⚡</span>
-              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Simpático')">Simpático 🙌</span>
+              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Amable')">Amable</span>
+              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Atento')">Atento</span>
+              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Respetuoso')">Respetuoso</span>
+              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Rápido')">Rápido</span>
+              <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Simpático')">Simpático</span>
             </div>
           </div>
-          <button class="btn btn-secondary" style="width:100%; margin-top:15px;" onclick="window.nextWizardStep(2)">Siguiente</button>
+          <button class="btn btn-secondary" style="width:100%; margin-top:12px; padding:14px;" onclick="window.nextWizardStep(2)">Continuar</button>
         </div>
 
-        <!-- PASO 2: CALIFICACIONES (Estrellas) -->
+        <!-- PASO 2: CALIFICACIONES (Nombres Fijos) -->
         <div id="wiz-step-2" class="wizard-step">
-          <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Califica el servicio <span class="reward-tag">+10 Pts</span></h4>
+          <h4 style="font-size:1.25rem; font-weight:900; text-transform:uppercase;">Califica el servicio <span class="reward-tag">+10 Pts</span></h4>
           
           <div class="rating-row">
-            <label id="label-star-staff">Atención de la persona</label>
+            <label>Atención del Personal</label>
             <div class="star-rating-picker" id="star-staff"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
           </div>
           <div class="rating-row">
@@ -427,7 +436,6 @@
           </div>
         </div>
 
-        <!-- PASO 3: COMIDA Y TEXTO -->
         <div id="wiz-step-3" class="wizard-step">
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Detalles <span class="reward-tag">+20 Pts</span></h4>
           <div class="form-group" style="width:100%;">
@@ -440,7 +448,6 @@
           </div>
         </div>
 
-        <!-- PASO 4: FOTO / VIDEO -->
         <div id="wiz-step-4" class="wizard-step">
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Foto / Video Corto <span class="reward-tag">+30 Pts</span></h4>
           <img id="wiz-photo-preview" style="width:100%; max-height:200px; border-radius:20px; display:none; margin-bottom:14px; object-fit:cover; border: 2px solid var(--primary);">
@@ -720,15 +727,17 @@
                   if (r.mediaBase64 || r.photoBase64) {
                     const src = r.mediaBase64 || r.photoBase64;
                     const type = r.mediaType || 'image';
-                    if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary); object-fit:cover;" onclick="window.openLightbox('${src}', 'video')"></video>`;
-                    else media += `<img src="${src}" style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary);" onclick="window.openLightbox('${src}', 'image')">`;
+                    if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline class="review-media" onclick="window.openLightbox('${src}', 'video')"></video>`;
+                    else media += `<img src="${src}" class="review-media" onclick="window.openLightbox('${src}', 'image')">`;
                   }
                   const div = document.createElement('div'); div.className = 'review-card slide-up';
                   div.innerHTML = `
-                    <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
-                    <div style="color:var(--warning); margin-bottom:8px; font-size:1.1rem;"><i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>
-                    ${r.text ? `<div class="review-text-quote">${window.escapeHtml(r.text)}</div>` : ''}
-                    ${media}`;
+                    <div class="review-header">
+                       <div class="review-author" style="margin-bottom:4px;">${window.escapeHtml(b.name)}</div>
+                       <div style="color:var(--warning); font-size:1rem;">${'<i class="fa-solid fa-star"></i>'.repeat(r.ratingGeneral || 5)}</div>
+                    </div>
+                    ${r.text ? `<div class="review-text-quote" style="margin-top:10px;">${window.escapeHtml(r.text)}</div>` : ''}
+                    <div class="review-media">${media}</div>`;
                   container.appendChild(div);
                 }
               });
@@ -800,15 +809,17 @@
                 if (r.mediaBase64 || r.photoBase64) {
                   const src = r.mediaBase64 || r.photoBase64;
                   const type = r.mediaType || 'image';
-                  if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary); object-fit:cover;"></video>`;
-                  else media += `<img src="${src}" style="width:100%; border-radius:16px; margin-top:10px; border:2px solid var(--primary);" onclick="window.openLightbox('${src}', 'image')">`;
+                  if (type === 'video') media += `<video src="${src}" autoplay loop muted playsinline class="review-media" onclick="window.openLightbox('${src}', 'video')"></video>`;
+                  else media += `<img src="${src}" class="review-media" onclick="window.openLightbox('${src}', 'image')">`;
                 }
                 const div = document.createElement('div'); div.className = 'review-card slide-up'; div.style.animationDelay = `${index * 0.05}s`;
                 div.innerHTML = `
-                  <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
-                  <div style="color:var(--warning); margin-bottom:8px; font-size:1.1rem;"><i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>
-                  ${r.text ? `<div class="review-text-quote">${window.escapeHtml(r.text)}</div>` : ''}
-                  ${media}`;
+                  <div class="review-header">
+                     <div class="review-author" style="margin-bottom:4px;">${window.escapeHtml(b.name)}</div>
+                     <div style="color:var(--warning); font-size:1rem;">${'<i class="fa-solid fa-star"></i>'.repeat(r.ratingGeneral || 5)}</div>
+                  </div>
+                  ${r.text ? `<div class="review-text-quote" style="margin-top:10px;">${window.escapeHtml(r.text)}</div>` : ''}
+                  <div class="review-media">${media}</div>`;
                 container.appendChild(div);
               }
             });
@@ -903,7 +914,7 @@
       });
     }
 
-    /* === WIZARD DE RESEÑAS (PERSONAL PRIMERO CON CHIPS) === */
+    /* === WIZARD DE RESEÑAS === */
     window.startReviewWizard = function() {
       if (!window.globalCurrentUser) { window.showToast("Inicia sesión para calificar", "fa-user-lock"); return window.openModal('modal-auth'); }
       const biz = allBusinesses[selectedBizId]; if(!biz) return;
@@ -917,7 +928,6 @@
       document.getElementById('wiz-photo-preview').style.display = 'none';
       document.getElementById('wiz-video-preview').style.display = 'none';
       uploadedMediaType = null; uploadedMediaB64 = null;
-      document.getElementById('label-star-staff').innerText = "Atención del Personal";
 
       const staffContainer = document.getElementById('wiz-staff-list'); staffContainer.innerHTML = "";
       if (biz && biz.staff) {
@@ -931,7 +941,7 @@
               ${sRole}
             </div>`;
         });
-      } else { staffContainer.innerHTML = "<p style='grid-column:1/-1; font-size:0.9rem; color:var(--text-muted); font-weight:600;'>No hay personal registrado.</p>"; }
+      } else { staffContainer.innerHTML = "<p style='min-width:100%; font-size:0.9rem; color:var(--text-muted); font-weight:600;'>No hay personal registrado.</p>"; }
 
       window.updateUserPointsDisplay();
       window.nextWizardStep(1); window.openModal('modal-wizard');
@@ -942,10 +952,8 @@
       if(id !== 'none') {
         const card = document.getElementById('staff-card-'+id); if(card) card.classList.add('active');
         wizStaffId = id; wizStaffName = name;
-        document.getElementById('label-star-staff').innerText = "Atención de " + name;
       } else { 
         wizStaffId = 'none'; wizStaffName = 'Otro / No especificado'; 
-        document.getElementById('label-star-staff').innerText = "Atención del Personal";
       }
     };
 
@@ -996,8 +1004,9 @@
       } 
       pendingSkipStep = null;
     };
-    window.tryNextStepText = function() { if (document.getElementById('wiz-text').value.trim() === '') window.trySkipWizard(4, 20, 'tu opinión'); else window.nextWizardStep(4); };
+    window.tryNextStepText = function() { if (document.getElementById('wiz-text').value.trim() === '') window.trySkipWizard(4, 20, 'tu opinión escrita'); else window.nextWizardStep(4); };
     
+    // MEDIA COMPRESOR Y VALIDACION
     window.previewWizMedia = function(e) { 
       if(e.target.files.length > 0) { 
         const file = e.target.files[0];
@@ -1033,8 +1042,7 @@
     };
 
     window.processSubmitReview = async function() {
-      const foodName = document.getElementById('wiz-food-name').value.trim(); 
-      const text = document.getElementById('wiz-text').value.trim(); 
+      const foodName = document.getElementById('wiz-food-name').value.trim(); const text = document.getElementById('wiz-text').value.trim(); 
       const btn = document.getElementById('btn-wiz-submit'); btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando...`;
       try {
         let isGpsVerified = true; 
