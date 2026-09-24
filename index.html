@@ -32,13 +32,13 @@
       --danger: #a84646;  
       --warning: var(--color-gold);
       
-      /* Sombras Neo-Brutalistas */
+      /* Sombras Neo-Brutalistas Dinámicas */
       --shadow-hard: 4px 4px 0px var(--color-coal);
       --shadow-hard-lg: 6px 6px 0px var(--color-coal);
       --shadow-float: 0 12px 30px rgba(34, 34, 34, 0.15);
       
       --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      --transition-fast: all 0.3s var(--spring);
+      --transition-fast: all 0.25s var(--spring);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
@@ -49,7 +49,7 @@
     @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
     @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
     @keyframes floatElement { 0% { transform: translateY(0px); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0px); } }
-    @keyframes pulseSoft { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+    @keyframes starPulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); filter: brightness(1.2); } 100% { transform: scale(1.15); } }
     
     .fade-in { animation: fadeIn 0.4s ease-out forwards; }
     .slide-up { animation: slideUpFade 0.5s ease-out forwards; opacity: 0; }
@@ -66,7 +66,7 @@
     .spinner-large { font-size: 3.5rem; color: var(--primary); animation: spin 1s linear infinite; margin-bottom: 20px; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    /* === HEADER CON BLUR === */
+    /* === HEADER === */
     .top-header { 
       position: fixed; top: 20px; right: 20px; z-index: 4000; 
       display: flex; justify-content: flex-end; align-items: center; 
@@ -145,13 +145,14 @@
     .lightbox-close { position: absolute; top: 30px; right: 30px; background: var(--surface-solid); border: 2px solid var(--primary); width: 48px; height: 48px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.4rem; cursor: pointer; z-index: 8001; transition: var(--transition-fast); }
     .lightbox-close:active { transform: scale(0.85); }
 
-    /* === LECTOR DE MENÚ PDF (VISOR NATIVO PERFECTO) === */
+    /* === LECTOR DE MENÚ PDF (VISOR PERFECTO MULTI-PÁGINA) === */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 5000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
     
-    /* Ajuste para que el PDF se vea igual a la foto sin cortes */
     #modal-pdf .modal-card { height: 90vh; max-height: 90vh; border-radius: 30px 30px 0 0; display: flex; flex-direction: column; overflow: hidden; }
     #modal-pdf .modal-body { padding: 0 !important; flex: 1; position: relative; background: #fff; -webkit-overflow-scrolling: touch; overflow-y: auto; }
+    
+    /* El Iframe Absoluto evita que iOS Safari lo estire al 1000% y corte las hojas */
     #pdf-frame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; display: block; }
 
     /* === DRAWER MENÚ === */
@@ -181,15 +182,22 @@
     .form-section { display: none; }
     .form-section.active { display: block; animation: slideUpFade 0.3s ease forwards; }
     
-    /* === WIZARD Y CALIFICACIÓN INDIVIDUAL === */
+    /* === WIZARD Y CALIFICACIÓN INDIVIDUAL DE PERSONAL (ESTILO IMAGEN 3) === */
     .wizard-step { display: none; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding-bottom: 5px; }
     .wizard-step.active { display: flex; animation: fadeIn 0.4s ease forwards; }
     
-    .staff-grid { display: flex; overflow-x: auto; gap: 12px; margin-top: 5px; padding-bottom: 12px; width: 100%; -webkit-overflow-scrolling: touch; }
-    .staff-grid::-webkit-scrollbar { display: none; }
-    .staff-card { min-width: 95px; flex-shrink: 0; background: var(--surface-solid); border: 2px solid var(--primary); border-radius: 20px; padding: 12px 8px; text-align: center; cursor: pointer; transition: var(--transition-fast); }
-    .staff-card img { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); margin-bottom: 8px; }
-    .staff-card.active { background: var(--primary); color: var(--surface-solid); box-shadow: var(--shadow-hard); transform: translateY(-4px); }
+    .staff-list-vertical { display: flex; flex-direction: column; gap: 14px; width: 100%; margin-top: 5px; margin-bottom: 16px; }
+    .staff-row-item { display: flex; align-items: center; justify-content: flex-start; gap: 16px; background: transparent; padding: 4px 0; }
+    .staff-info { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 90px; background: var(--surface-solid); padding: 12px; border-radius: 20px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); transition: var(--transition-fast); }
+    .staff-info:hover { transform: translateY(-2px); box-shadow: var(--shadow-hard-lg); }
+    .staff-info img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+    .staff-info-name { font-weight: 900; font-size: 0.85rem; color: var(--primary); text-align: center; word-break: break-word; }
+    
+    /* Las Estrellas al lado del Mozo */
+    .staff-stars-inline { display: flex; gap: 6px; font-size: 2.2rem; color: rgba(34, 34, 34, 0.15); align-items: center; }
+    .staff-stars-inline i { cursor: pointer; transition: var(--transition-fast); }
+    .staff-stars-inline i:active { transform: scale(0.8); }
+    .staff-stars-inline i.active { color: var(--warning); text-shadow: 2px 2px 0px var(--primary); animation: starPulse 0.4s var(--spring) forwards; }
     
     .staff-tags-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; justify-content: center; }
     .tag-chip { background: var(--surface-solid); border: 2px solid var(--primary); padding: 10px 16px; border-radius: 100px; font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: var(--transition-fast); display: inline-block; color: var(--primary); }
@@ -197,7 +205,8 @@
 
     .star-rating-picker { font-size: 2.6rem; color: rgba(34, 34, 34, 0.15); display: flex; gap: 10px; margin: 4px 0 14px; }
     .star-rating-picker i { cursor: pointer; transition: var(--transition-fast); }
-    .star-rating-picker i.active { color: var(--warning); text-shadow: 2px 2px 0px var(--primary); transform: scale(1.15); }
+    .star-rating-picker i:active { transform: scale(0.8); }
+    .star-rating-picker i.active { color: var(--warning); text-shadow: 2px 2px 0px var(--primary); animation: starPulse 0.4s var(--spring) forwards; }
     .rating-row { display: flex; flex-direction: column; align-items: center; width: 100%; border-bottom: 2px dashed rgba(34,34,34,0.15); padding-bottom: 16px; margin-bottom: 12px; }
     .rating-row:last-child { border-bottom: none; }
     .rating-row label { font-weight: 900; text-transform: uppercase; font-size: 0.95rem; margin-top: 8px; color: var(--primary); }
@@ -219,7 +228,7 @@
   <!-- LOADER GIRATORIO -->
   <div class="global-loader" id="global-loader">
     <i class="fa-solid fa-circle-notch spinner-large"></i>
-    <h2 style="color:var(--primary); font-family:'Plus Jakarta Sans'; font-weight:900;">Cargando experiencia...</h2>
+    <h2 style="color:var(--primary); font-family:'Plus Jakarta Sans'; font-weight:900;">Preparando...</h2>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -251,7 +260,7 @@
       <div class="social-links" id="biz-social-main"></div>
     </div>
 
-    <!-- BOTÓN MENÚ PDF -->
+    <!-- BOTÓN MENÚ PDF (SÓLO APARECE SI HAY MENÚ) -->
     <button id="biz-menu-btn" class="btn btn-primary" style="display:none;">
       <i class="fa-solid fa-file-pdf"></i> VER MENÚ DIGITAL
     </button>
@@ -270,7 +279,7 @@
     <video id="lightbox-video" controls autoplay playsinline onclick="event.stopPropagation()"></video>
   </div>
 
-  <!-- MODAL: LECTOR DE MENÚ PDF (SCROLL PERFECTO NATIVO) -->
+  <!-- MODAL: LECTOR DE MENÚ PDF (FORZADO A GOOGLE DOCS VIEWER PARA SCROLL PERFECTO) -->
   <div class="modal-overlay" id="modal-pdf" style="z-index: 7000;">
     <div class="modal-card">
       <div class="modal-header" style="background: var(--surface-solid); padding: 16px 24px; z-index: 10; border-bottom: 2px solid var(--primary);">
@@ -281,6 +290,7 @@
         </div>
       </div>
       <div class="modal-body">
+        <!-- El iframe con position absolute permite el scroll sin que iOS lo aplane y corte -->
         <iframe id="pdf-frame" title="Menu PDF"></iframe>
       </div>
     </div>
@@ -404,7 +414,7 @@
     </div>
   </div>
 
-  <!-- MODAL: WIZARD DE EXPERIENCIA (NUEVO SISTEMA STAFF) -->
+  <!-- MODAL: WIZARD DE EXPERIENCIA (NUEVO SISTEMA DE ESTRELLAS INDIVIDUALES POR MOZO) -->
   <div class="modal-overlay" id="modal-wizard" style="z-index: 5600;">
     <div class="modal-card">
       <div class="modal-header" style="align-items:flex-start; padding-bottom:10px;">
@@ -417,17 +427,18 @@
 
       <div class="modal-body" style="padding-bottom: 20px;">
         
-        <!-- PASO 1: SELECCIÓN MÚLTIPLE DE PERSONAL -->
+        <!-- PASO 1: SELECCIÓN Y CALIFICACIÓN DE MÚLTIPLES EMPLEADOS -->
         <div id="wiz-step-1" class="wizard-step active">
           <h4 style="font-size:1.2rem; font-weight:900; text-transform:uppercase; margin-bottom:4px;">¿Quién te atendió?</h4>
-          <p style="font-size:0.9rem; font-weight:700; color:var(--text-muted); margin-top:-4px;">Puedes seleccionar a más de uno</p>
+          <p style="font-size:0.9rem; font-weight:700; color:var(--text-muted); margin-top:-4px;">Puedes calificar a más de uno</p>
           
+          <!-- Lista Vertical con foto y estrellas al lado (Tipo Imagen 3) -->
           <div id="wiz-staff-list" style="width: 100%; margin-bottom: 10px;"></div>
           
-          <button class="btn btn-primary btn-sm" id="staff-card-none" style="margin-top:6px; padding: 14px 20px; font-size:0.95rem;" onclick="window.toggleStaff('none', 'Personal General', '')">No sé / Otro</button>
+          <button class="btn btn-primary btn-sm" id="staff-card-none" style="margin-top:6px; padding: 14px 20px; font-size:0.95rem; background:transparent;" onclick="window.selectStaffNone()">No sé / Otro</button>
           
           <div style="width:100%; margin-top:20px; border-top: 2px dashed rgba(34,34,34,0.15); padding-top: 20px;">
-            <label style="font-size:0.9rem; font-weight:900; text-transform:uppercase; display:block; margin-bottom:10px;">¿Cómo fue su actitud en general?</label>
+            <label style="font-size:0.9rem; font-weight:900; text-transform:uppercase; display:block; margin-bottom:10px;">¿Cómo fue el trato en general?</label>
             <div class="staff-tags-grid">
               <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Amable')">Amable</span>
               <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Atento')">Atento</span>
@@ -436,17 +447,13 @@
               <span class="tag-chip" onclick="window.toggleStaffTag(this, 'Simpático')">Simpático</span>
             </div>
           </div>
-          <button class="btn btn-secondary" style="width:100%; margin-top:20px; padding:18px;" onclick="window.prepareStep2()">Continuar</button>
+          <button class="btn btn-secondary" style="width:100%; margin-top:20px; padding:18px;" onclick="window.nextWizardStep(2)">Continuar</button>
         </div>
 
-        <!-- PASO 2: CALIFICACIONES (ESTRELLAS INDIVIDUALES) -->
+        <!-- PASO 2: CALIFICACIONES (COMIDA Y GENERAL) -->
         <div id="wiz-step-2" class="wizard-step">
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Califica el servicio <span class="reward-tag">+10 Pts</span></h4>
           
-          <div id="dynamic-staff-ratings" style="width: 100%;">
-             <!-- Aquí se inyectan las estrellas por cada empleado seleccionado -->
-          </div>
-
           <div class="rating-row">
             <label>Calidad de la Comida</label>
             <div class="star-rating-picker" id="star-food"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
@@ -544,7 +551,7 @@
       if(lb) { lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 300); }
     });
 
-    // === LIGHTBOX MULTIMEDIA (FOTOS / VIDEOS) ===
+    // === LIGHTBOX MULTIMEDIA ===
     window.openLightbox = function(src, type = 'image') { 
       const lb = document.getElementById('lightbox');
       const imgEl = document.getElementById('lightbox-img');
@@ -570,15 +577,19 @@
       if (window.location.hash === '#lightbox') history.back();
     };
 
-    // VISOR PDF NATIVO DIRECTO AL SRC
+    // === VISOR PDF NATIVO MULTIPAGINA (Docs Viewer Fallback para móviles) ===
     window.openPdfViewer = function(url) {
       const iframe = document.getElementById('pdf-frame');
       const extLinkBtn = document.getElementById('pdf-ext-link');
       
-      // Se carga la url directa en el iframe para que el navegador mobile lo interprete nativamente
-      iframe.src = url;
-      if(extLinkBtn) extLinkBtn.href = url;
+      // El visor embebido de Google Docs soluciona el problema de iOS que sólo renderiza 1 página
+      if (url.toLowerCase().endsWith('.pdf') || url.includes('.pdf')) {
+        iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
+      } else {
+        iframe.src = url;
+      }
       
+      if(extLinkBtn) extLinkBtn.href = url;
       window.openModal('modal-pdf');
     };
 
@@ -627,9 +638,7 @@
       authDomain: "the-pic-c437e.firebaseapp.com",
       databaseURL: "https://the-pic-c437e-default-rtdb.firebaseio.com",
       projectId: "the-pic-c437e",
-      storageBucket: "the-pic-c437e.appspot.com",
-      messagingSenderId: "750954597180",
-      appId: "1:750954597180:web:fc586d73d852ed5e17ec39"
+      storageBucket: "the-pic-c437e.appspot.com"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -641,10 +650,10 @@
     let allBusinesses = {}; 
     let selectedBizId = null;
 
-    // ESTADO PARA STAFF MULTIPLE
-    let selectedStaffList = {}; // Guarda multiples empleados {id: {name, photo, rating}}
+    // ESTADO PARA STAFF MULTIPLE INDIVIDUAL
+    let selectedStaffList = {}; 
     let selectedStaffTags = [];
-    let wRatings = { general: 0, food: 0 }; // staff se maneja individualmente ahora
+    let wRatings = { general: 0, food: 0 }; 
     let pendingSkipStep = null;
 
     let uploadedMediaType = null;
@@ -889,6 +898,8 @@
       }
       
       const menuBtn = document.getElementById('biz-menu-btn');
+      
+      // Abre el menú sin saltar automáticamente
       if(biz.menu && biz.menu.trim() !== '') {
         menuBtn.style.display = 'inline-flex';
         menuBtn.onclick = () => window.openPdfViewer(biz.menu);
@@ -916,25 +927,19 @@
           }
         }
         
-        let starsHtml = `<div style="color:var(--warning); font-size:1.1rem; margin-top:4px;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>`;
+        let starsHtml = `<div style="color:var(--warning); font-size:1rem; margin-top:4px;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>`;
         let detailsHtml = "";
         if(r.foodName) detailsHtml += `<div style="font-size:0.9rem; color:var(--primary); font-weight:800; margin-top:8px;"><i class="fa-solid fa-utensils"></i> Pidió: ${window.escapeHtml(r.foodName)}</div>`;
         
         let staffInfo = "";
-        // Nuevo Render para Personal con Estrellas Multiples
         if(r.staffRated && r.staffRated.length > 0) {
             r.staffRated.forEach(st => {
                 let sStars = `<span style="color:var(--warning); font-size:0.8rem; margin-left:6px;">` + `<i class="fa-solid fa-star"></i>`.repeat(st.rating || 5) + `</span>`;
                 staffInfo += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:6px; display:flex; align-items:center;">
-                  <img src="${st.photo}" style="width:20px; height:20px; border-radius:50%; margin-right:6px; border:1px solid var(--primary); object-fit:cover;"> 
-                  Atendido por: ${window.escapeHtml(st.name)} ${sStars}
+                  <img src="${st.photo}" style="width:24px; height:24px; border-radius:50%; margin-right:8px; border:1px solid var(--primary); object-fit:cover;"> 
+                  ${window.escapeHtml(st.name)} ${sStars}
                 </div>`;
             });
-        } 
-        // Soporte para reseñas antiguas
-        else if(r.staffName) {
-          let tagsStr = r.staffTags && r.staffTags.length > 0 ? ` (${r.staffTags.join(', ')})` : '';
-          staffInfo += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:6px;"><i class="fa-solid fa-user-tag"></i> Atendido por: ${window.escapeHtml(r.staffName)}${tagsStr}</div>`;
         }
 
         container.innerHTML += `
@@ -954,7 +959,7 @@
       });
     }
 
-    /* === WIZARD DE RESEÑAS CON MULTIPLES EMPLEADOS === */
+    /* === WIZARD DE RESEÑAS (ESTRELLAS INLINE) === */
     window.startReviewWizard = function() {
       if (!window.globalCurrentUser) { window.showToast("Inicia sesión para calificar", "fa-user-lock"); return window.openModal('modal-auth'); }
       const biz = allBusinesses[selectedBizId]; if(!biz) return;
@@ -973,7 +978,6 @@
       staffContainer.innerHTML = "";
       
       if (biz && biz.staff) {
-        // Agrupar personal por rol (Ej: Mozo, Bartender)
         const staffByRole = {};
         Object.entries(biz.staff).forEach(([sId, sData]) => {
           const role = sData.role || 'Otros';
@@ -981,22 +985,32 @@
           staffByRole[role].push({id: sId, ...sData});
         });
 
-        let staffHtml = "";
+        let staffHtml = "<div class='staff-list-vertical'>";
         Object.entries(staffByRole).forEach(([role, members]) => {
-          staffHtml += `<div style="text-align: left; width: 100%; margin-bottom: 16px;">`;
-          staffHtml += `<div style="font-size:0.85rem; font-weight:900; color:var(--primary); text-transform:uppercase; margin-bottom:4px; padding-left:4px;">${window.escapeHtml(role)}</div>`;
-          staffHtml += `<div class="staff-grid" style="margin-top:0;">`;
+          staffHtml += `<div style="text-align: left; width: 100%; margin-bottom: 20px;">`;
+          staffHtml += `<div style="font-size:0.9rem; font-weight:900; color:var(--primary); text-transform:uppercase; margin-bottom:10px; padding-left:4px;">${window.escapeHtml(role)}</div>`;
           
           members.forEach(s => {
             const sImg = s.photo || defaultImg;
             staffHtml += `
-              <div class="staff-card" id="staff-card-${s.id}" onclick="window.toggleStaff('${s.id}', '${window.escapeHtml(s.name)}', '${sImg}')">
-                <img src="${sImg}">
-                <div style="font-weight:900; font-size:0.85rem;">${window.escapeHtml(s.name)}</div>
+              <div class="staff-row-item">
+                <div class="staff-info">
+                  <img src="${sImg}">
+                  <div class="staff-info-name">${window.escapeHtml(s.name)}</div>
+                </div>
+                <div class="staff-stars-inline" id="staff-stars-${s.id}">
+                  <i class="fa-solid fa-star" onclick="window.rateStaff('${s.id}', '${window.escapeHtml(s.name)}', '${sImg}', 1)"></i>
+                  <i class="fa-solid fa-star" onclick="window.rateStaff('${s.id}', '${window.escapeHtml(s.name)}', '${sImg}', 2)"></i>
+                  <i class="fa-solid fa-star" onclick="window.rateStaff('${s.id}', '${window.escapeHtml(s.name)}', '${sImg}', 3)"></i>
+                  <i class="fa-solid fa-star" onclick="window.rateStaff('${s.id}', '${window.escapeHtml(s.name)}', '${sImg}', 4)"></i>
+                  <i class="fa-solid fa-star" onclick="window.rateStaff('${s.id}', '${window.escapeHtml(s.name)}', '${sImg}', 5)"></i>
+                </div>
               </div>`;
           });
-          staffHtml += `</div></div>`;
+          
+          staffHtml += `</div>`;
         });
+        staffHtml += "</div>";
         staffContainer.innerHTML = staffHtml;
 
       } else { 
@@ -1007,70 +1021,34 @@
       window.nextWizardStep(1); window.openModal('modal-wizard');
     };
 
-    // Selección Múltiple de Empleados
-    window.toggleStaff = function(id, name, photo) {
-      if(id === 'none') {
-        selectedStaffList = {};
-        document.querySelectorAll('.staff-card').forEach(c => c.classList.remove('active'));
-        document.getElementById('staff-card-none').classList.add('active');
-      } else {
-        const btnNone = document.getElementById('staff-card-none');
-        if(btnNone) btnNone.classList.remove('active');
-        
-        const card = document.getElementById('staff-card-'+id);
-        if(selectedStaffList[id]) {
-          delete selectedStaffList[id];
-          card.classList.remove('active');
-        } else {
-          selectedStaffList[id] = { id, name, photo, rating: 0 };
-          card.classList.add('active');
-        }
+    window.rateStaff = function(id, name, photo, rating) {
+      if(!selectedStaffList[id]) {
+        selectedStaffList[id] = { id, name, photo, rating: 0 };
       }
+      selectedStaffList[id].rating = rating;
+      
+      const container = document.getElementById('staff-stars-' + id);
+      if(container) {
+        container.querySelectorAll('i').forEach((st, idx) => {
+          if(idx < rating) st.classList.add('active'); else st.classList.remove('active');
+        });
+      }
+      
+      const btnNone = document.getElementById('staff-card-none');
+      if(btnNone) btnNone.classList.remove('active');
+    };
+
+    window.selectStaffNone = function() {
+      selectedStaffList = {};
+      document.querySelectorAll('.staff-stars-inline i').forEach(st => st.classList.remove('active'));
+      const btnNone = document.getElementById('staff-card-none');
+      if(btnNone) btnNone.classList.add('active');
     };
 
     window.toggleStaffTag = function(el, tagName) {
       el.classList.toggle('active');
       if(selectedStaffTags.includes(tagName)) selectedStaffTags = selectedStaffTags.filter(t => t !== tagName);
       else selectedStaffTags.push(tagName);
-    };
-
-    // Preparar el Paso 2 (Inyecta las estrellas por cada empleado)
-    window.prepareStep2 = function() {
-      const container = document.getElementById('dynamic-staff-ratings');
-      container.innerHTML = '';
-      
-      if(Object.keys(selectedStaffList).length > 0) {
-        let html = '';
-        Object.values(selectedStaffList).forEach(staff => {
-          html += `
-          <div class="rating-row" style="background:var(--surface); border: 2px solid var(--primary); padding:16px; border-radius: 20px; margin-bottom: 12px; border-bottom: 2px solid var(--primary);">
-              <label>Atención de ${window.escapeHtml(staff.name)}</label>
-              <div class="star-rating-picker dynamic-staff-star" data-id="${staff.id}">
-                  <i class="fa-solid fa-star" data-val="1"></i>
-                  <i class="fa-solid fa-star" data-val="2"></i>
-                  <i class="fa-solid fa-star" data-val="3"></i>
-                  <i class="fa-solid fa-star" data-val="4"></i>
-                  <i class="fa-solid fa-star" data-val="5"></i>
-              </div>
-          </div>`;
-        });
-        container.innerHTML = html;
-
-        // Añadir EventListeners a las estrellas dinámicas
-        document.querySelectorAll('.dynamic-staff-star i').forEach(s => {
-          s.addEventListener('click', e => {
-            const val = parseInt(e.target.getAttribute('data-val'));
-            const staffId = e.target.parentElement.getAttribute('data-id');
-            selectedStaffList[staffId].rating = val;
-            
-            e.target.parentElement.querySelectorAll('i').forEach((st, idx) => {
-              if(idx < val) st.classList.add('active'); else st.classList.remove('active');
-            });
-          });
-        });
-      }
-      
-      window.nextWizardStep(2);
     };
 
     function setupMultiStarPickers() { 
@@ -1081,16 +1059,6 @@
         })); 
       });
     }
-
-    window.validateRatingsAndNext = function() {
-      if(wRatings.general === 0 || wRatings.food === 0) return window.showToast("Por favor califica General y Comida", "fa-star");
-      
-      let missingStaff = false;
-      Object.values(selectedStaffList).forEach(s => { if(s.rating === 0) missingStaff = true; });
-      if(missingStaff) return window.showToast("Por favor califica al personal seleccionado", "fa-star");
-      
-      window.nextWizardStep(3);
-    };
 
     window.nextWizardStep = function(s) { 
       document.querySelectorAll('.wizard-step').forEach(e => e.classList.remove('active')); 
