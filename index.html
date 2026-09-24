@@ -116,17 +116,18 @@
     /* Reseñas Integradas */
     .section-title { font-size: 1.5rem; font-weight: 900; margin: 32px 0 16px; }
     .review-card { background: var(--surface); border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
-    .review-header { display: flex; align-items: center; gap: 14px; }
+    .review-header { display: flex; align-items: center; gap: 14px; cursor: pointer; transition: 0.2s; }
+    .review-header:active { opacity: 0.7; }
     .review-header img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
     .review-author { font-weight: 800; font-size: 1.05rem; color: var(--primary); }
     .review-text-quote { font-weight: 500; font-size: 1rem; color: var(--text-main); line-height: 1.5; padding-left: 12px; border-left: 3px solid var(--primary); margin-top: 4px; }
     .review-media img { width: 100%; height: 180px; border-radius: 16px; margin-top: 8px; object-fit: cover; border: 2px solid var(--primary); cursor: pointer; }
 
     /* === LIGHTBOX DE IMÁGENES === */
-    .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.9); z-index: 6000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; }
+    .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.9); z-index: 8000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; padding: 20px; }
     .lightbox.active { opacity: 1; }
     .lightbox img { max-width: 100%; max-height: 80vh; border-radius: 20px; border: 2px solid var(--surface); }
-    .lightbox-close { position: absolute; top: 30px; right: 30px; background: var(--surface); border: 2px solid var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; z-index: 6001; }
+    .lightbox-close { position: absolute; top: 30px; right: 30px; background: var(--surface); border: 2px solid var(--primary); width: 44px; height: 44px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; z-index: 8001; }
 
     /* === DRAWER MENÚ === */
     .drawer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(34,34,34,0.4); backdrop-filter: blur(4px); z-index: 5200; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
@@ -155,8 +156,8 @@
 
     /* === FORMULARIOS Y WIZARD === */
     .form-group input, .form-group textarea { width: 100%; padding: 18px 24px; border: 2px solid var(--primary); border-radius: 20px; background: var(--surface); font-family: 'Inter', sans-serif; margin-bottom: 8px; font-size: 1rem; color: var(--primary); outline: none; }
-    .tabs { display: flex; gap: 6px; margin-bottom: 20px; background: var(--surface); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); }
-    .tab { flex: 1; text-align: center; padding: 12px; border-radius: 100px; cursor: pointer; font-weight: 800; color: var(--text-muted); font-size: 0.95rem; }
+    .tabs { display: flex; gap: 6px; margin-bottom: 10px; background: var(--surface); padding: 8px; border-radius: 100px; border: 2px solid var(--primary); }
+    .tab { flex: 1; text-align: center; padding: 12px; border-radius: 100px; cursor: pointer; font-weight: 800; color: var(--text-muted); font-size: 0.85rem; }
     .tab.active { background: var(--primary); color: var(--surface); }
     .form-section { display: none; }
     .form-section.active { display: block; animation: slideUpFade 0.3s ease forwards; }
@@ -173,6 +174,11 @@
     .rating-row { display: flex; flex-direction: column; align-items: center; width: 100%; border-bottom: 2px solid rgba(34,34,34,0.1); padding-bottom: 10px; }
     .rating-row label { font-weight: 900; text-transform: uppercase; font-size: 0.9rem; margin-top: 10px; }
     .reward-tag { background: var(--surface); color: var(--success); padding: 4px 12px; border-radius: 12px; font-size: 0.85rem; font-weight: 900; border: 2px solid var(--primary); margin-left: 8px; box-shadow: 2px 2px 0px var(--primary); }
+
+    /* Listas Perfiles */
+    .points-row { display: flex; justify-content: space-between; padding: 16px; border-bottom: 2px dashed var(--primary); font-weight: 800; font-size: 0.95rem; }
+    .friend-card { display: flex; align-items: center; gap: 14px; padding: 14px; border: 2px solid var(--primary); border-radius: 16px; margin-bottom: 12px; cursor: pointer; background: var(--surface); transition: var(--transition-fast); }
+    .friend-card:active { transform: translateY(2px); box-shadow: var(--shadow-hard); }
 
     /* Toast */
     .toast { position: fixed; top: 90px; left: 50%; transform: translate(-50%, -150px); background: var(--surface); color: var(--primary); padding: 16px 28px; border-radius: 100px; z-index: 10000; font-weight: 900; transition: transform 0.4s var(--spring); font-size: 1rem; white-space: nowrap; display: flex; align-items: center; gap: 12px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); }
@@ -198,52 +204,53 @@
   <main class="hero-section fade-in" id="hero-main">
     <h1 class="hero-title">Tu experiencia,<br>tu voz.</h1>
     <div class="scan-info-box">
-      <!-- Icono genérico simulando el de la imagen -->
       <img src="https://cdn-icons-png.flaticon.com/512/714/714390.png" onerror="this.style.display='none'">
       <p>Al escanear el QR accederás automáticamente al menú y podrás evaluar el servicio recibido. No necesitas descargar nada.</p>
     </div>
   </main>
 
-  <!-- VISTA DEL LOCAL (PANTALLA NUEVA COMPLETA, APARECE AL ESCANEAR QR) -->
+  <!-- VISTA DEL LOCAL -->
   <main id="biz-main" class="fade-in">
     <h1 id="biz-title-main" class="biz-title-main">Restaurante</h1>
     <div id="biz-category-main" class="biz-category">Categoría</div>
 
-    <!-- Galería Horizontal de Fotos -->
-    <div class="gallery-container" id="biz-gallery">
-      <!-- Fotos inyectadas dinámicamente -->
-    </div>
+    <div class="gallery-container" id="biz-gallery"></div>
 
-    <!-- Caja de Info: Descripción, Horarios, Redes -->
     <div class="biz-details-box">
-      <p id="biz-desc-main" class="biz-desc">Descripción del local...</p>
-      <div id="biz-hours-main" class="biz-hours">
-        <i class="fa-solid fa-clock"></i> <span>Abierto</span>
-      </div>
-      <div class="social-links" id="biz-social-main">
-        <!-- Botones sociales inyectados dinámicamente -->
-      </div>
+      <p id="biz-desc-main" class="biz-desc"></p>
+      <div id="biz-hours-main" class="biz-hours"></div>
+      <div class="social-links" id="biz-social-main"></div>
     </div>
 
-    <!-- Botones Principales -->
-    <a id="biz-menu-btn" href="#" target="_blank" class="btn btn-primary">
+    <!-- BOTÓN MENÚ AHORA ABRE EL PDF INTERNO -->
+    <button id="biz-menu-btn" class="btn btn-primary">
       <i class="fa-solid fa-book-open"></i> VER MENÚ DIGITAL
-    </a>
+    </button>
     <button class="btn btn-secondary" onclick="window.startReviewWizard()">
       <i class="fa-solid fa-star"></i> CALIFICAR EXPERIENCIA
     </button>
 
-    <!-- Reseñas Integradas abajo -->
     <h3 class="section-title">Opiniones de clientes</h3>
-    <div id="biz-inline-reviews">
-      <!-- Reseñas aquí -->
-    </div>
+    <div id="biz-inline-reviews"></div>
   </main>
 
   <!-- LIGHTBOX PARA FOTOS -->
   <div class="lightbox" id="lightbox" onclick="window.closeLightbox(event)">
     <button class="lightbox-close" onclick="window.closeLightbox(event)"><i class="fa-solid fa-xmark"></i></button>
     <img id="lightbox-img" src="" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- MODAL: LECTOR DE MENÚ PDF -->
+  <div class="modal-overlay" id="modal-pdf" style="z-index: 7000;">
+    <div class="modal-card" style="height: 95vh; border-radius: 20px 20px 0 0; background: var(--surface);">
+      <div class="modal-header" style="background: var(--surface); padding: 16px 24px;">
+        <h3 style="font-size: 1.3rem;">Menú del Local</h3>
+        <button class="btn-close" onclick="window.closeModal('modal-pdf')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="padding: 0; height: 100%; overflow: hidden; background: #fff;">
+        <iframe id="pdf-frame" style="width:100%; height:100%; border:none;"></iframe>
+      </div>
+    </div>
   </div>
 
   <!-- MENÚ HAMBURGUESA (DRAWER) -->
@@ -268,8 +275,8 @@
     </div>
   </div>
 
-  <!-- MODAL: MI PERFIL / PUNTOS -->
-  <div class="modal-overlay" id="modal-profile">
+  <!-- MODAL: MI PERFIL (Con pestañas de Puntos y Amigos) -->
+  <div class="modal-overlay" id="modal-profile" style="z-index: 5400;">
     <div class="modal-card">
       <div class="modal-header">
         <h3>Mi Perfil</h3>
@@ -280,7 +287,7 @@
         <div class="slide-up" style="background: var(--surface); padding: 28px; border-radius: 28px; margin-bottom: 20px; display: flex; justify-content: space-around; text-align: center; border: 2px solid var(--primary); box-shadow: var(--shadow-hard);">
           <div style="flex:1;">
             <div style="font-size: 2.4rem; font-family:'Plus Jakarta Sans'; font-weight: 900; line-height: 1;" id="prof-points">0</div>
-            <div style="font-size: 0.8rem; text-transform: uppercase; margin-top: 8px; font-weight: 900;">Puntos</div>
+            <div style="font-size: 0.8rem; text-transform: uppercase; margin-top: 8px; font-weight: 900;">Puntos Totales</div>
           </div>
           <div style="width: 2px; background: var(--primary);"></div>
           <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
@@ -288,15 +295,51 @@
           </div>
         </div>
 
-        <h4 style="font-weight:900; font-size:1.2rem; margin-bottom:14px; text-transform:uppercase;">Mis Evaluaciones</h4>
-        <div id="my-reviews-list" style="display:flex; flex-direction:column; gap:16px;"></div>
+        <div class="tabs">
+          <div id="tab-prof-points" class="tab active" onclick="window.switchProfTab('points')">Puntos Locales</div>
+          <div id="tab-prof-reviews" class="tab" onclick="window.switchProfTab('reviews')">Mis Reseñas</div>
+          <div id="tab-prof-friends" class="tab" onclick="window.switchProfTab('friends')">Amigos</div>
+        </div>
+
+        <!-- Lista de Puntos Separados por Establecimiento -->
+        <div id="prof-sec-points" class="form-section active">
+          <div id="prof-points-list" style="display:flex; flex-direction:column; background:var(--surface); border-radius:16px; border:2px solid var(--primary);"></div>
+        </div>
+
+        <div id="prof-sec-reviews" class="form-section">
+          <div id="my-reviews-list" style="display:flex; flex-direction:column; gap:16px;"></div>
+        </div>
+
+        <div id="prof-sec-friends" class="form-section">
+          <div id="my-friends-list" style="display:flex; flex-direction:column;"></div>
+        </div>
 
       </div>
     </div>
   </div>
 
+  <!-- MODAL: PERFIL PÚBLICO DE OTRO USUARIO -->
+  <div class="modal-overlay" id="modal-public-profile" style="z-index: 6500;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Perfil</h3>
+        <button class="btn-close" onclick="window.closeModal('modal-public-profile')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <img id="pub-avatar" class="user-avatar" style="width:100px; height:100px; margin:0 auto 10px; border-width: 3px;">
+        <h2 id="pub-name" style="font-weight:900; font-size:1.8rem;"></h2>
+        <div id="pub-level" style="font-weight:800; margin-bottom: 20px; font-size:1rem;"></div>
+        
+        <button id="btn-follow" class="btn btn-secondary" style="width:100%; margin-bottom:24px;"></button>
+        
+        <h4 style="text-align:left; font-weight:900; text-transform:uppercase; margin-bottom:14px;">Evaluaciones</h4>
+        <div id="pub-reviews-list" style="display:flex; flex-direction:column; gap:16px; text-align:left;"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: LOGIN / REGISTRO -->
-  <div class="modal-overlay" id="modal-auth" style="z-index: 5500;">
+  <div class="modal-overlay" id="modal-auth" style="z-index: 7500;">
     <div class="modal-card" style="max-width: 420px;">
       <div class="modal-header">
         <h3>Identificación</h3>
@@ -335,67 +378,52 @@
       <div class="modal-header" style="align-items:flex-start; padding-bottom:10px;">
         <div>
           <h3 style="margin-bottom:4px;">Tu Experiencia</h3>
-          <span id="wizard-user-points" style="color:var(--warning); font-weight:900; font-size:0.9rem; display:block; margin-top:2px;">🏆 Tienes 0 Pts</span>
+          <span id="wizard-user-points" style="color:var(--warning); font-weight:900; font-size:0.9rem; display:block; margin-top:2px;"></span>
         </div>
         <button class="btn-close" onclick="window.closeModal('modal-wizard')"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
       <div class="modal-body">
         
-        <!-- PASO 1: PERSONAL -->
         <div id="wiz-step-1" class="wizard-step active">
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">¿Quién te atendió?</h4>
           <p style="font-size:0.95rem; font-weight:600; color:var(--text-muted); margin-top:-8px;">Selecciona a tu mesero/a</p>
-          <div class="staff-grid" id="wiz-staff-list">
-            <!-- Staff inyectado dinámicamente -->
-          </div>
+          <div class="staff-grid" id="wiz-staff-list"></div>
           <button class="btn btn-primary" style="margin-top:10px;" onclick="window.selectStaff('none', null)">No sé / Otro</button>
         </div>
 
-        <!-- PASO 2: CALIFICACIONES (Estrellas Múltiples) -->
         <div id="wiz-step-2" class="wizard-step">
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Califica el servicio <span class="reward-tag">+10 Pts</span></h4>
-          
           <div class="rating-row">
             <label>Experiencia General</label>
-            <div class="star-rating-picker" id="star-general">
-              <i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i>
-            </div>
+            <div class="star-rating-picker" id="star-general"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
           </div>
           <div class="rating-row">
             <label>Calidad de la Comida</label>
-            <div class="star-rating-picker" id="star-food">
-              <i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i>
-            </div>
+            <div class="star-rating-picker" id="star-food"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
           </div>
           <div class="rating-row" style="border-bottom:none;">
             <label>Atención del Personal</label>
-            <div class="star-rating-picker" id="star-staff">
-              <i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i>
-            </div>
+            <div class="star-rating-picker" id="star-staff"><i class="fa-solid fa-star" data-val="1"></i><i class="fa-solid fa-star" data-val="2"></i><i class="fa-solid fa-star" data-val="3"></i><i class="fa-solid fa-star" data-val="4"></i><i class="fa-solid fa-star" data-val="5"></i></div>
           </div>
-
           <div style="display:flex; gap:12px; width:100%;">
             <button class="btn btn-primary" style="flex:1;" onclick="window.nextWizardStep(1)">Atrás</button>
             <button class="btn btn-secondary" style="flex:1;" onclick="window.validateRatingsAndNext()">Siguiente</button>
           </div>
         </div>
 
-        <!-- PASO 3: COMIDA Y TEXTO -->
         <div id="wiz-step-3" class="wizard-step">
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Detalles <span class="reward-tag">+20 Pts</span></h4>
           <div class="form-group" style="width:100%;">
             <input type="text" id="wiz-food-name" placeholder="¿Qué plato pediste? (Ej: Milanesa)">
           </div>
           <textarea id="wiz-text" rows="3" placeholder="Cuéntanos más sobre tu experiencia..." style="width:100%; border:2px solid var(--primary); border-radius:20px; padding:16px; font-size:1rem; outline:none; background:var(--surface);"></textarea>
-          
           <div style="display:flex; gap:12px; width:100%;">
             <button class="btn btn-primary" style="flex:1;" onclick="window.trySkipWizard(4, 20, 'tu opinión escrita')">Saltar</button>
             <button class="btn btn-secondary" style="flex:1;" onclick="window.tryNextStepText()">Siguiente</button>
           </div>
         </div>
 
-        <!-- PASO 4: FOTO Y PUBLICAR -->
         <div id="wiz-step-4" class="wizard-step">
           <h4 style="font-size:1.3rem; font-weight:900; text-transform:uppercase;">Foto del plato <span class="reward-tag">+30 Pts</span></h4>
           <img id="wiz-photo-preview" style="width:100%; max-height:200px; border-radius:20px; display:none; margin-bottom:14px; object-fit:cover; border: 2px solid var(--primary);">
@@ -407,11 +435,9 @@
     </div>
   </div>
 
-  <!-- MODAL: ALERTA DE CULPA -->
   <div class="modal-overlay" id="modal-guilt" style="z-index: 6000; align-items: center; background: rgba(34,34,34, 0.8);">
     <div class="modal-card pop-in" style="max-width: 340px; background: transparent; box-shadow: none; border: none;">
       <div class="modal-body" style="padding: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px; width:100%;">
-        
         <div style="display: flex; flex-direction: column; gap: 14px; width: 100%; background: var(--bg-base); padding: 24px; border-radius: 30px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard-lg);">
           <h3 style="font-family:'Plus Jakarta Sans'; font-weight:900; color:var(--primary); font-size:1.4rem;">¿Seguro que deseas omitir este paso?</h3>
           <p style="font-weight:600; font-size:0.95rem;">Perderás los puntos de bonificación.</p>
@@ -428,29 +454,24 @@
 
   <!-- CORE SCRIPTS: Firebase y Lógica Global -->
   <script type="module">
-    // === LOADER OPTIMIZADO (Aparece inmediatamente si hay URL ?biz=) ===
+    // === LOADER OPTIMIZADO ===
     const urlParamsFast = new URLSearchParams(window.location.search);
-    if(urlParamsFast.has('biz')) {
-      document.getElementById('global-loader').classList.add('active');
-    }
+    if(urlParamsFast.has('biz')) { document.getElementById('global-loader').classList.add('active'); }
 
-    // === SISTEMA HISTORY API (EL BOTÓN ATRÁS DEL CELULAR YA NO CIERRA LA APP) ===
+    // === SISTEMA HISTORY API ===
     window.openModal = function(id) { 
       document.getElementById(id).classList.add('active'); 
       if (window.location.hash !== '#' + id) history.pushState({ modal: id }, '', '#' + id);
     };
-    
     window.closeModal = function(id, fromPopState = false) { 
       document.getElementById(id).classList.remove('active'); 
       if (!fromPopState && window.location.hash === '#' + id) history.back();
     };
-    
     window.openDrawerSafe = function() { 
       document.getElementById('drawer').classList.add('active'); 
       document.getElementById('drawer-overlay').classList.add('active'); 
       if (window.location.hash !== '#drawer') history.pushState({ drawer: true }, '', '#drawer');
     };
-    
     window.closeDrawerSafe = function(fromPopState = false) { 
       document.getElementById('drawer').classList.remove('active'); 
       document.getElementById('drawer-overlay').classList.remove('active'); 
@@ -458,35 +479,41 @@
     };
 
     window.addEventListener('popstate', (e) => {
-      // Si presiona atrás, se cierran todos los modales/menús
       document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
       document.getElementById('drawer').classList.remove('active');
       document.getElementById('drawer-overlay').classList.remove('active');
-      
       const lb = document.getElementById('lightbox');
       if(lb) { lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 300); }
     });
 
-    // === MANEJO LIGHTBOX ===
+    // === MANEJO LIGHTBOX Y PDF ===
     window.openLightbox = function(src) { 
       document.getElementById('lightbox-img').src = src; 
       const lb = document.getElementById('lightbox');
-      lb.style.display = 'flex';
-      setTimeout(() => lb.classList.add('active'), 10);
+      lb.style.display = 'flex'; setTimeout(() => lb.classList.add('active'), 10);
       history.pushState({ lightbox: true }, '', '#lightbox');
     };
     window.closeLightbox = function(e) { 
       if (e) e.stopPropagation();
       const lb = document.getElementById('lightbox');
-      lb.classList.remove('active');
-      setTimeout(() => lb.style.display = 'none', 300);
+      lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 300);
       if (window.location.hash === '#lightbox') history.back();
+    };
+
+    window.openPdfViewer = function(url) {
+      const iframe = document.getElementById('pdf-frame');
+      // Asegurar compatibilidad de PDFs en móviles (Google Docs Viewer)
+      if (url.toLowerCase().endsWith('.pdf')) {
+        iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
+      } else {
+        iframe.src = url;
+      }
+      window.openModal('modal-pdf');
     };
 
     window.handleMenuProfile = function() { 
       window.closeDrawerSafe(); 
-      if(window.globalCurrentUser) window.openMyProfile(); 
-      else window.openModal('modal-auth'); 
+      if(window.globalCurrentUser) window.openMyProfile(); else window.openModal('modal-auth'); 
     };
 
     window.switchAuthTab = function(tab) { 
@@ -496,11 +523,17 @@
       document.getElementById('tab-register').classList.toggle('active', tab === 'register'); 
     };
 
+    window.switchProfTab = function(tab) {
+      document.querySelectorAll('#modal-profile .tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#modal-profile .form-section').forEach(s => s.classList.remove('active'));
+      document.getElementById('tab-prof-' + tab).classList.add('active');
+      document.getElementById('prof-sec-' + tab).classList.add('active');
+    };
+
     window.showToast = function(msg, icon = 'fa-bell') { 
       const t = document.getElementById('toast'); 
       t.innerHTML = `<i class="fa-solid ${icon}" style="color:var(--surface);"></i> ${msg}`;
-      t.classList.add('show'); 
-      setTimeout(() => t.classList.remove('show'), 3000); 
+      t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); 
     };
 
     window.showLoader = function(show) {
@@ -510,10 +543,10 @@
 
     window.escapeHtml = function(s) { return s ? s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : ""; };
 
-    // === FIREBASE CONFIG ===
+    // === FIREBASE CONFIG E IMPORTS ACTUALIZADOS ===
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-    import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+    import { getDatabase, ref, set, push, onValue, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAhz1XHoprhhrHyYfuAdIYGMJxm5UsDO-4",
@@ -528,14 +561,12 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
-
     const defaultImg = "https://via.placeholder.com/150/e8eee8/222222?text=P";
 
     window.globalCurrentUser = null; 
     let allBusinesses = {}; 
     let selectedBizId = null;
 
-    // WIZARD STATE
     let wizStaffId = null; let wizStaffName = null;
     let wRatings = { general: 0, food: 0, staff: 0 };
     let pendingSkipStep = null;
@@ -546,43 +577,40 @@
       onValue(ref(db, 'businesses'), (snapshot) => {
         allBusinesses = snapshot.val() || {};
         
-        // DEEP LINKING LÓGICA RÁPIDA
-        const urlParams = new URLSearchParams(window.location.search);
-        const bizParam = urlParams.get('biz');
-        
-        if (bizParam && !window.deepLinkOpened) {
+        if (urlParamsFast.has('biz') && !window.deepLinkOpened) {
           window.deepLinkOpened = true; 
-          
-          if(allBusinesses[bizParam]) {
-             // Abre instantáneamente, 0 retraso
-             window.openRestaurant(bizParam);
+          const bId = urlParamsFast.get('biz');
+          if(allBusinesses[bId]) {
+             window.openRestaurant(bId);
              window.history.replaceState({}, document.title, window.location.pathname);
-          } else {
-             window.showToast("Local no encontrado", "fa-triangle-exclamation");
-          }
+          } else { window.showToast("Local no encontrado", "fa-triangle-exclamation"); }
           window.showLoader(false);
         }
         
-        // Si el local ya está abierto y se actualiza la DB, re-renderizar reseñas
         if(selectedBizId && allBusinesses[selectedBizId]) {
             renderInlineReviews(allBusinesses[selectedBizId].reviews || {});
         }
       });
     });
 
-    /* === GAMIFICACIÓN Y NIVELES === */
-    window.calculateUserPoints = function(uid) {
-      let pts = 0;
-      Object.values(allBusinesses).forEach(biz => {
+    /* === GAMIFICACIÓN Y NIVELES DETALLADOS (Puntos Per Venue) === */
+    window.calculateUserPointsDetailed = function(uid) {
+      let pts = { total: 0, byBiz: {} };
+      Object.entries(allBusinesses).forEach(([bizId, biz]) => {
+        let bizPts = 0;
         if(biz.reviews) {
           Object.values(biz.reviews).forEach(r => {
             if(r.authorUid === uid) {
-              if(r.ratingGeneral) pts += 10;
-              if(r.text && r.text.trim() !== '') pts += 20;
-              if(r.photoBase64) pts += 30;
-              if(r.gpsVerified) pts += 50; 
+              if(r.ratingGeneral) bizPts += 10;
+              if(r.text && r.text.trim() !== '') bizPts += 20;
+              if(r.photoBase64) bizPts += 30;
+              if(r.gpsVerified) bizPts += 50; 
             }
           });
+        }
+        if(bizPts > 0) {
+          pts.total += bizPts;
+          pts.byBiz[bizId] = { name: biz.name, points: bizPts };
         }
       });
       return pts;
@@ -597,14 +625,18 @@
 
     window.updateUserPointsDisplay = function() {
       if(!window.globalCurrentUser) return;
-      const pts = window.calculateUserPoints(window.globalCurrentUser.uid);
-      const level = window.getUserLevel(pts);
+      const ptsData = window.calculateUserPointsDetailed(window.globalCurrentUser.uid);
+      const level = window.getUserLevel(ptsData.total);
       
       const wizPts = document.getElementById('wizard-user-points');
-      if(wizPts) wizPts.innerText = `🏆 Tienes ${pts} Puntos`;
+      if(wizPts) {
+        // En el wizard, mostrar los puntos que tiene EXCLUSIVAMENTE en este local
+        const localPts = selectedBizId && ptsData.byBiz[selectedBizId] ? ptsData.byBiz[selectedBizId].points : 0;
+        wizPts.innerText = `🏆 Puntos en este local: ${localPts}`;
+      }
       
       const profPts = document.getElementById('prof-points');
-      if(profPts) profPts.innerText = pts;
+      if(profPts) profPts.innerText = ptsData.total;
 
       const profLevel = document.getElementById('prof-level');
       if(profLevel) { profLevel.innerText = level.name; profLevel.style.color = level.color; }
@@ -613,235 +645,107 @@
       if(drawerLevel) drawerLevel.innerHTML = `<span style="color:${level.color}; font-size:0.85rem; font-weight:900; text-transform:uppercase;">${level.name}</span>`;
     };
 
-    /* === VISTA RESTAURANTE (PANTALLA COMPLETA) === */
-    window.openRestaurant = function(id) {
-      selectedBizId = id; const biz = allBusinesses[id];
-      if(!biz) return window.showToast("Local no encontrado", "fa-triangle-exclamation");
+    /* === RED SOCIAL: PERFIL PÚBLICO Y AMIGOS === */
+    window.openPublicProfile = function(uid) {
+      if(window.globalCurrentUser && window.globalCurrentUser.uid === uid) return window.openMyProfile();
       
-      // Ocultar inicio, Mostrar restaurante
-      document.getElementById('hero-main').style.display = 'none';
-      document.getElementById('biz-main').style.display = 'block';
-
-      // Llenar Datos
-      document.getElementById('biz-title-main').innerText = biz.name;
-      document.getElementById('biz-category-main').innerText = biz.category || "Gastronomía";
-      document.getElementById('biz-desc-main').innerText = biz.desc || "Sin descripción.";
-      
-      const hoursText = biz.hoursDesc || (biz.openTime && biz.closeTime ? `De ${biz.openTime} a ${biz.closeTime}` : "Horario no especificado");
-      document.getElementById('biz-hours-main').innerHTML = `<i class="fa-solid fa-clock"></i> <span>${hoursText}</span>`;
-      
-      // Redes Sociales
-      let socialHtml = "";
-      if(biz.whatsapp) socialHtml += `<a href="https://wa.me/${biz.whatsapp.replace(/\D/g,'')}" target="_blank" class="social-btn"><i class="fa-brands fa-whatsapp"></i></a>`;
-      if(biz.instagram) socialHtml += `<a href="${biz.instagram}" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i></a>`;
-      if(biz.facebook) socialHtml += `<a href="${biz.facebook}" target="_blank" class="social-btn"><i class="fa-brands fa-facebook"></i></a>`;
-      document.getElementById('biz-social-main').innerHTML = socialHtml;
-
-      // Galería Horizontal
-      const gallery = document.getElementById('biz-gallery');
-      gallery.innerHTML = "";
-      const photos = biz.photos && biz.photos.length > 0 ? biz.photos : (biz.photoBase64 ? [biz.photoBase64] : []);
-      if (photos.length > 0) {
-        photos.forEach(src => { gallery.innerHTML += `<img src="${src}" class="gallery-img" onclick="window.openLightbox('${src}')">`; });
-      } else {
-        // Fallback si no hay fotos
-        gallery.innerHTML = `<img src="https://via.placeholder.com/600x400/e8eee8/222222?text=FOTO+DEL+LOCAL" class="gallery-img">`;
-      }
-      
-      // Botón Menú
-      const menuBtn = document.getElementById('biz-menu-btn');
-      if(biz.menu && biz.menu.trim() !== '') {
-        menuBtn.style.display = 'inline-flex';
-        if (biz.menu.startsWith('data:')) {
-          menuBtn.href = biz.menu;
-          menuBtn.download = `Menu_${biz.name.replace(/\s+/g, '_')}`;
-        } else {
-          menuBtn.href = biz.menu.startsWith('http') ? biz.menu : 'https://' + biz.menu;
-          menuBtn.removeAttribute('download');
+      get(ref(db, 'users/' + uid)).then(snap => {
+        if(snap.exists()) {
+          const u = snap.val();
+          document.getElementById('pub-name').innerText = window.escapeHtml(u.name);
+          document.getElementById('pub-avatar').src = u.photo || defaultImg;
+          
+          const ptsData = window.calculateUserPointsDetailed(uid);
+          const level = window.getUserLevel(ptsData.total);
+          document.getElementById('pub-level').innerHTML = `<span style="color:${level.color}">${level.name}</span> - ${ptsData.total} Pts Totales`;
+          
+          // Lógica Botón de Seguir
+          const btn = document.getElementById('btn-follow');
+          if(window.globalCurrentUser && window.globalCurrentUser.following && window.globalCurrentUser.following[uid]) {
+            btn.innerHTML = `<i class="fa-solid fa-user-check"></i> Siguiendo`;
+            btn.onclick = () => window.toggleFollow(uid, false);
+          } else {
+            btn.innerHTML = `<i class="fa-solid fa-user-plus"></i> Seguir Usuario`;
+            btn.onclick = () => window.toggleFollow(uid, true);
+          }
+          
+          // Reseñas de este usuario
+          const container = document.getElementById('pub-reviews-list'); container.innerHTML = ""; let count = 0;
+          Object.entries(allBusinesses).forEach(([bId, b]) => {
+            if (b.reviews) {
+              Object.values(b.reviews).forEach(r => {
+                if (r.authorUid === uid) {
+                  count++; let media = "";
+                  if (r.photoBase64) media += `<img src="${r.photoBase64}" style="width:100%; border-radius:16px; margin-top:10px; cursor:zoom-in; border:2px solid var(--primary);" onclick="window.openLightbox('${r.photoBase64}')">`;
+                  const div = document.createElement('div'); div.className = 'review-card slide-up';
+                  div.innerHTML = `
+                    <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
+                    <div style="color:var(--warning); margin-bottom:8px; font-size:1.1rem;"><i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>
+                    ${r.text ? `<div class="review-text-quote">${window.escapeHtml(r.text)}</div>` : ''}
+                    ${media}`;
+                  container.appendChild(div);
+                }
+              });
+            }
+          });
+          if (count === 0) container.innerHTML = "<p style='color:var(--text-muted); font-weight:600;'>Este usuario aún no tiene reseñas.</p>";
+          
+          window.openModal('modal-public-profile');
         }
-      } else {
-        menuBtn.style.display = 'none';
-      }
-
-      // Renderizar Reseñas Directo en la Pantalla
-      renderInlineReviews(biz.reviews || {});
+      });
     };
 
-    function renderInlineReviews(reviewsObj) {
-      const container = document.getElementById('biz-inline-reviews');
-      container.innerHTML = "";
-      const reviewsArr = Object.values(reviewsObj).sort((a,b) => b.timestamp - a.timestamp);
-      
-      if (reviewsArr.length === 0) {
-        container.innerHTML = "<p style='color:var(--text-muted); font-weight:600;'>Aún no hay opiniones. ¡Sé el primero!</p>";
+    window.toggleFollow = async function(uid, follow) {
+      if(!window.globalCurrentUser) { window.showToast("Inicia sesión para seguir", "fa-user-lock"); return window.openModal('modal-auth'); }
+      const followRef = ref(db, `users/${window.globalCurrentUser.uid}/following/${uid}`);
+      if(follow) {
+        await set(followRef, true);
+        if(!window.globalCurrentUser.following) window.globalCurrentUser.following = {};
+        window.globalCurrentUser.following[uid] = true;
+        window.showToast("Usuario seguido", "fa-user-check");
+      } else {
+        await set(followRef, null); // Usamos set null en vez de remove para no requerir import extra
+        delete window.globalCurrentUser.following[uid];
+        window.showToast("Dejaste de seguir", "fa-user-minus");
+      }
+      window.openPublicProfile(uid); // Refresca vista
+    };
+
+    window.loadFriendsList = async function() {
+      const container = document.getElementById('my-friends-list');
+      if(!window.globalCurrentUser.following || Object.keys(window.globalCurrentUser.following).length === 0) {
+        container.innerHTML = "<p style='color:var(--text-muted); text-align:center; font-weight:600; padding:20px;'>Aún no sigues a nadie. Toca las fotos en los comentarios para descubrir perfiles.</p>";
         return;
       }
-
-      reviewsArr.forEach(r => {
-        let media = "";
-        if (r.photoBase64) media += `<img src="${r.photoBase64}" onclick="window.openLightbox('${r.photoBase64}')">`;
-        
-        let starsHtml = `<div style="color:var(--warning); font-size:1rem; margin-top:4px;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>`;
-        let detailsHtml = "";
-        if(r.foodName) detailsHtml += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:6px;"><i class="fa-solid fa-utensils"></i> Pidió: ${window.escapeHtml(r.foodName)}</div>`;
-        if(r.staffName) detailsHtml += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:4px;"><i class="fa-solid fa-user-tag"></i> Atendido por: ${window.escapeHtml(r.staffName)}</div>`;
-
-        container.innerHTML += `
-          <div class="review-card">
-            <div class="review-header">
-              <img src="${r.authorPhoto || defaultImg}">
-              <div>
-                <div class="review-author">${window.escapeHtml(r.authorName)}</div>
-                ${starsHtml}
-              </div>
-            </div>
-            ${detailsHtml}
-            ${r.text ? `<div class="review-text-quote" style="margin-top:10px;">${window.escapeHtml(r.text)}</div>` : ''}
-            <div class="review-media">${media}</div>
+      container.innerHTML = "<p style='text-align:center;'><i class='fa-solid fa-spinner fa-spin'></i> Cargando amigos...</p>";
+      let html = "";
+      for(let uid of Object.keys(window.globalCurrentUser.following)) {
+        const snap = await get(ref(db, `users/${uid}`));
+        if(snap.exists()) {
+          const u = snap.val();
+          html += `
+          <div class="friend-card slide-up" onclick="window.openPublicProfile('${uid}')">
+             <img src="${u.photo || defaultImg}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);">
+             <div style="font-weight:900; font-size:1.1rem;">${window.escapeHtml(u.name)}</div>
           </div>`;
-      });
-    }
-
-    /* === WIZARD DE RESEÑAS GASTRONÓMICAS === */
-    window.startReviewWizard = function() {
-      if (!window.globalCurrentUser) {
-        window.showToast("Inicia sesión para calificar", "fa-user-lock");
-        return window.openModal('modal-auth');
-      }
-      
-      const biz = allBusinesses[selectedBizId];
-      if(!biz) return;
-      
-      wizStaffId = null; wizStaffName = null; wRatings = { general: 0, food: 0, staff: 0 };
-      document.querySelectorAll('.star-rating-picker i').forEach(s => s.classList.remove('active'));
-      document.getElementById('wiz-food-name').value = ''; document.getElementById('wiz-text').value = ''; 
-      document.getElementById('wiz-photo').value = ''; document.getElementById('wiz-photo-preview').style.display = 'none';
-
-      const staffContainer = document.getElementById('wiz-staff-list');
-      staffContainer.innerHTML = "";
-      if (biz && biz.staff) {
-        Object.entries(biz.staff).forEach(([sId, sData]) => {
-          const sImg = sData.photo || defaultImg;
-          const sRole = sData.role ? `<div style="font-size:0.75rem; color:var(--success); font-weight:900; margin-top:4px; text-transform:uppercase;">${window.escapeHtml(sData.role)}</div>` : '';
-          
-          staffContainer.innerHTML += `
-            <div class="staff-card" id="staff-card-${sId}" onclick="window.selectStaff('${sId}', '${window.escapeHtml(sData.name)}')">
-              <img src="${sImg}">
-              <div style="font-weight:900; font-size:0.85rem;">${window.escapeHtml(sData.name)}</div>
-              ${sRole}
-            </div>`;
-        });
-      } else {
-        staffContainer.innerHTML = "<p style='grid-column:1/-1; font-size:0.9rem; color:var(--text-muted); font-weight:600;'>No hay personal registrado.</p>";
-      }
-
-      window.updateUserPointsDisplay();
-      window.nextWizardStep(1); window.openModal('modal-wizard');
-    };
-
-    window.selectStaff = function(id, name) {
-      document.querySelectorAll('.staff-card').forEach(c => c.classList.remove('active'));
-      if(id !== 'none') {
-        const card = document.getElementById('staff-card-'+id);
-        if(card) card.classList.add('active');
-        wizStaffId = id; wizStaffName = name;
-      } else {
-        wizStaffId = 'none'; wizStaffName = 'Otro / No especificado';
-      }
-      setTimeout(() => window.nextWizardStep(2), 300);
-    };
-
-    function setupMultiStarPickers() { 
-      ['general', 'food', 'staff'].forEach(type => {
-        document.querySelectorAll(`#star-${type} i`).forEach(s => s.addEventListener('click', e => { 
-          const val = parseInt(e.target.getAttribute('data-val'));
-          wRatings[type] = val;
-          document.querySelectorAll(`#star-${type} i`).forEach((st, idx) => { 
-            if(idx < val) st.classList.add('active'); else st.classList.remove('active'); 
-          }); 
-        })); 
-      });
-    }
-
-    window.validateRatingsAndNext = function() {
-      if(wRatings.general === 0 || wRatings.food === 0 || wRatings.staff === 0) return window.showToast("Por favor califica las 3 áreas", "fa-star");
-      window.nextWizardStep(3);
-    };
-
-    window.nextWizardStep = function(s) { 
-      document.querySelectorAll('.wizard-step').forEach(e => e.classList.remove('active')); 
-      document.getElementById('wiz-step-'+s).classList.add('active'); 
-    };
-
-    // CORRECCIÓN BUG: VACÍA LOS CAMPOS SI ELIGE SALTAR PARA NO REGALAR PUNTOS
-    window.trySkipWizard = function(nextStep, ptsToLose, typeName) { 
-      pendingSkipStep = nextStep; 
-      document.querySelector('#modal-guilt .btn-secondary').innerHTML = `<i class="fa-solid fa-star" style="color:var(--warning);"></i> Completar paso`;
-      window.openModal('modal-guilt'); 
-    };
-    
-    window.cancelSkip = function() { window.closeModal('modal-guilt'); pendingSkipStep = null; };
-    
-    window.confirmSkip = function() {
-      window.closeModal('modal-guilt');
-      window.showToast("Paso omitido. No sumarás esos puntos.", "fa-forward-step");
-
-      if (pendingSkipStep === 'submit') {
-        // Vacia la foto para que no gane los puntos de foto
-        document.getElementById('wiz-photo').value = "";
-        document.getElementById('wiz-photo-preview').src = "";
-        document.getElementById('wiz-photo-preview').style.display = 'none';
-        window.processSubmitReview(); 
-      } 
-      else if (pendingSkipStep !== null) {
-        if (pendingSkipStep === 4) {
-          // Vacia el texto para que no gane los puntos de texto
-          document.getElementById('wiz-text').value = "";
-          document.getElementById('wiz-food-name').value = "";
         }
-        window.nextWizardStep(pendingSkipStep); 
-      } 
-      pendingSkipStep = null;
-    };
-
-    window.tryNextStepText = function() { if (document.getElementById('wiz-text').value.trim() === '') window.trySkipWizard(4, 20, 'tu opinión'); else window.nextWizardStep(4); };
-    
-    window.previewWizPhoto = function(e) { if(e.target.files.length>0){ fileToBase64Compress(e.target.files[0]).then(b64 => { document.getElementById('wiz-photo-preview').src = b64; document.getElementById('wiz-photo-preview').style.display = 'block'; }); } };
-    
-    window.submitWizardReview = async function() {
-      const photoInput = document.getElementById('wiz-photo');
-      if (photoInput.files.length === 0) { pendingSkipStep = 'submit'; window.openModal('modal-guilt'); return; }
-      await window.processSubmitReview();
-    };
-
-    window.processSubmitReview = async function() {
-      const foodName = document.getElementById('wiz-food-name').value.trim();
-      const text = document.getElementById('wiz-text').value.trim(); 
-      const photoInput = document.getElementById('wiz-photo');
-      const btn = document.getElementById('btn-wiz-submit'); 
-      btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando...`;
-      
-      try {
-        let photoB64 = null; 
-        if (photoInput.files.length > 0) photoB64 = await fileToBase64Compress(photoInput.files[0]);
-        let isGpsVerified = true; // Forzado a True para pruebas
-
-        await push(ref(db, `businesses/${selectedBizId}/reviews`), { 
-          authorUid: window.globalCurrentUser.uid, authorName: window.globalCurrentUser.name, authorPhoto: window.globalCurrentUser.photo, 
-          ratingGeneral: wRatings.general, ratingFood: wRatings.food, ratingStaff: wRatings.staff,
-          staffId: wizStaffId, staffName: wizStaffName,
-          foodName: foodName, text: text, photoBase64: photoB64, gpsVerified: isGpsVerified,
-          timestamp: Date.now() 
-        });
-        
-        window.closeModal('modal-wizard'); window.showToast("¡Experiencia publicada!", "fa-award"); 
-        window.updateUserPointsDisplay();
-
-      } catch(err) { window.showToast("Error al publicar", "fa-triangle-exclamation"); } finally { btn.disabled = false; btn.innerHTML = `PUBLICAR EXPERIENCIA`; }
+      }
+      container.innerHTML = html;
     };
 
     /* === PERFIL PERSONAL === */
     window.openMyProfile = function() {
+      // 1. Mostrar Puntos Separados por Restaurante
+      const ptsData = window.calculateUserPointsDetailed(window.globalCurrentUser.uid);
+      let ptsHtml = "";
+      Object.entries(ptsData.byBiz).forEach(([bId, b]) => {
+        ptsHtml += `<div class="points-row"><span>${window.escapeHtml(b.name)}</span><span style="color:var(--success)">${b.points} Pts</span></div>`;
+      });
+      if(ptsHtml === "") ptsHtml = "<p style='color:var(--text-muted); text-align:center; padding:16px; font-weight:600;'>Aún no tienes puntos en ningún local.</p>";
+      document.getElementById('prof-points-list').innerHTML = ptsHtml;
+      document.getElementById('prof-points').innerText = ptsData.total;
+
+      // 2. Mis Reseñas
       const container = document.getElementById('my-reviews-list'); container.innerHTML = ""; let count = 0;
       Object.entries(allBusinesses).forEach(([id, b]) => {
         if (b.reviews) {
@@ -861,22 +765,176 @@
         }
       });
       if (count === 0) container.innerHTML = "<p style='color:var(--text-muted); text-align:center; font-weight:600;'>No has publicado experiencias aún.</p>";
+      
+      // 3. Cargar Amigos
+      window.loadFriendsList();
+
+      window.switchProfTab('points');
       window.openModal('modal-profile');
     };
 
-    /* === UTILS === */
-    function fileToBase64Compress(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { try { const canvas = document.createElement('canvas'); const MAX_WIDTH = 600; let scaleSize = 1; if (img.width > MAX_WIDTH) scaleSize = MAX_WIDTH / img.width; canvas.width = img.width * scaleSize; canvas.height = img.height * scaleSize; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); resolve(canvas.toDataURL('image/jpeg', 0.7)); } catch(err) { resolve(e.target.result); } }; img.onerror = () => resolve(e.target.result); img.src = e.target.result; }; reader.onerror = reject; reader.readAsDataURL(file); }); }
+    /* === VISTA RESTAURANTE Y MENU PDF === */
+    window.openRestaurant = function(id) {
+      selectedBizId = id; const biz = allBusinesses[id];
+      if(!biz) return window.showToast("Local no encontrado", "fa-triangle-exclamation");
+      
+      document.getElementById('hero-main').style.display = 'none'; document.getElementById('biz-main').style.display = 'block';
+
+      document.getElementById('biz-title-main').innerText = biz.name;
+      document.getElementById('biz-category-main').innerText = biz.category || "Gastronomía";
+      document.getElementById('biz-desc-main').innerText = biz.desc || "Sin descripción.";
+      const hoursText = biz.hoursDesc || (biz.openTime && biz.closeTime ? `De ${biz.openTime} a ${biz.closeTime}` : "Horario no especificado");
+      document.getElementById('biz-hours-main').innerHTML = `<i class="fa-solid fa-clock"></i> <span>${hoursText}</span>`;
+      
+      let socialHtml = "";
+      if(biz.whatsapp) socialHtml += `<a href="https://wa.me/${biz.whatsapp.replace(/\D/g,'')}" target="_blank" class="social-btn"><i class="fa-brands fa-whatsapp"></i></a>`;
+      if(biz.instagram) socialHtml += `<a href="${biz.instagram}" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i></a>`;
+      if(biz.facebook) socialHtml += `<a href="${biz.facebook}" target="_blank" class="social-btn"><i class="fa-brands fa-facebook"></i></a>`;
+      document.getElementById('biz-social-main').innerHTML = socialHtml;
+
+      const gallery = document.getElementById('biz-gallery'); gallery.innerHTML = "";
+      const photos = biz.photos && biz.photos.length > 0 ? biz.photos : (biz.photoBase64 ? [biz.photoBase64] : []);
+      if (photos.length > 0) { photos.forEach(src => { gallery.innerHTML += `<img src="${src}" class="gallery-img" onclick="window.openLightbox('${src}')">`; }); } 
+      else { gallery.innerHTML = `<img src="https://via.placeholder.com/600x400/e8eee8/222222?text=FOTO+DEL+LOCAL" class="gallery-img">`; }
+      
+      // NUEVO: El Botón de menú abre el Modal Lector de PDF
+      const menuBtn = document.getElementById('biz-menu-btn');
+      if(biz.menu && biz.menu.trim() !== '') {
+        menuBtn.style.display = 'inline-flex';
+        menuBtn.onclick = () => window.openPdfViewer(biz.menu);
+      } else {
+        menuBtn.style.display = 'none';
+      }
+
+      renderInlineReviews(biz.reviews || {});
+    };
+
+    function renderInlineReviews(reviewsObj) {
+      const container = document.getElementById('biz-inline-reviews'); container.innerHTML = "";
+      const reviewsArr = Object.values(reviewsObj).sort((a,b) => b.timestamp - a.timestamp);
+      if (reviewsArr.length === 0) { container.innerHTML = "<p style='color:var(--text-muted); font-weight:600;'>Aún no hay opiniones. ¡Sé el primero!</p>"; return; }
+
+      reviewsArr.forEach(r => {
+        let media = "";
+        if (r.photoBase64) media += `<img src="${r.photoBase64}" onclick="window.openLightbox('${r.photoBase64}')">`;
+        
+        let starsHtml = `<div style="color:var(--warning); font-size:1rem; margin-top:4px;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>`;
+        let detailsHtml = "";
+        if(r.foodName) detailsHtml += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:6px;"><i class="fa-solid fa-utensils"></i> Pidió: ${window.escapeHtml(r.foodName)}</div>`;
+        if(r.staffName) detailsHtml += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:4px;"><i class="fa-solid fa-user-tag"></i> Atendido por: ${window.escapeHtml(r.staffName)}</div>`;
+
+        container.innerHTML += `
+          <div class="review-card">
+            <!-- AGREGADO: Al hacer click en el header (foto o nombre) se abre su perfil público -->
+            <div class="review-header" onclick="window.openPublicProfile('${r.authorUid}')">
+              <img src="${r.authorPhoto || defaultImg}">
+              <div>
+                <div class="review-author">${window.escapeHtml(r.authorName)}</div>
+                ${starsHtml}
+              </div>
+            </div>
+            ${detailsHtml}
+            ${r.text ? `<div class="review-text-quote" style="margin-top:10px;">${window.escapeHtml(r.text)}</div>` : ''}
+            <div class="review-media">${media}</div>
+          </div>`;
+      });
+    }
+
+    /* === WIZARD DE RESEÑAS GASTRONÓMICAS === */
+    window.startReviewWizard = function() {
+      if (!window.globalCurrentUser) { window.showToast("Inicia sesión para calificar", "fa-user-lock"); return window.openModal('modal-auth'); }
+      const biz = allBusinesses[selectedBizId]; if(!biz) return;
+      
+      wizStaffId = null; wizStaffName = null; wRatings = { general: 0, food: 0, staff: 0 };
+      document.querySelectorAll('.star-rating-picker i').forEach(s => s.classList.remove('active'));
+      document.getElementById('wiz-food-name').value = ''; document.getElementById('wiz-text').value = ''; 
+      document.getElementById('wiz-photo').value = ''; document.getElementById('wiz-photo-preview').style.display = 'none';
+
+      const staffContainer = document.getElementById('wiz-staff-list'); staffContainer.innerHTML = "";
+      if (biz && biz.staff) {
+        Object.entries(biz.staff).forEach(([sId, sData]) => {
+          const sImg = sData.photo || defaultImg;
+          const sRole = sData.role ? `<div style="font-size:0.75rem; color:var(--success); font-weight:900; margin-top:4px; text-transform:uppercase;">${window.escapeHtml(sData.role)}</div>` : '';
+          staffContainer.innerHTML += `
+            <div class="staff-card" id="staff-card-${sId}" onclick="window.selectStaff('${sId}', '${window.escapeHtml(sData.name)}')">
+              <img src="${sImg}">
+              <div style="font-weight:900; font-size:0.85rem;">${window.escapeHtml(sData.name)}</div>
+              ${sRole}
+            </div>`;
+        });
+      } else { staffContainer.innerHTML = "<p style='grid-column:1/-1; font-size:0.9rem; color:var(--text-muted); font-weight:600;'>No hay personal registrado.</p>"; }
+
+      window.updateUserPointsDisplay();
+      window.nextWizardStep(1); window.openModal('modal-wizard');
+    };
+
+    window.selectStaff = function(id, name) {
+      document.querySelectorAll('.staff-card').forEach(c => c.classList.remove('active'));
+      if(id !== 'none') {
+        const card = document.getElementById('staff-card-'+id); if(card) card.classList.add('active');
+        wizStaffId = id; wizStaffName = name;
+      } else { wizStaffId = 'none'; wizStaffName = 'Otro / No especificado'; }
+      setTimeout(() => window.nextWizardStep(2), 300);
+    };
+
+    function setupMultiStarPickers() { 
+      ['general', 'food', 'staff'].forEach(type => {
+        document.querySelectorAll(`#star-${type} i`).forEach(s => s.addEventListener('click', e => { 
+          const val = parseInt(e.target.getAttribute('data-val')); wRatings[type] = val;
+          document.querySelectorAll(`#star-${type} i`).forEach((st, idx) => { if(idx < val) st.classList.add('active'); else st.classList.remove('active'); }); 
+        })); 
+      });
+    }
+
+    window.validateRatingsAndNext = function() {
+      if(wRatings.general === 0 || wRatings.food === 0 || wRatings.staff === 0) return window.showToast("Por favor califica las 3 áreas", "fa-star");
+      window.nextWizardStep(3);
+    };
+
+    window.nextWizardStep = function(s) { 
+      document.querySelectorAll('.wizard-step').forEach(e => e.classList.remove('active')); 
+      document.getElementById('wiz-step-'+s).classList.add('active'); 
+    };
+
+    window.trySkipWizard = function(nextStep, ptsToLose, typeName) { 
+      pendingSkipStep = nextStep; document.querySelector('#modal-guilt .btn-secondary').innerHTML = `<i class="fa-solid fa-star" style="color:var(--warning);"></i> Completar paso`; window.openModal('modal-guilt'); 
+    };
+    window.cancelSkip = function() { window.closeModal('modal-guilt'); pendingSkipStep = null; };
+    window.confirmSkip = function() {
+      window.closeModal('modal-guilt'); window.showToast("Paso omitido. No sumarás esos puntos.", "fa-forward-step");
+      if (pendingSkipStep === 'submit') { document.getElementById('wiz-photo').value = ""; document.getElementById('wiz-photo-preview').src = ""; document.getElementById('wiz-photo-preview').style.display = 'none'; window.processSubmitReview(); } 
+      else if (pendingSkipStep !== null) { if (pendingSkipStep === 4) { document.getElementById('wiz-text').value = ""; document.getElementById('wiz-food-name').value = ""; } window.nextWizardStep(pendingSkipStep); } 
+      pendingSkipStep = null;
+    };
+    window.tryNextStepText = function() { if (document.getElementById('wiz-text').value.trim() === '') window.trySkipWizard(4, 20, 'tu opinión'); else window.nextWizardStep(4); };
+    window.previewWizPhoto = function(e) { if(e.target.files.length>0){ fileToBase64Compress(e.target.files[0]).then(b64 => { document.getElementById('wiz-photo-preview').src = b64; document.getElementById('wiz-photo-preview').style.display = 'block'; }); } };
+    window.submitWizardReview = async function() {
+      const photoInput = document.getElementById('wiz-photo');
+      if (photoInput.files.length === 0) { pendingSkipStep = 'submit'; window.openModal('modal-guilt'); return; }
+      await window.processSubmitReview();
+    };
+
+    window.processSubmitReview = async function() {
+      const foodName = document.getElementById('wiz-food-name').value.trim(); const text = document.getElementById('wiz-text').value.trim(); const photoInput = document.getElementById('wiz-photo');
+      const btn = document.getElementById('btn-wiz-submit'); btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando...`;
+      try {
+        let photoB64 = null; if (photoInput.files.length > 0) photoB64 = await fileToBase64Compress(photoInput.files[0]);
+        let isGpsVerified = true; 
+        await push(ref(db, `businesses/${selectedBizId}/reviews`), { authorUid: window.globalCurrentUser.uid, authorName: window.globalCurrentUser.name, authorPhoto: window.globalCurrentUser.photo, ratingGeneral: wRatings.general, ratingFood: wRatings.food, ratingStaff: wRatings.staff, staffId: wizStaffId, staffName: wizStaffName, foodName: foodName, text: text, photoBase64: photoB64, gpsVerified: isGpsVerified, timestamp: Date.now() });
+        window.closeModal('modal-wizard'); window.showToast("¡Experiencia publicada!", "fa-award"); window.updateUserPointsDisplay();
+      } catch(err) { window.showToast("Error al publicar", "fa-triangle-exclamation"); } finally { btn.disabled = false; btn.innerHTML = `PUBLICAR EXPERIENCIA`; }
+    };
 
     /* === AUTHENTICATION LOGIC === */
+    function fileToBase64Compress(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { try { const canvas = document.createElement('canvas'); const MAX_WIDTH = 600; let scaleSize = 1; if (img.width > MAX_WIDTH) scaleSize = MAX_WIDTH / img.width; canvas.width = img.width * scaleSize; canvas.height = img.height * scaleSize; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height); resolve(canvas.toDataURL('image/jpeg', 0.7)); } catch(err) { resolve(e.target.result); } }; img.onerror = () => resolve(e.target.result); img.src = e.target.result; }; reader.onerror = reject; reader.readAsDataURL(file); }); }
+    
     onAuthStateChanged(auth, user => {
       if (user) { 
         onValue(ref(db, 'users/' + user.uid), s => { 
-          if(s.exists()){ window.globalCurrentUser = {uid:user.uid, email:user.email, ...s.val()}; } 
-          else { window.globalCurrentUser = {uid:user.uid, email:user.email, name:"Usuario", photo:defaultImg}; }
+          if(s.exists()){ window.globalCurrentUser = {uid:user.uid, email:user.email, ...s.val()}; } else { window.globalCurrentUser = {uid:user.uid, email:user.email, name:"Usuario", photo:defaultImg}; }
           updateAuthUI(); 
         }); 
-      } 
-      else { window.globalCurrentUser = null; updateAuthUI(); }
+      } else { window.globalCurrentUser = null; updateAuthUI(); }
     });
     
     window.registerUser = async function() {
@@ -894,10 +952,7 @@
 
     window.loginUser = async function() { 
       const btn = document.getElementById('btn-login'); if(btn) { btn.disabled = true; btn.innerText = "Entrando..."; }
-      try{ 
-        await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value); 
-        window.closeModal('modal-auth'); window.showToast("¡Bienvenido!", "fa-hand-wave"); 
-      } catch(e){ window.showToast("Datos incorrectos", "fa-xmark"); } finally { if(btn) { btn.disabled = false; btn.innerText = "Entrar"; } }
+      try{ await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value); window.closeModal('modal-auth'); window.showToast("¡Bienvenido!", "fa-hand-wave"); } catch(e){ window.showToast("Datos incorrectos", "fa-xmark"); } finally { if(btn) { btn.disabled = false; btn.innerText = "Entrar"; } }
     };
     
     window.logoutUser = async function() { await signOut(auth); window.closeDrawerSafe(); window.showToast("Sesión cerrada", "fa-right-from-bracket"); };
