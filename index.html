@@ -50,6 +50,7 @@
     @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
     @keyframes floatElement { 0% { transform: translateY(0px); } 50% { transform: translateY(-6px); } 100% { transform: translateY(0px); } }
     @keyframes starPulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); filter: brightness(1.2); } 100% { transform: scale(1.15); } }
+    @keyframes pulseCall { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
     
     .fade-in { animation: fadeIn 0.4s ease-out forwards; }
     .slide-up { animation: slideUpFade 0.5s ease-out forwards; opacity: 0; }
@@ -100,7 +101,7 @@
     /* === VISTA DEL LOCAL === */
     #biz-main { display: none; height: 100%; padding: 100px 20px 40px; overflow-y: auto; background: var(--bg-base); }
     .biz-title-main { font-size: 2.4rem; font-weight: 900; margin-bottom: 8px; line-height: 1.1; }
-    .biz-category { font-size: 0.95rem; font-weight: 800; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 24px; }
+    .biz-category { font-size: 0.95rem; font-weight: 800; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
     
     .gallery-container { display: flex; overflow-x: auto; gap: 14px; padding: 4px 0 20px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
     .gallery-container::-webkit-scrollbar { display: none; }
@@ -116,6 +117,133 @@
     .social-btn { width: 48px; height: 48px; border-radius: 14px; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--primary); text-decoration: none; transition: var(--transition-fast); background: var(--surface-solid); }
     .social-btn:hover { transform: translateY(-4px); box-shadow: var(--shadow-hard); background: var(--primary); color: var(--surface-solid); }
     .social-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--primary); }
+
+    /* === PANEL ESTRATÉGICO DE ATENCIÓN EN MESA (3 BOTONES) === */
+    .table-service-panel {
+      background: var(--surface);
+      backdrop-filter: blur(12px);
+      border: 2px solid var(--primary);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow-hard);
+      margin-bottom: 24px;
+      transition: var(--transition-fast);
+    }
+    .table-service-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .table-service-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 900;
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .table-badge-pill {
+      background: var(--primary);
+      color: var(--surface-solid);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 900;
+      font-size: 0.85rem;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 2px solid var(--primary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition-fast);
+    }
+    .table-badge-pill:active { transform: scale(0.95); }
+    .table-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .btn-table-action {
+      background: var(--surface-solid);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: 18px;
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 0.88rem;
+      text-align: center;
+      line-height: 1.2;
+      box-shadow: var(--shadow-hard);
+      transition: var(--transition-fast);
+    }
+    .btn-table-action i {
+      font-size: 1.45rem;
+      color: var(--primary);
+      transition: var(--transition-fast);
+    }
+    .btn-table-action:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hard-lg);
+    }
+    .btn-table-action:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px var(--primary);
+    }
+    .btn-table-action.sent-active {
+      background: var(--primary);
+      color: var(--surface-solid);
+    }
+    .btn-table-action.sent-active i {
+      color: var(--warning);
+    }
+    .table-status-feedback {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--success);
+      text-align: center;
+      display: none;
+      padding: 8px 12px;
+      background: var(--surface-solid);
+      border-radius: 12px;
+      border: 2px solid var(--primary);
+    }
+    .table-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+      gap: 10px;
+      width: 100%;
+      margin-top: 8px;
+    }
+    .table-num-btn {
+      padding: 14px 10px;
+      border: 2px solid var(--primary);
+      border-radius: 16px;
+      background: var(--surface-solid);
+      color: var(--primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 900;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: var(--shadow-hard);
+      transition: var(--transition-fast);
+    }
+    .table-num-btn.active, .table-num-btn:active {
+      background: var(--primary);
+      color: var(--surface-solid);
+    }
 
     /* BOTONES GLOBALES ANIMADOS */
     .btn { padding: 18px 24px; border: 2px solid var(--primary); border-radius: 100px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.1rem; transition: var(--transition-fast); text-decoration: none; width: 100%; margin-bottom: 14px; }
@@ -215,6 +343,23 @@
     .friend-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hard); }
     .prof-stats-box { background: var(--surface-solid); padding: 28px; border-radius: 30px; margin-bottom: 24px; display: flex; justify-content: space-around; text-align: center; border: 2px solid var(--primary); box-shadow: var(--shadow-hard); flex-shrink: 0; }
 
+    /* Modal Google Maps Redirect */
+    .gmaps-compiled-box {
+      background: var(--surface-solid);
+      border: 2px solid var(--primary);
+      border-radius: 20px;
+      padding: 16px;
+      text-align: left;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: var(--primary);
+      font-weight: 600;
+      white-space: pre-wrap;
+      box-shadow: var(--shadow-hard);
+      max-height: 210px;
+      overflow-y: auto;
+    }
+
     /* Toast */
     .toast { position: fixed; top: 90px; left: 50%; transform: translate(-50%, -150px); background: var(--surface-solid); color: var(--primary); padding: 16px 28px; border-radius: 100px; z-index: 10000; font-weight: 900; transition: transform 0.4s var(--spring); font-size: 1.05rem; white-space: nowrap; display: flex; align-items: center; gap: 12px; border: 2px solid var(--primary); box-shadow: var(--shadow-hard-lg); }
     .toast.show { transform: translate(-50%, 0); }
@@ -249,6 +394,33 @@
     <h1 id="biz-title-main" class="biz-title-main">Restaurante</h1>
     <div id="biz-category-main" class="biz-category">Categoría</div>
 
+    <!-- PANEL ESTRATÉGICO DE ASISTENCIA EN MESA: 3 BOTONES PRINCIPALES -->
+    <div class="table-service-panel" id="table-service-panel">
+      <div class="table-service-header">
+        <div class="table-service-title">
+          <i class="fa-solid fa-bell-concierge"></i> Atención en tu Mesa
+        </div>
+        <button type="button" class="table-badge-pill" id="current-table-badge" onclick="window.openTableSelectorModal()">
+          <i class="fa-solid fa-chair"></i> <span id="current-table-label">Elegir Mesa</span>
+        </button>
+      </div>
+      <div class="table-actions-grid">
+        <button type="button" class="btn-table-action" id="btn-call-waiter" onclick="window.handleTableAction('waiter')">
+          <i class="fa-solid fa-hand-sparkles"></i>
+          <span>Llamar al mozo</span>
+        </button>
+        <button type="button" class="btn-table-action" id="btn-ask-menu" onclick="window.handleTableAction('menu')">
+          <i class="fa-solid fa-book-open"></i>
+          <span>Pedir el menú</span>
+        </button>
+        <button type="button" class="btn-table-action" id="btn-ask-bill" onclick="window.handleTableAction('bill')">
+          <i class="fa-solid fa-receipt"></i>
+          <span>Pedir la cuenta</span>
+        </button>
+      </div>
+      <div class="table-status-feedback" id="table-status-feedback"></div>
+    </div>
+
     <div class="gallery-container" id="biz-gallery"></div>
 
     <div class="biz-details-box">
@@ -268,6 +440,64 @@
     <h3 class="section-title">Opiniones de clientes</h3>
     <div id="biz-inline-reviews"></div>
   </main>
+
+  <!-- MODAL: SELECCIONAR NÚMERO DE MESA -->
+  <div class="modal-overlay" id="modal-select-table" style="z-index: 6200;">
+    <div class="modal-card" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3>¿En qué mesa estás?</h3>
+        <button class="btn-close" onclick="window.closeModal('modal-select-table')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.95rem; font-weight: 600; color: var(--text-muted);">Selecciona el número de tu mesa para que el personal reciba tu solicitud de inmediato.</p>
+        <div class="table-picker-grid" id="table-picker-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: REDIRECCIÓN AUTOMÁTICA Y RESEÑA LISTA PARA GOOGLE MAPS -->
+  <div class="modal-overlay" id="modal-gmaps-redirect" style="z-index: 6800;">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>¡Reseña Lista para Maps!</h3>
+        <button class="btn-close" onclick="window.closeModal('modal-gmaps-redirect')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="background: var(--surface-solid); border: 2px solid var(--primary); border-radius: 18px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 2px 2px 0px var(--primary);">
+          <i class="fa-solid fa-clipboard-check" style="font-size: 1.6rem; color: var(--success);"></i>
+          <div style="font-size: 0.92rem; font-weight: 700; color: var(--primary); line-height: 1.35;">
+            Copiamos automáticamente tu reseña completa al portapapeles. Solo tendrás que pegarla en Google Maps.
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 900; text-transform: uppercase; display: block; margin-bottom: 8px; color: var(--primary);">Resumen recopilado automáticamente:</label>
+          <div class="gmaps-compiled-box" id="gmaps-compiled-preview"></div>
+        </div>
+
+        <div id="gmaps-media-reminder" style="display: none; align-items: center; gap: 12px; background: var(--surface-solid); padding: 12px; border-radius: 16px; border: 2px dashed var(--primary);">
+          <img id="gmaps-photo-thumb" src="" style="width: 54px; height: 54px; border-radius: 12px; object-fit: cover; border: 2px solid var(--primary); display: none;">
+          <div style="flex: 1; font-size: 0.85rem; font-weight: 700; color: var(--primary);">
+            ¡También adjuntaste multimedia! Puedes subir la foto/video directamente en Google Maps.
+          </div>
+          <a id="gmaps-download-media" href="#" download="experiencia_proof.jpg" class="btn-close" style="text-decoration: none; width: 40px; height: 40px;" title="Guardar archivo">
+            <i class="fa-solid fa-download"></i>
+          </a>
+        </div>
+
+        <div id="gmaps-countdown-banner" style="text-align: center; font-weight: 800; font-size: 0.92rem; color: var(--success);"></div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button type="button" class="btn btn-secondary" id="btn-go-gmaps-now" onclick="window.openConfiguredGoogleMaps()" style="margin-bottom: 0;">
+            <i class="fa-solid fa-map-location-dot"></i> PUBLICAR EN GOOGLE MAPS AHORA
+          </button>
+          <button type="button" class="btn btn-primary" onclick="window.copyCompiledReviewAgain()" style="margin-bottom: 0; padding: 14px;">
+            <i class="fa-solid fa-copy"></i> Copiar texto nuevamente
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- LIGHTBOX MULTIMEDIA -->
   <div class="lightbox" id="lightbox" onclick="window.closeLightbox(event)">
@@ -515,6 +745,8 @@
   <!-- CORE SCRIPTS -->
   <script type="module">
     const urlParamsFast = new URLSearchParams(window.location.search);
+    const initialBizParam = urlParamsFast.get('biz');
+    const initialMesaParam = urlParamsFast.get('mesa');
     if(urlParamsFast.has('biz')) { document.getElementById('global-loader').classList.add('active'); }
 
     // === SISTEMA HISTORY API ===
@@ -525,6 +757,10 @@
     window.closeModal = function(id, fromPopState = false) { 
       document.getElementById(id).classList.remove('active'); 
       if(id === 'modal-pdf') document.getElementById('pdf-frame').src = "";
+      if(id === 'modal-gmaps-redirect' && window.gmapsRedirectTimer) {
+        clearInterval(window.gmapsRedirectTimer);
+        window.gmapsRedirectTimer = null;
+      }
       if (!fromPopState && window.location.hash === '#' + id) history.back();
     };
     window.openDrawerSafe = function() { 
@@ -543,6 +779,10 @@
       document.getElementById('drawer').classList.remove('active');
       document.getElementById('drawer-overlay').classList.remove('active');
       document.getElementById('pdf-frame').src = "";
+      if(window.gmapsRedirectTimer) {
+        clearInterval(window.gmapsRedirectTimer);
+        window.gmapsRedirectTimer = null;
+      }
       const lb = document.getElementById('lightbox');
       if(lb) { lb.classList.remove('active'); setTimeout(() => lb.style.display = 'none', 300); }
     });
@@ -578,7 +818,7 @@
       const iframe = document.getElementById('pdf-frame');
       const extLinkBtn = document.getElementById('pdf-ext-link');
       
-      if (url.toLowerCase().endsWith('.pdf') || url.includes('.pdf')) {
+      if ((url.toLowerCase().endsWith('.pdf') || url.includes('.pdf')) && !url.startsWith('data:')) {
         iframe.src = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
       } else {
         iframe.src = url;
@@ -612,7 +852,7 @@
 
     window.showToast = function(msg, icon = 'fa-bell') { 
       const t = document.getElementById('toast'); 
-      t.innerHTML = `<i class="fa-solid ${icon}" style="color:var(--surface-solid);"></i> ${msg}`;
+      t.innerHTML = `<i class="fa-solid ${icon}" style="color:var(--primary);"></i> ${msg}`;
       t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); 
     };
 
@@ -621,7 +861,31 @@
       else document.getElementById('global-loader').classList.remove('active');
     };
 
-    window.escapeHtml = function(s) { return s ? s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : ""; };
+    window.escapeHtml = function(s) { return s ? String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : ""; };
+
+    // Copiar texto al portapapeles de forma compatible con todos los navegadores y webviews
+    window.copyTextSafe = async function(text) {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (e) {}
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        return true;
+      } catch (err) {
+        return false;
+      }
+    };
 
     // === FIREBASE ===
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
@@ -639,13 +903,17 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
-    const defaultImg = "https://via.placeholder.com/150/e8eee8/222222?text=P";
+    const defaultImg = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><rect width="150" height="150" fill="#e8eee8"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="#222222" font-family="sans-serif" font-weight="bold" font-size="64">P</text></svg>');
 
     window.globalCurrentUser = null; 
     let allBusinesses = {}; 
     let selectedBizId = null;
 
-    // ESTADO WIZARD
+    // ESTADO DE MESA Y SOLICITUDES DEL CLIENTE
+    let selectedTableNumber = initialMesaParam ? parseInt(initialMesaParam, 10) : null;
+    let pendingTableActionType = null;
+
+    // ESTADO WIZARD Y GOOGLE MAPS
     let selectedStaffList = {}; 
     let selectedStaffTags = [];
     let wRatings = { general: 0, food: 0 }; 
@@ -653,6 +921,8 @@
 
     let uploadedMediaType = null;
     let uploadedMediaB64 = null;
+    let lastCompiledReviewText = "";
+    let lastConfiguredGoogleMapsUrl = "";
 
     window.addEventListener('DOMContentLoaded', () => {
       setupMultiStarPickers();
@@ -660,9 +930,9 @@
       onValue(ref(db, 'businesses'), (snapshot) => {
         allBusinesses = snapshot.val() || {};
         
-        if (urlParamsFast.has('biz') && !window.deepLinkOpened) {
+        if (initialBizParam && !window.deepLinkOpened) {
           window.deepLinkOpened = true; 
-          const bId = urlParamsFast.get('biz');
+          const bId = initialBizParam;
           if(allBusinesses[bId]) {
              window.openRestaurant(bId);
              window.history.replaceState({}, document.title, window.location.pathname);
@@ -672,10 +942,123 @@
         
         if(selectedBizId && allBusinesses[selectedBizId]) {
             renderInlineReviews(allBusinesses[selectedBizId].reviews || {});
+            updateTableBadgeUI();
         }
       });
     });
 
+    /* =======================================================
+       SISTEMA DE MESAS Y SOLICITUDES AL PERSONAL (3 BOTONES)
+       ======================================================= */
+    function updateTableBadgeUI() {
+      const labelEl = document.getElementById('current-table-label');
+      if (!labelEl) return;
+      if (selectedTableNumber && !isNaN(selectedTableNumber)) {
+        labelEl.innerText = `Mesa ${selectedTableNumber}`;
+      } else {
+        labelEl.innerText = `Elegir Mesa`;
+      }
+    }
+
+    window.openTableSelectorModal = function() {
+      if (!selectedBizId || !allBusinesses[selectedBizId]) return;
+      const biz = allBusinesses[selectedBizId];
+      const totalTables = parseInt(biz.tableCount, 10) || (biz.tables ? Object.keys(biz.tables).length : 12) || 12;
+      const grid = document.getElementById('table-picker-grid');
+      grid.innerHTML = "";
+
+      for (let i = 1; i <= totalTables; i++) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'table-num-btn' + (selectedTableNumber === i ? ' active' : '');
+        btn.innerText = `Mesa ${i}`;
+        btn.onclick = () => window.selectTableNumber(i);
+        grid.appendChild(btn);
+      }
+      window.openModal('modal-select-table');
+    };
+
+    window.selectTableNumber = function(tableNum) {
+      selectedTableNumber = parseInt(tableNum, 10);
+      updateTableBadgeUI();
+      window.closeModal('modal-select-table');
+      window.showToast(`Mesa ${selectedTableNumber} seleccionada`, 'fa-chair');
+
+      if (pendingTableActionType) {
+        const actionToRun = pendingTableActionType;
+        pendingTableActionType = null;
+        setTimeout(() => window.handleTableAction(actionToRun), 200);
+      }
+    };
+
+    window.handleTableAction = async function(actionType) {
+      if (!selectedBizId || !allBusinesses[selectedBizId]) {
+        return window.showToast("Primero escanea el QR del restaurante", "fa-qrcode");
+      }
+
+      if (!selectedTableNumber || isNaN(selectedTableNumber)) {
+        pendingTableActionType = actionType;
+        window.openTableSelectorModal();
+        return;
+      }
+
+      const biz = allBusinesses[selectedBizId];
+      const tableNum = selectedTableNumber;
+
+      // Mensajes exactos requeridos para la pantalla de los mozos
+      let message = "";
+      let btnId = "";
+      let toastIcon = "fa-bell-concierge";
+
+      if (actionType === 'waiter') {
+        message = `Mesa ${tableNum} está llamando al mozo.`;
+        btnId = 'btn-call-waiter';
+        toastIcon = 'fa-hand-sparkles';
+      } else if (actionType === 'menu') {
+        message = `Mesa ${tableNum} está pidiendo el menú.`;
+        btnId = 'btn-ask-menu';
+        toastIcon = 'fa-book-open';
+      } else if (actionType === 'bill') {
+        message = `Mesa ${tableNum} está pidiendo la cuenta.`;
+        btnId = 'btn-ask-bill';
+        toastIcon = 'fa-receipt';
+      } else {
+        return;
+      }
+
+      const btnEl = document.getElementById(btnId);
+      if (btnEl) btnEl.classList.add('sent-active');
+
+      try {
+        // Guardado único por restaurante y mesa en businesses/{bizId}/tableRequests
+        const requestKey = `mesa_${tableNum}_${actionType}`;
+        await set(ref(db, `businesses/${selectedBizId}/tableRequests/${requestKey}`), {
+          requestId: requestKey,
+          bizId: selectedBizId,
+          bizName: biz.name || 'Restaurante',
+          tableNumber: tableNum,
+          type: actionType,
+          message: message,
+          status: 'pending',
+          timestamp: Date.now()
+        });
+
+        const feedbackEl = document.getElementById('table-status-feedback');
+        if (feedbackEl) {
+          feedbackEl.style.display = 'block';
+          feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> Solicitud enviada: <strong>${window.escapeHtml(message)}</strong>`;
+        }
+
+        window.showToast(message, toastIcon);
+      } catch (err) {
+        if (btnEl) btnEl.classList.remove('sent-active');
+        window.showToast("No se pudo enviar la solicitud", "fa-triangle-exclamation");
+      }
+    };
+
+    /* =======================================================
+       PUNTOS, NIVELES Y PERFILES
+       ======================================================= */
     window.calculateUserPointsDetailed = function(uid) {
       let pts = { total: 0, byBiz: {} };
       Object.entries(allBusinesses).forEach(([bizId, biz]) => {
@@ -871,10 +1254,13 @@
       const hoursText = biz.hoursDesc || (biz.openTime && biz.closeTime ? `De ${biz.openTime} a ${biz.closeTime}` : "Horario no especificado");
       document.getElementById('biz-hours-main').innerHTML = `<i class="fa-solid fa-clock"></i> <span>${hoursText}</span>`;
       
+      updateTableBadgeUI();
+
       let socialHtml = "";
       if(biz.whatsapp) socialHtml += `<a href="https://wa.me/${biz.whatsapp.replace(/\D/g,'')}" target="_blank" class="social-btn"><i class="fa-brands fa-whatsapp"></i></a>`;
       if(biz.instagram) socialHtml += `<a href="${biz.instagram}" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i></a>`;
       if(biz.facebook) socialHtml += `<a href="${biz.facebook}" target="_blank" class="social-btn"><i class="fa-brands fa-facebook"></i></a>`;
+      if(biz.googleMapsUrl) socialHtml += `<a href="${biz.googleMapsUrl}" target="_blank" class="social-btn" title="Google Maps"><i class="fa-solid fa-map-location-dot"></i></a>`;
       document.getElementById('biz-social-main').innerHTML = socialHtml;
 
       const gallery = document.getElementById('biz-gallery'); gallery.innerHTML = "";
@@ -889,7 +1275,8 @@
           }
         }); 
       } else { 
-        gallery.innerHTML = `<img src="https://via.placeholder.com/600x400/e8eee8/222222?text=FOTO+DEL+LOCAL" class="gallery-media">`; 
+        const fallbackLocalSvg = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400"><rect width="600" height="400" fill="#e8eee8"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#222222" font-family="sans-serif" font-weight="bold" font-size="28">FOTO DEL LOCAL</text></svg>');
+        gallery.innerHTML = `<img src="${fallbackLocalSvg}" class="gallery-media">`; 
       }
       
       const menuBtn = document.getElementById('biz-menu-btn');
@@ -948,12 +1335,12 @@
             ${detailsHtml}
             ${staffInfo}
             ${r.text ? `<div class="review-text-quote" style="margin-top:12px;">${window.escapeHtml(r.text)}</div>` : ''}
-            <div class="review-media">${media}</div>
+            ${media ? `<div>${media}</div>` : ''}
           </div>`;
       });
     }
 
-    /* === WIZARD (CON CORRECCIÓN DE BUG EN PASO 2) === */
+    /* === WIZARD (CON RECOPILACIÓN AUTOMÁTICA PARA GOOGLE MAPS) === */
     window.startReviewWizard = function() {
       if (!window.globalCurrentUser) { window.showToast("Inicia sesión para calificar", "fa-user-lock"); return window.openModal('modal-auth'); }
       const biz = allBusinesses[selectedBizId]; if(!biz) return;
@@ -1054,7 +1441,6 @@
       });
     }
 
-    // AQUI ESTABA EL ERROR: Ya no pedimos validación de `staff` porque se califica en el paso anterior.
     window.validateRatingsAndNext = function() {
       if(wRatings.general === 0 || wRatings.food === 0) {
           return window.showToast("Por favor califica Comida y Experiencia General", "fa-star");
@@ -1122,22 +1508,118 @@
       await window.processSubmitReview();
     };
 
+    // Compila automáticamente toda la información de la experiencia para pegar en Google Maps
+    function buildGoogleMapsReviewSummary(biz, staffArr, staffTags, ratings, foodName, text) {
+      const lines = [];
+      if (text) {
+        lines.push(text);
+        lines.push("");
+      }
+      if (foodName) {
+        lines.push(`🍽️ Pedido: ${foodName}`);
+      }
+      lines.push(`⭐ Experiencia General: ${"★".repeat(ratings.general || 5)} (${ratings.general || 5}/5)`);
+      lines.push(`🥘 Calidad de la Comida: ${"★".repeat(ratings.food || 5)} (${ratings.food || 5}/5)`);
+
+      if (staffArr && staffArr.length > 0) {
+        const staffDetails = staffArr.map(s => `${s.name} (${"★".repeat(s.rating || 5)} ${s.rating || 5}/5)`).join(", ");
+        lines.push(`👏 Atención de: ${staffDetails}`);
+      }
+      if (staffTags && staffTags.length > 0) {
+        lines.push(`✨ Destacado por: ${staffTags.join(", ")}`);
+      }
+      return lines.join("\n");
+    }
+
+    window.copyCompiledReviewAgain = async function() {
+      if (!lastCompiledReviewText) return;
+      await window.copyTextSafe(lastCompiledReviewText);
+      window.showToast("¡Texto copiado al portapapeles!", "fa-copy");
+    };
+
+    window.openConfiguredGoogleMaps = function() {
+      if (window.gmapsRedirectTimer) {
+        clearInterval(window.gmapsRedirectTimer);
+        window.gmapsRedirectTimer = null;
+      }
+      const targetUrl = lastConfiguredGoogleMapsUrl;
+      if (targetUrl) {
+        window.open(targetUrl, '_blank');
+      }
+    };
+
     window.processSubmitReview = async function() {
       const foodName = document.getElementById('wiz-food-name').value.trim(); const text = document.getElementById('wiz-text').value.trim(); 
       const btn = document.getElementById('btn-wiz-submit'); btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Publicando...`;
       try {
         let isGpsVerified = true; 
         const staffArr = Object.values(selectedStaffList);
+        const biz = allBusinesses[selectedBizId] || {};
 
+        // 1. Recopilar automáticamente toda la reseña y copiarla al portapapeles
+        lastCompiledReviewText = buildGoogleMapsReviewSummary(biz, staffArr, selectedStaffTags, wRatings, foodName, text);
+        await window.copyTextSafe(lastCompiledReviewText);
+
+        // 2. Guardar en Firebase (sistema actual intacto)
         await push(ref(db, `businesses/${selectedBizId}/reviews`), { 
           authorUid: window.globalCurrentUser.uid, authorName: window.globalCurrentUser.name, authorPhoto: window.globalCurrentUser.photo, 
           ratingGeneral: wRatings.general, ratingFood: wRatings.food, 
           staffRated: staffArr, staffTags: selectedStaffTags,
           foodName: foodName, text: text, 
           mediaBase64: uploadedMediaB64, mediaType: uploadedMediaType,
+          tableNumber: selectedTableNumber || null,
           gpsVerified: isGpsVerified, timestamp: Date.now() 
         });
-        window.closeModal('modal-wizard'); window.showToast("¡Experiencia publicada!", "fa-award"); window.updateUserPointsDisplay();
+
+        window.closeModal('modal-wizard');
+        window.updateUserPointsDisplay();
+
+        // 3. Preparar redirección a la URL de Google Maps del restaurante
+        const mapsUrl = (biz.googleMapsUrl && biz.googleMapsUrl.trim() !== '')
+          ? biz.googleMapsUrl.trim()
+          : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((biz.name || '') + ' ' + (biz.address || ''))}`;
+        lastConfiguredGoogleMapsUrl = mapsUrl;
+
+        document.getElementById('gmaps-compiled-preview').innerText = lastCompiledReviewText;
+
+        const mediaRem = document.getElementById('gmaps-media-reminder');
+        const thumbImg = document.getElementById('gmaps-photo-thumb');
+        const dlBtn = document.getElementById('gmaps-download-media');
+        if (uploadedMediaB64) {
+          mediaRem.style.display = 'flex';
+          dlBtn.href = uploadedMediaB64;
+          dlBtn.download = uploadedMediaType === 'video' ? 'experiencia_proof.mp4' : 'experiencia_proof.jpg';
+          if (uploadedMediaType === 'image') {
+            thumbImg.src = uploadedMediaB64;
+            thumbImg.style.display = 'block';
+          } else {
+            thumbImg.style.display = 'none';
+          }
+        } else {
+          mediaRem.style.display = 'none';
+        }
+
+        setTimeout(() => {
+          window.openModal('modal-gmaps-redirect');
+          window.showToast("¡Reseña copiada! Redirigiendo a Google Maps...", "fa-map-location-dot");
+
+          let secondsLeft = 3;
+          const banner = document.getElementById('gmaps-countdown-banner');
+          banner.innerText = `Abriendo Google Maps automáticamente en ${secondsLeft} segundos...`;
+          if (window.gmapsRedirectTimer) clearInterval(window.gmapsRedirectTimer);
+          window.gmapsRedirectTimer = setInterval(() => {
+            secondsLeft--;
+            if (secondsLeft > 0) {
+              banner.innerText = `Abriendo Google Maps automáticamente en ${secondsLeft} segundos...`;
+            } else {
+              clearInterval(window.gmapsRedirectTimer);
+              window.gmapsRedirectTimer = null;
+              banner.innerText = `¡Listo! Pega tu reseña en Google Maps.`;
+              window.open(lastConfiguredGoogleMapsUrl, '_blank');
+            }
+          }, 1000);
+        }, 250);
+
       } catch(err) { window.showToast("Error al publicar", "fa-triangle-exclamation"); } finally { btn.disabled = false; btn.innerHTML = `PUBLICAR EXPERIENCIA`; }
     };
 
@@ -1159,7 +1641,8 @@
       if(!n || !e || !p) return window.showToast("Faltan datos", "fa-circle-info");
       const btn = document.getElementById('btn-register'); if(btn) { btn.disabled = true; btn.innerText = "Creando..."; }
       try {
-        let b64 = "https://via.placeholder.com/150/e8eee8/222222?text="+n.charAt(0).toUpperCase(); 
+        const initialChar = n.charAt(0).toUpperCase();
+        let b64 = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150"><rect width="150" height="150" fill="#e8eee8"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="#222222" font-family="sans-serif" font-weight="bold" font-size="64">${initialChar}</text></svg>`); 
         if(f) b64 = await fileToBase64Compress(f);
         const c = await createUserWithEmailAndPassword(auth, e, p);
         await set(ref(db, 'users/'+c.user.uid), {name:n, photo:b64, createdAt:Date.now()}); 
