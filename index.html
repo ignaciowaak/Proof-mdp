@@ -278,24 +278,25 @@
       box-shadow: none;
     }
 
-    /* === GALERÍA MULTIMEDIA DEBAJO DEL NOMBRE (2 TARJETAS CUADRADAS REDONDEADAS SIDE-BY-SIDE) === */
+    /* === GALERÍA MULTIMEDIA FORMATO HISTORIA DE INSTAGRAM (9:16, MÁS CHICAS, PEGADITAS Y SIN BORDE) === */
     .gallery-container {
       display: flex;
       overflow-x: auto;
-      gap: 12px;
-      padding: 4px 2px 18px;
+      gap: 8px;
+      padding: 2px 2px 16px;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
     }
     .gallery-container::-webkit-scrollbar { display: none; }
     .gallery-item-wrap {
       position: relative;
-      height: 192px;
-      min-width: calc(50% - 6px);
-      width: calc(50% - 6px);
-      border-radius: 26px;
-      border: 1.5px solid rgba(255, 255, 255, 0.74);
-      box-shadow: 0 12px 26px rgba(22, 32, 22, 0.14);
+      width: 112px;
+      min-width: 112px;
+      height: 198px;
+      aspect-ratio: 9 / 16;
+      border-radius: 18px;
+      border: none;
+      box-shadow: 0 8px 18px rgba(20, 30, 20, 0.13);
       scroll-snap-align: start;
       cursor: pointer;
       background: var(--surface-solid);
@@ -304,62 +305,27 @@
       flex-shrink: 0;
     }
     .gallery-item-wrap.is-video-hero {
-      min-width: calc(50% - 6px);
-      width: calc(50% - 6px);
+      width: 112px;
+      min-width: 112px;
+      height: 198px;
     }
     .gallery-item-wrap:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 32px rgba(22, 32, 22, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(20, 30, 20, 0.18);
     }
     .gallery-item-wrap:active {
-      transform: scale(0.97);
+      transform: scale(0.96);
     }
     .gallery-media {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      border: none;
     }
-    /* Botón circular de expandir abajo a la derecha en cada foto/video */
-    .media-expand-badge {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      width: 36px;
-      height: 36px;
-      background: rgba(28, 35, 29, 0.72);
-      color: #F4F7F4;
-      border: 1.2px solid rgba(255, 255, 255, 0.58);
-      border-radius: 50%;
-      padding: 0;
-      font-size: 0.85rem;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      pointer-events: none;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-    }
+    .media-expand-badge,
     .media-video-badge {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(28, 35, 29, 0.76);
-      color: #F4F7F4;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-radius: 100px;
-      padding: 4px 10px;
-      font-size: 0.68rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      backdrop-filter: blur(8px);
-      pointer-events: none;
+      display: none !important;
     }
 
     /* === TARJETA DE DETALLES 3D FROSTED GLASS === */
@@ -1123,32 +1089,89 @@
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     }
 
-    /* Toast */
+    /* Notificación Estilo iPhone (iOS Banner) - Se oculta 100% fuera de la pantalla */
     .toast {
       position: fixed;
-      top: 82px;
+      top: max(12px, env(safe-area-inset-top, 12px));
       left: 50%;
-      transform: translate(-50%, -180px);
-      background: rgba(28, 34, 29, 0.94);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      color: #F4F7F4;
-      padding: 14px 24px;
-      border-radius: 100px;
+      transform: translate(-50%, calc(-100% - 90px)) scale(0.92);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      background: rgba(28, 31, 29, 0.88);
+      backdrop-filter: blur(28px) saturate(190%);
+      -webkit-backdrop-filter: blur(28px) saturate(190%);
+      color: #FFFFFF;
+      padding: 12px 16px;
+      border-radius: 24px;
       z-index: 10000;
-      font-weight: 700;
-      transition: transform 0.4s var(--spring);
-      font-size: 0.92rem;
+      transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.3s ease,
+        visibility 0.3s ease;
       display: flex;
       align-items: center;
-      gap: 10px;
-      border: 1.5px solid rgba(255, 255, 255, 0.28);
-      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
-      max-width: 92vw;
-      text-align: center;
+      gap: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow:
+        0 18px 38px rgba(0, 0, 0, 0.26),
+        0 4px 12px rgba(0, 0, 0, 0.12);
+      width: calc(100vw - 28px);
+      max-width: 380px;
+      text-align: left;
+      cursor: pointer;
     }
-    .toast i { color: var(--warning) !important; }
-    .toast.show { transform: translate(-50%, 0); }
+    .toast.show {
+      transform: translate(-50%, 0) scale(1);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    .toast-ios-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(145deg, #39443A 0%, #1E241F 100%);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.22);
+    }
+    .toast-ios-icon i {
+      color: #E5B85B !important;
+      font-size: 1.05rem;
+    }
+    .toast-ios-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .toast-ios-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.58);
+    }
+    .toast-ios-title {
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.68rem;
+    }
+    .toast-ios-msg {
+      font-size: 0.87rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      line-height: 1.3;
+      word-break: break-word;
+    }
   </style>
 </head>
 <body>
@@ -1810,10 +1833,25 @@
 
     window.showToast = function(msg, icon = 'fa-bell') {
       const t = document.getElementById('toast');
-      t.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
+      if (!t) return;
+      t.innerHTML = `
+        <div class="toast-ios-icon"><i class="fa-solid ${icon}"></i></div>
+        <div class="toast-ios-body">
+          <div class="toast-ios-header">
+            <span class="toast-ios-title">Proof</span>
+            <span>ahora</span>
+          </div>
+          <div class="toast-ios-msg">${msg}</div>
+        </div>`;
+      t.onclick = () => {
+        t.classList.remove('show');
+        if (window.toastTimer) clearTimeout(window.toastTimer);
+      };
       t.classList.add('show');
       if (window.toastTimer) clearTimeout(window.toastTimer);
-      window.toastTimer = setTimeout(() => t.classList.remove('show'), 3400);
+      window.toastTimer = setTimeout(() => {
+        t.classList.remove('show');
+      }, 3200);
     };
 
     window.showLoader = function(show) {
@@ -2696,14 +2734,9 @@
           wrap.onclick = () => window.openLightbox(src, isVid ? 'video' : 'image');
 
           if (isVid) {
-            wrap.innerHTML = `
-              <video src="${src}" autoplay loop muted playsinline class="gallery-media"></video>
-              <span class="media-video-badge"><i class="fa-solid fa-play"></i> Video</span>
-              <span class="media-expand-badge"><i class="fa-solid fa-expand"></i></span>`;
+            wrap.innerHTML = `<video src="${src}" autoplay loop muted playsinline class="gallery-media"></video>`;
           } else {
-            wrap.innerHTML = `
-              <img src="${src}" class="gallery-media" alt="Foto del local">
-              <span class="media-expand-badge"><i class="fa-solid fa-expand"></i></span>`;
+            wrap.innerHTML = `<img src="${src}" class="gallery-media" alt="Foto del local">`;
           }
           gallery.appendChild(wrap);
         });
@@ -2712,7 +2745,6 @@
         gallery.innerHTML = `
           <div class="gallery-item-wrap" onclick="window.openLightbox('${fallbackLocalImg}', 'image')">
             <img src="${fallbackLocalImg}" class="gallery-media" alt="Portada">
-            <span class="media-expand-badge"><i class="fa-solid fa-expand"></i></span>
           </div>`;
       }
 
