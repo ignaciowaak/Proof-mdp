@@ -2235,208 +2235,7 @@
     let lastCompiledReviewText = "";
     let lastConfiguredGoogleMapsUrl = "";
 
-    // Resolución inteligente de ID de restaurante (exacto o fallback al local disponible)
-    function resolveTargetBizId(requestedId) {
-      if (!requestedId) return null;
-      if (allBusinesses[requestedId]) return requestedId;
-      const keys = Object.keys(allBusinesses);
-      const lowerReq = String(requestedId).toLowerCase();
-      const ciMatch = keys.find(k => k.toLowerCase() === lowerReq);
-      if (ciMatch) return ciMatch;
-      const nameMatch = keys.find(k => {
-        const b = allBusinesses[k];
-        return b && b.name && b.name.toLowerCase().replace(/[^a-z0-9]/g, '') === lowerReq.replace(/[^a-z0-9]/g, '');
-      });
-      if (nameMatch) return nameMatch;
-      // Si solo hay 1 restaurante cargado en la base de datos o si el ID era de prueba, abrir el más reciente
-      if (keys.length > 0) {
-        const sorted = keys.sort((a, b) => ((allBusinesses[b] && allBusinesses[b].timestamp) || 0) - ((allBusinesses[a] && allBusinesses[a].timestamp) || 0));
-        return sorted[0];
-      }
-      return null;
-    }
 
-    function buildUrlFallbackBusinessIfNeeded(bizId) {
-      const fallbackName = urlParamsFast.get('n') || hashParamsFast.get('n');
-      if (!fallbackName) return null;
-      return {
-        name: fallbackName,
-        category: urlParamsFast.get('c') || hashParamsFast.get('c') || 'Cafetería',
-        desc: urlParamsFast.get('d') || hashParamsFast.get('d') || '',
-        hoursDesc: urlParamsFast.get('h') || hashParamsFast.get('h') || 'De 08:00 a 23:00',
-        tableCount: parseInt(urlParamsFast.get('tc') || hashParamsFast.get('tc') || '10', 10) || 10,
-        googleMapsUrl: urlParamsFast.get('gm') || hashParamsFast.get('gm') || '',
-        whatsapp: urlParamsFast.get('wa') || hashParamsFast.get('wa') || '',
-        instagram: urlParamsFast.get('ig') || hashParamsFast.get('ig') || '',
-        timestamp: Date.now()
-      };
-    }
-
-    async function fetchBusinessesFastViaRest(targetId) {
-      try {
-        if (targetId) {
-          const singleRes = await fetch(`${FB_DB_URL}/businesses/${encodeURIComponent(targetId)}.json`, { cache: 'no-store' });
-          if (singleRes.ok) {
-            const singleData = await singleRes.json();
-            if (singleData && typeof singleData === 'object') {
-              firebaseBusinesses[targetId] = singleData;
-              allBusinesses = mergeBusinesses(firebaseBusinesses);
-              saveLocalBusinesses(allBusinesses);
-              window.openRestaurant(targetId);
-              syncDockButtonsStateFromRequests();
-              window.showLoader(false);
-              return true;
-            }
-          }
-        }
-        const allRes = await fetch(`${FB_DB_URL}/businesses.json`, { cache: 'no-store' });
-        if (allRes.ok) {
-          const allData = await allRes.json();
-          if (allData && typeof allData === 'object') {
-            firebaseBusinesses = { ...firebaseBusinesses, ...allData };
-            allBusinesses = mergeBusinesses(firebaseBusinesses);
-            saveLocalBusinesses(allBusinesses);
-            if (targetId) {
-              const resolved = resolveTargetBizId(targetId);
-              if (resolved && allBusinesses[resolved]) {
-                window.openRestaurant(resolved);
-                syncDockButtonsStateFromRequests();
-                window.showLoader(false);
-                return true;
-              }
-            }
-          }
-        }
-      } catch (e) {}
-      return false;
-    }
-
-    function initProofClientApp() {
-      if (window.__proofClientBooted) return;
-      window.__proofClientBooted = true;
-
-      if (liveScreenBizId) {
-        initStandaloneLiveScreenWithLogin(liveScreenBizId);
-        return;
-      }
-
-      setupMultiStarPickers();
-      updateAuthUI();
-
-      // Timeout máximo de seguridad para que "Preparando..." jamás quede colgado
-      const safetyLoaderTimer = setTimeout(() => {
-        if (initialBizParam && !selectedBizId) {
-          const resolved = resolveTargetBizId(initialBizParam);
-          if (resolved && allBusinesses[resolved]) {
-            window.openRestaurant(resolved);
-            syncDockButtonsStateFromRequests();
-          } else {
-            const urlFallback = buildUrlFallbackBusinessIfNeeded(initialBizParam);
-            if (urlFallback) {
-              allBusinesses[initialBizParam] = urlFallback;
-              window.openRestaurant(initialBizParam);
-            }
-          }
-        }
-        window.showLoader(false);
-      }, 2800);
-
-      // Si ya está en caché local o tiene parámetros de respaldo, abrir al instante
-      if (initialBizParam) {
-        if (allBusinesses[initialBizParam]) {
-          window.openRestaurant(initialBizParam);
-          syncDockButtonsStateFromRequests();
-          window.showLoader(false);
-        } else {
-          const urlFallback = buildUrlFallbackBusinessIfNeeded(initialBizParam);
-          if (urlFallback) {
-            allBusinesses[initialBizParam] = urlFallback;
-            window.openRestaurant(initialBizParam);
-            window.showLoader(false);
-          }
-        }
-        // Carga ultrarrápida por HTTPS REST (funciona en cualquier navegador sin esperar WebSockets)
-        fetchBusinessesFastViaRest(initialBizParam).then((loaded) => {
-          if (loaded) clearTimeout(safetyLoaderTimer);
-        });
-      } else {
-        window.showLoader(false);
-        fetchBusinessesFastViaRest(null);
-      }
-
-      // Listener directo al restaurante específico + árbol general en tiempo real
-      if (initialBizParam) {
-        onValue(ref(db, `businesses/${initialBizParam}`), (snap) => {
-          if (snap.exists()) {
-            const val = snap.val();
-            firebaseBusinesses[initialBizParam] = val;
-            allBusinesses = mergeBusinesses(firebaseBusinesses);
-            saveLocalBusinesses(allBusinesses);
-            window.openRestaurant(initialBizParam);
-            syncDockButtonsStateFromRequests();
-            clearTimeout(safetyLoaderTimer);
-            window.showLoader(false);
-          }
-        }, () => {});
-      }
-
-      onValue(ref(db, 'businesses'), (snapshot) => {
-        firebaseBusinesses = snapshot.val() || {};
-        allBusinesses = mergeBusinesses(firebaseBusinesses);
-        saveLocalBusinesses(allBusinesses);
-
-        if (initialBizParam) {
-          const resolved = resolveTargetBizId(initialBizParam);
-          if (resolved && allBusinesses[resolved]) {
-            window.openRestaurant(resolved);
-            syncDockButtonsStateFromRequests();
-          } else {
-            const urlFallback = buildUrlFallbackBusinessIfNeeded(initialBizParam);
-            if (urlFallback) {
-              allBusinesses[initialBizParam] = urlFallback;
-              window.openRestaurant(initialBizParam);
-            } else {
-              window.showToast("Restaurante no encontrado", "fa-triangle-exclamation");
-            }
-          }
-        }
-        clearTimeout(safetyLoaderTimer);
-        window.showLoader(false);
-      }, () => {
-        clearTimeout(safetyLoaderTimer);
-        window.showLoader(false);
-      });
-
-      if (syncChannel) {
-        syncChannel.onmessage = (ev) => {
-          if (ev.data && ev.data.type === 'sync_businesses') {
-            allBusinesses = mergeBusinesses(firebaseBusinesses);
-            if (selectedBizId && allBusinesses[selectedBizId]) {
-              renderInlineReviews(allBusinesses[selectedBizId].reviews || {});
-              updateTableBadgeUI();
-              syncDockButtonsStateFromRequests();
-            }
-          }
-        };
-      }
-
-      window.addEventListener('storage', (ev) => {
-        if (ev.key === LOCAL_STORAGE_KEY) {
-          allBusinesses = mergeBusinesses(firebaseBusinesses);
-          if (selectedBizId && allBusinesses[selectedBizId]) {
-            renderInlineReviews(allBusinesses[selectedBizId].reviews || {});
-            updateTableBadgeUI();
-            syncDockButtonsStateFromRequests();
-          }
-        }
-      });
-    }
-
-    if (document.readyState === 'loading') {
-      window.addEventListener('DOMContentLoaded', initProofClientApp);
-    } else {
-      initProofClientApp();
-    }
 
     /* =========================================================================
        MODO PANTALLA EN VIVO AISLADA CON LOGIN OBLIGATORIO DE LA DUEÑA DEL LOCAL
@@ -3734,6 +3533,209 @@
         document.getElementById('menu-text-auth').innerText="Iniciar Sesión / Registro";
         document.getElementById('menu-btn-logout').style.display='none';
       }
+    }
+
+    // Resolución inteligente de ID de restaurante (exacto o fallback al local disponible)
+    function resolveTargetBizId(requestedId) {
+      if (!requestedId) return null;
+      if (allBusinesses[requestedId]) return requestedId;
+      const keys = Object.keys(allBusinesses);
+      const lowerReq = String(requestedId).toLowerCase();
+      const ciMatch = keys.find(k => k.toLowerCase() === lowerReq);
+      if (ciMatch) return ciMatch;
+      const nameMatch = keys.find(k => {
+        const b = allBusinesses[k];
+        return b && b.name && b.name.toLowerCase().replace(/[^a-z0-9]/g, '') === lowerReq.replace(/[^a-z0-9]/g, '');
+      });
+      if (nameMatch) return nameMatch;
+      // Si solo hay 1 restaurante cargado en la base de datos o si el ID era de prueba, abrir el más reciente
+      if (keys.length > 0) {
+        const sorted = keys.sort((a, b) => ((allBusinesses[b] && allBusinesses[b].timestamp) || 0) - ((allBusinesses[a] && allBusinesses[a].timestamp) || 0));
+        return sorted[0];
+      }
+      return null;
+    }
+
+    function buildUrlFallbackBusinessIfNeeded(bizId) {
+      const fallbackName = urlParamsFast.get('n') || hashParamsFast.get('n');
+      if (!fallbackName) return null;
+      return {
+        name: fallbackName,
+        category: urlParamsFast.get('c') || hashParamsFast.get('c') || 'Cafetería',
+        desc: urlParamsFast.get('d') || hashParamsFast.get('d') || '',
+        hoursDesc: urlParamsFast.get('h') || hashParamsFast.get('h') || 'De 08:00 a 23:00',
+        tableCount: parseInt(urlParamsFast.get('tc') || hashParamsFast.get('tc') || '10', 10) || 10,
+        googleMapsUrl: urlParamsFast.get('gm') || hashParamsFast.get('gm') || '',
+        whatsapp: urlParamsFast.get('wa') || hashParamsFast.get('wa') || '',
+        instagram: urlParamsFast.get('ig') || hashParamsFast.get('ig') || '',
+        timestamp: Date.now()
+      };
+    }
+
+    async function fetchBusinessesFastViaRest(targetId) {
+      try {
+        if (targetId) {
+          const singleRes = await fetch(`${FB_DB_URL}/businesses/${encodeURIComponent(targetId)}.json`, { cache: 'no-store' });
+          if (singleRes.ok) {
+            const singleData = await singleRes.json();
+            if (singleData && typeof singleData === 'object') {
+              firebaseBusinesses[targetId] = singleData;
+              allBusinesses = mergeBusinesses(firebaseBusinesses);
+              saveLocalBusinesses(allBusinesses);
+              window.openRestaurant(targetId);
+              syncDockButtonsStateFromRequests();
+              window.showLoader(false);
+              return true;
+            }
+          }
+        }
+        const allRes = await fetch(`${FB_DB_URL}/businesses.json`, { cache: 'no-store' });
+        if (allRes.ok) {
+          const allData = await allRes.json();
+          if (allData && typeof allData === 'object') {
+            firebaseBusinesses = { ...firebaseBusinesses, ...allData };
+            allBusinesses = mergeBusinesses(firebaseBusinesses);
+            saveLocalBusinesses(allBusinesses);
+            if (targetId) {
+              const resolved = resolveTargetBizId(targetId);
+              if (resolved && allBusinesses[resolved]) {
+                window.openRestaurant(resolved);
+                syncDockButtonsStateFromRequests();
+                window.showLoader(false);
+                return true;
+              }
+            }
+          }
+        }
+      } catch (e) {}
+      return false;
+    }
+
+    function initProofClientApp() {
+      if (window.__proofClientBooted) return;
+      window.__proofClientBooted = true;
+
+      if (liveScreenBizId) {
+        initStandaloneLiveScreenWithLogin(liveScreenBizId);
+        return;
+      }
+
+      setupMultiStarPickers();
+      updateAuthUI();
+
+      // Timeout máximo de seguridad para que "Preparando..." jamás quede colgado
+      const safetyLoaderTimer = setTimeout(() => {
+        if (initialBizParam && !selectedBizId) {
+          const resolved = resolveTargetBizId(initialBizParam);
+          if (resolved && allBusinesses[resolved]) {
+            window.openRestaurant(resolved);
+            syncDockButtonsStateFromRequests();
+          } else {
+            const urlFallback = buildUrlFallbackBusinessIfNeeded(initialBizParam);
+            if (urlFallback) {
+              allBusinesses[initialBizParam] = urlFallback;
+              window.openRestaurant(initialBizParam);
+            }
+          }
+        }
+        window.showLoader(false);
+      }, 2800);
+
+      // Si ya está en caché local o tiene parámetros de respaldo, abrir al instante
+      if (initialBizParam) {
+        if (allBusinesses[initialBizParam]) {
+          window.openRestaurant(initialBizParam);
+          syncDockButtonsStateFromRequests();
+          window.showLoader(false);
+        } else {
+          const urlFallback = buildUrlFallbackBusinessIfNeeded(initialBizParam);
+          if (urlFallback) {
+            allBusinesses[initialBizParam] = urlFallback;
+            window.openRestaurant(initialBizParam);
+            window.showLoader(false);
+          }
+        }
+        // Carga ultrarrápida por HTTPS REST (funciona en cualquier navegador sin esperar WebSockets)
+        fetchBusinessesFastViaRest(initialBizParam).then((loaded) => {
+          if (loaded) clearTimeout(safetyLoaderTimer);
+        });
+      } else {
+        window.showLoader(false);
+        fetchBusinessesFastViaRest(null);
+      }
+
+      // Listener directo al restaurante específico + árbol general en tiempo real
+      if (initialBizParam) {
+        onValue(ref(db, `businesses/${initialBizParam}`), (snap) => {
+          if (snap.exists()) {
+            const val = snap.val();
+            firebaseBusinesses[initialBizParam] = val;
+            allBusinesses = mergeBusinesses(firebaseBusinesses);
+            saveLocalBusinesses(allBusinesses);
+            window.openRestaurant(initialBizParam);
+            syncDockButtonsStateFromRequests();
+            clearTimeout(safetyLoaderTimer);
+            window.showLoader(false);
+          }
+        }, () => {});
+      }
+
+      onValue(ref(db, 'businesses'), (snapshot) => {
+        firebaseBusinesses = snapshot.val() || {};
+        allBusinesses = mergeBusinesses(firebaseBusinesses);
+        saveLocalBusinesses(allBusinesses);
+
+        if (initialBizParam) {
+          const resolved = resolveTargetBizId(initialBizParam);
+          if (resolved && allBusinesses[resolved]) {
+            window.openRestaurant(resolved);
+            syncDockButtonsStateFromRequests();
+          } else {
+            const urlFallback = buildUrlFallbackBusinessIfNeeded(initialBizParam);
+            if (urlFallback) {
+              allBusinesses[initialBizParam] = urlFallback;
+              window.openRestaurant(initialBizParam);
+            } else {
+              window.showToast("Restaurante no encontrado", "fa-triangle-exclamation");
+            }
+          }
+        }
+        clearTimeout(safetyLoaderTimer);
+        window.showLoader(false);
+      }, () => {
+        clearTimeout(safetyLoaderTimer);
+        window.showLoader(false);
+      });
+
+      if (syncChannel) {
+        syncChannel.onmessage = (ev) => {
+          if (ev.data && ev.data.type === 'sync_businesses') {
+            allBusinesses = mergeBusinesses(firebaseBusinesses);
+            if (selectedBizId && allBusinesses[selectedBizId]) {
+              renderInlineReviews(allBusinesses[selectedBizId].reviews || {});
+              updateTableBadgeUI();
+              syncDockButtonsStateFromRequests();
+            }
+          }
+        };
+      }
+
+      window.addEventListener('storage', (ev) => {
+        if (ev.key === LOCAL_STORAGE_KEY) {
+          allBusinesses = mergeBusinesses(firebaseBusinesses);
+          if (selectedBizId && allBusinesses[selectedBizId]) {
+            renderInlineReviews(allBusinesses[selectedBizId].reviews || {});
+            updateTableBadgeUI();
+            syncDockButtonsStateFromRequests();
+          }
+        }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', initProofClientApp);
+    } else {
+      initProofClientApp();
     }
   </script>
 </body>
