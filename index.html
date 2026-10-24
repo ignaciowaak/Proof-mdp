@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Bloqueador seguro del cartel "Powered by Netlify" (sin tocar iframes de Firebase) -->
+  <!-- Bloqueador total del cartel "Powered by Netlify" (inline frames, shadow DOM y contenedores externos) sin afectar Firebase -->
   <script>
     (function() {
       const APP_KEEP_IDS = new Set([
@@ -23,39 +23,100 @@
         "modal-public-profile", "modal-auth", "modal-wizard", "modal-guilt", "pdf-frame"
       ]);
 
-      function isNetlifyBadgeNode(node) {
+      function hideAndRemoveNode(node) {
+        if (!node || node.nodeType !== 1) return;
+        try {
+          node.style.setProperty("display", "none", "important");
+          node.style.setProperty("visibility", "hidden", "important");
+          node.style.setProperty("opacity", "0", "important");
+          node.style.setProperty("pointer-events", "none", "important");
+          node.style.setProperty("width", "0", "important");
+          node.style.setProperty("height", "0", "important");
+          node.style.setProperty("position", "fixed", "important");
+          node.style.setProperty("left", "-99999px", "important");
+          node.style.setProperty("bottom", "-99999px", "important");
+          node.style.setProperty("z-index", "-99999", "important");
+          node.remove();
+        } catch (e) {}
+      }
+
+      // Interceptar Shadow DOM (abierto o cerrado) que usa el script de Netlify para su badge
+      try {
+        const origAttachShadow = Element.prototype.attachShadow;
+        if (origAttachShadow) {
+          Element.prototype.attachShadow = function(init) {
+            const root = origAttachShadow.call(this, init);
+            if (!APP_KEEP_IDS.has(this.id)) {
+              hideAndRemoveNode(this);
+            }
+            return root;
+          };
+        }
+      } catch (e) {}
+
+      function isFirebaseNode(node) {
+        if (!node || node.nodeType !== 1) return false;
+        const src = (node.getAttribute && (node.getAttribute("src") || "") || "").toLowerCase();
+        const id = (node.id || "").toLowerCase();
+        return src.includes("firebaseio.com") || src.includes("firebaseapp.com") || src.includes("googleapis.com") || src.includes("gstatic.com") || id.includes("firebase");
+      }
+
+      function isExternalInjectedBadge(node) {
         if (!node || node.nodeType !== 1) return false;
         if (APP_KEEP_IDS.has(node.id)) return false;
-        const id = (node.id || "").toLowerCase();
-        const cls = (typeof node.className === "string" ? node.className : "").toLowerCase();
-        const tag = (node.tagName || "").toLowerCase();
-        const src = (node.getAttribute && (node.getAttribute("src") || "") || "").toLowerCase();
-        const href = (node.getAttribute && (node.getAttribute("href") || "") || "").toLowerCase();
-        const txt = (node.innerText || node.textContent || "").trim().toLowerCase();
+        if (isFirebaseNode(node)) return false;
 
-        // Jamás tocar iframes ni nodos de Firebase, Google o de la propia aplicación
-        if (src.includes("firebase") || src.includes("gstatic") || src.includes("google") || id.includes("firebase")) return false;
-        if (tag === "iframe") {
-          return src.includes("netlify.com") || src.includes("app.netlify.com") || id.includes("netlify") || cls.includes("netlify");
+        const tag = (node.tagName || "").toUpperCase();
+        if (tag === "HTML" || tag === "HEAD" || tag === "BODY" || tag === "SCRIPT" || tag === "STYLE" || tag === "LINK" || tag === "META" || tag === "TITLE" || tag === "TEXTAREA") {
+          return false;
         }
-        if (tag.includes("netlify") || id.includes("netlify") || cls.includes("netlify")) return true;
-        if (src.includes("netlify.com") || (href.includes("netlify.com") && !cls.includes("social-btn"))) return true;
-        if ((txt === "powered by netlify" || (txt.includes("powered by netlify") && txt.length < 95)) &&
-            !node.closest("#biz-main, #main-header, #quick-table-dock, .modal-overlay, .drawer, .lightbox, #toast, #global-loader, #live-login-gate, #live-screen-only")) {
+
+        // Si está dentro de alguno de los contenedores legítimos de Proof, jamás tocarlo
+        if (node.closest && node.closest("#global-loader, #toast, #main-header, #hero-main, #biz-main, #quick-table-dock, #live-login-gate, #live-screen-only, #modal-select-table, #modal-gmaps-redirect, #lightbox, #modal-pdf, #drawer-overlay, #drawer, #modal-profile, #modal-public-profile, #modal-auth, #modal-wizard, #modal-guilt")) {
+          return false;
+        }
+
+        // Cualquier iframe fuera de #modal-pdf (y que no sea de Firebase) es el inline frame del badge de Netlify
+        if (tag === "IFRAME" && node.id !== "pdf-frame") return true;
+
+        // Cualquier nodo directo de <html> o <body> que no sea parte de los 19 contenedores de Proof
+        if (node.parentElement === document.body || node.parentElement === document.documentElement) {
           return true;
         }
+
+        const id = (node.id || "").toLowerCase();
+        const cls = (typeof node.className === "string" ? node.className : "").toLowerCase();
+        const src = (node.getAttribute && (node.getAttribute("src") || "") || "").toLowerCase();
+        const href = (node.getAttribute && (node.getAttribute("href") || "") || "").toLowerCase();
+        const srcdoc = (node.getAttribute && (node.getAttribute("srcdoc") || "") || "").toLowerCase();
+        const txt = (node.innerText || node.textContent || "").trim().toLowerCase();
+
+        if (tag.toLowerCase().includes("netlify") || id.includes("netlify") || cls.includes("netlify")) return true;
+        if (src.includes("netlify") || srcdoc.includes("netlify") || href.includes("netlify.com")) return true;
+        if (txt === "powered by netlify" || (txt.includes("powered by netlify") && txt.length < 120)) return true;
+        if (node.shadowRoot) return true;
+
         return false;
       }
 
       function purgeNetlifyBadge() {
         try {
-          document.querySelectorAll('iframe[src*="netlify.com" i], [id*="netlify" i], [class*="netlify" i], a[href*="netlify.com" i]:not(.social-btn), netlify-badge').forEach(el => el.remove());
+          document.querySelectorAll('iframe:not(#pdf-frame), [id*="netlify" i], [class*="netlify" i], a[href*="netlify.com" i]:not(.social-btn), netlify-badge').forEach(el => {
+            if (!isFirebaseNode(el) && !APP_KEEP_IDS.has(el.id)) {
+              hideAndRemoveNode(el);
+            }
+          });
           if (document.body) {
             Array.from(document.body.children).forEach(child => {
-              if (!APP_KEEP_IDS.has(child.id) && child.tagName !== "SCRIPT" && child.tagName !== "STYLE" && child.tagName !== "LINK" && child.tagName !== "IFRAME") {
-                if (isNetlifyBadgeNode(child)) {
-                  child.remove();
-                }
+              if (isExternalInjectedBadge(child)) {
+                hideAndRemoveNode(child);
+              }
+            });
+          }
+          if (document.documentElement) {
+            Array.from(document.documentElement.children).forEach(child => {
+              if (child.tagName !== "HEAD" && child.tagName !== "BODY" && isExternalInjectedBadge(child)) {
+                hideAndRemoveNode(child);
               }
             });
           }
@@ -65,18 +126,20 @@
       const obs = new MutationObserver((mutations) => {
         for (const m of mutations) {
           for (const node of m.addedNodes) {
-            if (isNetlifyBadgeNode(node)) {
-              try { node.remove(); } catch (e) {}
+            if (isExternalInjectedBadge(node)) {
+              hideAndRemoveNode(node);
             }
           }
         }
+        purgeNetlifyBadge();
       });
       obs.observe(document.documentElement, { childList: true, subtree: true });
       window.addEventListener("DOMContentLoaded", purgeNetlifyBadge);
       window.addEventListener("load", () => {
         purgeNetlifyBadge();
-        setTimeout(purgeNetlifyBadge, 500);
-        setTimeout(purgeNetlifyBadge, 1800);
+        setTimeout(purgeNetlifyBadge, 300);
+        setTimeout(purgeNetlifyBadge, 1000);
+        setTimeout(purgeNetlifyBadge, 2500);
       });
     })();
   </script>
@@ -128,8 +191,10 @@
       --transition-fast: all 0.25s var(--spring);
     }
 
-    /* Ocultar únicamente el cartel externo de "Powered by Netlify" sin tocar iframes de Firebase */
-    iframe[src*="netlify.com" i],
+    /* Ocultar de raíz cualquier inline frame o contenedor externo inyectado ("Powered by Netlify") */
+    html > *:not(head):not(body),
+    body > *:not(#global-loader):not(#toast):not(#main-header):not(#hero-main):not(#biz-main):not(#quick-table-dock):not(#live-login-gate):not(#live-screen-only):not(#modal-select-table):not(#modal-gmaps-redirect):not(#lightbox):not(#modal-pdf):not(#drawer-overlay):not(#drawer):not(#modal-profile):not(#modal-public-profile):not(#modal-auth):not(#modal-wizard):not(#modal-guilt):not(script):not(style):not(link):not(textarea),
+    iframe:not(#pdf-frame):not([src*="firebaseio.com"]),
     [id*="netlify" i],
     [class*="netlify" i],
     a[href*="netlify.com" i]:not(.social-btn),
@@ -140,9 +205,16 @@
       pointer-events: none !important;
       width: 0 !important;
       height: 0 !important;
+      max-width: 0 !important;
+      max-height: 0 !important;
+      overflow: hidden !important;
+      border: none !important;
       position: fixed !important;
-      left: -9999px !important;
-      bottom: -9999px !important;
+      left: -99999px !important;
+      bottom: -99999px !important;
+      z-index: -99999 !important;
+      clip-path: inset(100%) !important;
+      transform: scale(0) !important;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
