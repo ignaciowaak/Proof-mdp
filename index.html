@@ -236,7 +236,7 @@
     #biz-main {
       display: none;
       height: 100%;
-      padding: 80px 20px 120px;
+      padding: 80px 20px 140px;
       overflow-y: auto;
       background: transparent;
       max-width: 620px;
@@ -393,43 +393,48 @@
     }
     .social-btn:active { transform: scale(0.95); }
 
-    /* === CÁPSULA VERTICAL FLOTANTE A LA DERECHA (3 BOTONES CIRCULARES 3D GLASS) === */
+    /* === BARRA HORIZONTAL INFERIOR FLOTANTE (LLAMAR MOZO | MENÚ | PEDIR CUENTA) === */
     .quick-table-dock {
       position: fixed;
-      bottom: 72px;
-      right: 14px;
+      bottom: max(14px, env(safe-area-inset-bottom, 14px));
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 580px;
       z-index: 4300;
       display: none;
       flex-direction: column;
-      align-items: flex-end;
-      gap: 8px;
+      align-items: center;
       transition: transform 0.35s var(--spring);
     }
     .quick-table-dock.visible {
       display: flex;
     }
     .quick-dock-panel {
-      background: linear-gradient(180deg, rgba(52, 60, 53, 0.88) 0%, rgba(27, 33, 28, 0.94) 100%);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1.5px solid rgba(255, 255, 255, 0.38);
-      border-radius: 40px;
-      padding: 10px 8px;
+      width: 100%;
+      background:
+        radial-gradient(ellipse at 50% 42%, rgba(216, 174, 98, 0.16) 0%, transparent 68%),
+        linear-gradient(180deg, rgba(62, 67, 60, 0.84) 0%, rgba(28, 32, 28, 0.94) 100%);
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      border: 1.5px solid rgba(255, 255, 255, 0.34);
+      border-radius: 26px;
+      padding: 12px 8px;
       box-shadow:
-        0 16px 34px rgba(10, 16, 10, 0.32),
+        0 16px 36px rgba(10, 16, 10, 0.34),
         inset 0 2px 4px rgba(255, 255, 255, 0.28),
-        inset 0 -3px 6px rgba(0, 0, 0, 0.38);
-      display: flex;
-      flex-direction: column;
+        inset 0 -3px 6px rgba(0, 0, 0, 0.36);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       align-items: center;
-      gap: 10px;
-      transform-origin: bottom right;
+      gap: 4px;
+      transform-origin: bottom center;
       transition: opacity 0.25s ease, transform 0.3s var(--spring);
     }
     .quick-table-dock.collapsed .quick-dock-panel {
       opacity: 0;
       pointer-events: none;
-      transform: translateX(24px) scale(0.85);
+      transform: translateY(24px) scale(0.9);
       width: 0;
       height: 0;
       padding: 0;
@@ -440,53 +445,62 @@
       display: none;
     }
     .btn-mini-table {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      padding: 0;
-      background: radial-gradient(circle at 32% 24%, rgba(128, 142, 130, 0.65) 0%, rgba(52, 62, 54, 0.88) 65%, rgba(36, 44, 38, 0.96) 100%);
-      color: #F4F7F4;
-      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+      padding: 6px 4px;
+      background: transparent;
+      color: #F4F6F3;
+      border: none;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 7px;
       cursor: pointer;
-      box-shadow:
-        0 6px 14px rgba(0, 0, 0, 0.32),
-        inset 0 2px 3px rgba(255, 255, 255, 0.42),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.32);
+      box-shadow: none;
       transition: var(--transition-fast);
       position: relative;
     }
     .btn-mini-table span {
-      display: none;
+      display: block;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #F4F6F3;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      text-align: center;
     }
-    .btn-mini-table i.mini-icon {
-      width: auto;
-      height: auto;
-      border-radius: 0;
+    .btn-mini-table .mini-icon,
+    .btn-mini-table svg.mini-svg-icon {
+      width: 28px;
+      height: 28px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.15rem;
+      font-size: 1.4rem;
       border: none;
       background: transparent !important;
-      color: #F4F7F4 !important;
+      color: #D8B168 !important;
+      stroke: #D8B168;
       flex-shrink: 0;
+      transition: transform 0.25s var(--spring);
     }
     .btn-mini-table:hover {
-      transform: translateY(-2px) scale(1.04);
-      border-color: rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-2px);
     }
     .btn-mini-table:active {
-      transform: scale(0.92);
+      transform: scale(0.94);
     }
     .btn-mini-table.sent-active {
-      background: radial-gradient(circle at 32% 24%, rgba(226, 179, 88, 0.92) 0%, rgba(164, 114, 30, 0.96) 100%);
-      border-color: #FEF08A;
-      box-shadow:
-        0 0 16px rgba(216, 166, 72, 0.55),
-        inset 0 2px 3px rgba(255, 255, 255, 0.65);
+      background: rgba(216, 177, 104, 0.16);
+      box-shadow: inset 0 0 0 1px rgba(216, 177, 104, 0.45);
+    }
+    .btn-mini-table.sent-active span {
+      color: #FDE68A;
+      font-weight: 700;
     }
 
     /* Botón discreto para ocultar / mostrar la cápsula si el cliente lo desea */
@@ -613,37 +627,154 @@
     }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
+    .reviews-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 26px 0 14px;
+      flex-wrap: wrap;
+    }
     .section-title {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.55rem;
-      font-weight: 800;
-      margin: 26px 0 14px;
+      font-size: 1.52rem;
+      font-weight: 700;
+      margin: 0;
       color: #1E241E;
+      letter-spacing: -0.01em;
+    }
+    .reviews-summary-pill {
+      background: linear-gradient(180deg, #E2C68E 0%, #CCA96B 100%);
+      color: #1E221D;
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      border-radius: 100px;
+      padding: 5px 13px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 4px 12px rgba(20, 28, 20, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+      white-space: nowrap;
     }
 
-    /* === RESEÑAS GLASS === */
+    /* === CARRUSEL HORIZONTAL DE RESEÑAS (ESTILO TARJETA OSCURA CON DETALLES DORADOS) === */
+    #biz-inline-reviews {
+      display: flex;
+      overflow-x: auto;
+      gap: 12px;
+      padding: 2px 2px 16px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    #biz-inline-reviews::-webkit-scrollbar { display: none; }
+
     .review-card {
-      background: linear-gradient(155deg, rgba(241, 245, 240, 0.84) 0%, rgba(221, 230, 220, 0.72) 100%);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: linear-gradient(155deg, rgba(39, 43, 39, 0.94) 0%, rgba(26, 29, 26, 0.97) 100%);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border-radius: 24px;
       padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      margin-bottom: 16px;
-      border: var(--border-glass);
-      box-shadow: var(--shadow-hard);
+      margin-bottom: 0;
+      border: 1.2px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 14px 30px rgba(18, 26, 18, 0.2);
+      transition: var(--transition-fast);
+      color: #F4F6F3;
+      min-width: 90%;
+      width: 90%;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+    }
+    #biz-inline-reviews .review-card:only-child {
+      min-width: 100%;
+      width: 100%;
+    }
+    #my-reviews-list .review-card,
+    #pub-reviews-list .review-card {
+      min-width: 100%;
+      width: 100%;
+      margin-bottom: 14px;
+    }
+    .review-card:hover { transform: translateY(-2px); }
+    .review-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .review-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .review-header:active { transform: scale(0.98); }
+    .review-header img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.2px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.12);
+      flex-shrink: 0;
+    }
+    .review-author {
+      font-weight: 700;
+      font-size: 1.12rem;
+      color: #FFFFFF;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .review-stars-right {
+      color: #D8B168;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+    .review-dish-pill {
+      display: inline-flex;
+      align-items: center;
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 0.83rem;
+      font-weight: 500;
+      color: #E6EAE5;
+      line-height: 1.2;
+    }
+    .review-text-quote {
+      font-weight: 400;
+      font-size: 0.96rem;
+      color: #F0F3EF;
+      line-height: 1.48;
+      padding-left: 0;
+      border-left: none;
+      margin-top: 2px;
+    }
+    .review-media {
+      width: 100%;
+      height: 158px;
+      border-radius: 16px;
+      margin-top: 4px;
+      object-fit: cover;
+      border: none;
+      cursor: pointer;
+      background: #141714;
+      display: block;
       transition: var(--transition-fast);
     }
-    .review-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hard-lg); }
-    .review-header { display: flex; align-items: center; gap: 14px; cursor: pointer; transition: 0.2s; }
-    .review-header:active { transform: scale(0.96); }
-    .review-header img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255, 255, 255, 0.85); box-shadow: 0 4px 10px rgba(0,0,0,0.1); flex-shrink: 0; }
-    .review-author { font-weight: 800; font-size: 1.05rem; color: var(--primary); }
-    .review-text-quote { font-weight: 600; font-size: 0.98rem; color: var(--text-main); line-height: 1.55; padding-left: 14px; border-left: 3px solid var(--primary); margin-top: 4px; }
-    .review-media { width: 100%; height: 210px; border-radius: 18px; margin-top: 8px; object-fit: cover; border: 1.5px solid rgba(255, 255, 255, 0.75); cursor: pointer; background: #000; display: block; transition: var(--transition-fast); }
-    .review-media:active { transform: scale(0.97); }
+    .review-media:active { transform: scale(0.98); }
 
     /* === LIGHTBOX EN PANTALLA COMPLETA CON OPCIÓN CLARA DE SALIR === */
     .lightbox {
@@ -1233,29 +1364,46 @@
     </button>
 
     <!-- 4. OPINIONES DE CLIENTES -->
-    <h3 class="section-title">Opiniones de clientes</h3>
+    <div class="reviews-section-header">
+      <h3 class="section-title">Opiniones de Clientes</h3>
+      <span class="reviews-summary-pill" id="biz-reviews-summary-pill">5.0 ★ (0 reseñas)</span>
+    </div>
     <div id="biz-inline-reviews"></div>
   </main>
 
   <!-- =========================================================================
-       WIDGET ÚNICO FIJO A LA DERECHA: CÁPSULA VERTICAL 3D CON LOS 3 BOTONES
+       BARRA INFERIOR FLOTANTE CON LOS 3 BOTONES (LLAMAR MOZO | MENÚ | PEDIR CUENTA)
        ========================================================================= -->
   <div class="quick-table-dock" id="quick-table-dock">
     <div class="quick-dock-panel" id="quick-dock-panel">
       <div class="dock-header-mini">
         <span><i class="fa-solid fa-bell-concierge"></i> <span id="dock-mesa-title">Mesa</span></span>
       </div>
-      <button type="button" class="btn-mini-table waiter-mini" id="btn-float-waiter" onclick="window.handleTableAction('waiter')" title="Llamar al mozo" aria-label="Llamar al mozo">
-        <i class="fa-solid fa-hand-sparkles mini-icon"></i>
-        <span id="label-float-waiter">Llamar al mozo</span>
+      <button type="button" class="btn-mini-table waiter-mini" id="btn-float-waiter" onclick="window.handleTableAction('waiter')" title="Llamar Mozo" aria-label="Llamar Mozo">
+        <svg class="mini-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="5.5" r="2.2"></circle>
+          <path d="M8.5 11.2c0-1.6 1.5-2.7 3.5-2.7s3.5 1.1 3.5 2.7"></path>
+          <path d="M3 17.5l4.2-2.2c.9-.5 2-.5 2.9-.1l3.6 1.3c1 .3 2-.3 2.1-1.3l3.7-1.4c.8-.3 1.7.1 1.9.9.2.7-.2 1.5-.9 1.9l-6.6 3.1c-1.1.5-2.4.6-3.6.2L6.2 18.6 3 20"></path>
+        </svg>
+        <span id="label-float-waiter">Llamar Mozo</span>
       </button>
-      <button type="button" class="btn-mini-table menu-mini" id="btn-float-menu" onclick="window.handleTableAction('menu')" title="Pedir el menú" aria-label="Pedir el menú">
-        <i class="fa-solid fa-book-open mini-icon"></i>
-        <span id="label-float-menu">Pedir el menú</span>
+      <button type="button" class="btn-mini-table menu-mini" id="btn-float-menu" onclick="window.handleTableAction('menu')" title="Menú" aria-label="Menú">
+        <svg class="mini-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5.5 4h11a2 2 0 0 1 2 2v12.5a1.5 1.5 0 0 1-1.5 1.5H6.5a2 2 0 0 1-2-2V5.5A1.5 1.5 0 0 1 5.5 4z"></path>
+          <path d="M14.5 4v13"></path>
+          <path d="M4.5 17.5h12.5"></path>
+        </svg>
+        <span id="label-float-menu">Menú</span>
       </button>
-      <button type="button" class="btn-mini-table bill-mini" id="btn-float-bill" onclick="window.handleTableAction('bill')" title="Pedir la cuenta" aria-label="Pedir la cuenta">
-        <i class="fa-solid fa-receipt mini-icon"></i>
-        <span id="label-float-bill">Pedir la cuenta</span>
+      <button type="button" class="btn-mini-table bill-mini" id="btn-float-bill" onclick="window.handleTableAction('bill')" title="Pedir Cuenta" aria-label="Pedir Cuenta">
+        <svg class="mini-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 3.5h12a1 1 0 0 1 1 1v16l-2.2-1.5-2.2 1.5-2.6-1.5-2.6 1.5-2.2-1.5L5 20.5v-16a1 1 0 0 1 1-1z"></path>
+          <line x1="9" y1="8.5" x2="11" y2="8.5"></line>
+          <line x1="13.5" y1="8.5" x2="15" y2="8.5"></line>
+          <line x1="9" y1="12" x2="15" y2="12"></line>
+          <line x1="9" y1="15.5" x2="13" y2="15.5"></line>
+        </svg>
+        <span id="label-float-bill">Pedir Cuenta</span>
       </button>
     </div>
 
@@ -2383,9 +2531,9 @@
       if (!selectedBizId || !allBusinesses[selectedBizId] || !selectedTableNumber) return;
       const reqs = allBusinesses[selectedBizId].tableRequests || {};
       const mapTypes = [
-        { type: 'waiter', btnId: 'btn-float-waiter', labelId: 'label-float-waiter', defaultText: 'Llamar al mozo', sentText: 'Mozo notificado ✓' },
-        { type: 'menu', btnId: 'btn-float-menu', labelId: 'label-float-menu', defaultText: 'Pedir el menú', sentText: 'Menú solicitado ✓' },
-        { type: 'bill', btnId: 'btn-float-bill', labelId: 'label-float-bill', defaultText: 'Pedir la cuenta', sentText: 'Cuenta solicitada ✓' }
+        { type: 'waiter', btnId: 'btn-float-waiter', labelId: 'label-float-waiter', defaultText: 'Llamar Mozo', sentText: 'Mozo avisado ✓' },
+        { type: 'menu', btnId: 'btn-float-menu', labelId: 'label-float-menu', defaultText: 'Menú', sentText: 'Menú pedido ✓' },
+        { type: 'bill', btnId: 'btn-float-bill', labelId: 'label-float-bill', defaultText: 'Pedir Cuenta', sentText: 'Cuenta pedida ✓' }
       ];
 
       mapTypes.forEach(item => {
@@ -2586,8 +2734,11 @@
                   }
                   const div = document.createElement('div'); div.className = 'review-card slide-up';
                   div.innerHTML = `
-                    <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
-                    <div style="color:var(--warning); margin-bottom:8px; font-size:1.1rem;"><i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>
+                    <div class="review-header">
+                      <div class="review-author">${window.escapeHtml(b.name)}</div>
+                      <div class="review-stars-right">${'<i class="fa-solid fa-star"></i>'.repeat(r.ratingGeneral || 5)}</div>
+                    </div>
+                    ${r.foodName ? `<div class="review-dish-pill">Pidió: ${window.escapeHtml(r.foodName)}</div>` : ''}
                     ${r.text ? `<div class="review-text-quote">${window.escapeHtml(r.text)}</div>` : ''}
                     ${media}`;
                   container.appendChild(div);
@@ -2667,8 +2818,11 @@
                 }
                 const div = document.createElement('div'); div.className = 'review-card slide-up'; div.style.animationDelay = `${index * 0.05}s`;
                 div.innerHTML = `
-                  <div style="font-weight:900; font-size:1.1rem; color:var(--primary); margin-bottom:6px; text-transform:uppercase;">${window.escapeHtml(b.name)}</div>
-                  <div style="color:var(--warning); margin-bottom:8px; font-size:1.1rem;"><i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>
+                  <div class="review-header">
+                    <div class="review-author">${window.escapeHtml(b.name)}</div>
+                    <div class="review-stars-right">${'<i class="fa-solid fa-star"></i>'.repeat(r.ratingGeneral || 5)}</div>
+                  </div>
+                  ${r.foodName ? `<div class="review-dish-pill">Pidió: ${window.escapeHtml(r.foodName)}</div>` : ''}
                   ${r.text ? `<div class="review-text-quote">${window.escapeHtml(r.text)}</div>` : ''}
                   ${media}`;
                 container.appendChild(div);
@@ -2761,10 +2915,26 @@
 
     function renderInlineReviews(reviewsObj) {
       const container = document.getElementById('biz-inline-reviews');
+      const summaryPill = document.getElementById('biz-reviews-summary-pill');
       if (!container) return;
       container.innerHTML = "";
       const reviewsArr = Object.values(reviewsObj || {}).filter(Boolean).sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
-      if (reviewsArr.length === 0) { container.innerHTML = "<p style='color:var(--text-muted); font-weight:600;'>Aún no hay opiniones. ¡Sé el primero!</p>"; return; }
+
+      if (summaryPill) {
+        if (reviewsArr.length > 0) {
+          const sum = reviewsArr.reduce((acc, item) => acc + (Number(item.ratingGeneral) || 5), 0);
+          const avg = (sum / reviewsArr.length).toFixed(1);
+          const labelCount = reviewsArr.length === 1 ? '1 reseña' : `${reviewsArr.length} reseñas`;
+          summaryPill.innerText = `${avg} ★ (${labelCount})`;
+        } else {
+          summaryPill.innerText = `5.0 ★ (0 reseñas)`;
+        }
+      }
+
+      if (reviewsArr.length === 0) {
+        container.innerHTML = "<p style='color:var(--text-muted); font-weight:600; padding: 6px 2px;'>Aún no hay opiniones. ¡Sé el primero!</p>";
+        return;
+      }
 
       reviewsArr.forEach(r => {
         let media = "";
@@ -2778,18 +2948,18 @@
           }
         }
 
-        let starsHtml = `<div style="color:var(--warning); font-size:1rem; margin-top:4px;">` + `<i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>`;
+        let starsHtml = `<div class="review-stars-right">` + `<i class="fa-solid fa-star"></i>`.repeat(r.ratingGeneral || 5) + `</div>`;
         let detailsHtml = "";
-        if(r.foodName) detailsHtml += `<div style="font-size:0.9rem; color:var(--primary); font-weight:800; margin-top:8px;"><i class="fa-solid fa-utensils"></i> Pidió: ${window.escapeHtml(r.foodName)}</div>`;
+        if(r.foodName) detailsHtml += `<div class="review-dish-pill">Pidió: ${window.escapeHtml(r.foodName)}</div>`;
 
         let staffInfo = "";
         if(r.staffRated && r.staffRated.length > 0) {
             r.staffRated.forEach(st => {
                 if (!st) return;
-                let sStars = `<span style="color:var(--warning); font-size:0.8rem; margin-left:6px;">` + `<i class="fa-solid fa-star"></i>`.repeat(st.rating || 5) + `</span>`;
-                staffInfo += `<div style="font-size:0.85rem; color:var(--primary); font-weight:800; margin-top:6px; display:flex; align-items:center;">
-                  <img src="${st.photo || defaultImg}" style="width:24px; height:24px; border-radius:50%; margin-right:8px; border:1px solid rgba(255,255,255,0.8); object-fit:cover;">
-                  ${window.escapeHtml(st.name)} ${sStars}
+                let sStars = `<span style="color:#D8B168; font-size:0.78rem; margin-left:6px;">` + `<i class="fa-solid fa-star"></i>`.repeat(st.rating || 5) + `</span>`;
+                staffInfo += `<div style="font-size:0.82rem; color:#E2E7E1; font-weight:600; display:flex; align-items:center;">
+                  <img src="${st.photo || defaultImg}" style="width:22px; height:22px; border-radius:50%; margin-right:8px; border:1px solid rgba(255,255,255,0.4); object-fit:cover;">
+                  Atendió: ${window.escapeHtml(st.name)} ${sStars}
                 </div>`;
             });
         }
@@ -2797,15 +2967,15 @@
         container.innerHTML += `
           <div class="review-card slide-up">
             <div class="review-header" onclick="window.openPublicProfile('${r.authorUid || ''}')">
-              <img src="${r.authorPhoto || defaultImg}">
-              <div>
+              <div class="review-header-left">
+                <img src="${r.authorPhoto || defaultImg}">
                 <div class="review-author">${window.escapeHtml(r.authorName || 'Cliente')}</div>
-                ${starsHtml}
               </div>
+              ${starsHtml}
             </div>
             ${detailsHtml}
             ${staffInfo}
-            ${r.text ? `<div class="review-text-quote" style="margin-top:12px;">${window.escapeHtml(r.text)}</div>` : ''}
+            ${r.text ? `<div class="review-text-quote">${window.escapeHtml(r.text)}</div>` : ''}
             ${media ? `<div>${media}</div>` : ''}
           </div>`;
       });
