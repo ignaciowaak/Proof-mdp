@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Bloqueador automático del cartel "Powered by Netlify" inyectado en el DOM -->
+  <!-- Bloqueador seguro del cartel "Powered by Netlify" (sin tocar iframes de Firebase) -->
   <script>
     (function() {
       const APP_KEEP_IDS = new Set([
@@ -25,36 +25,35 @@
 
       function isNetlifyBadgeNode(node) {
         if (!node || node.nodeType !== 1) return false;
-        const id = (node.id || "").toLowerCase();
         if (APP_KEEP_IDS.has(node.id)) return false;
+        const id = (node.id || "").toLowerCase();
         const cls = (typeof node.className === "string" ? node.className : "").toLowerCase();
         const tag = (node.tagName || "").toLowerCase();
         const src = (node.getAttribute && (node.getAttribute("src") || "") || "").toLowerCase();
         const href = (node.getAttribute && (node.getAttribute("href") || "") || "").toLowerCase();
-        const txt = (node.innerText || node.textContent || "").toLowerCase();
+        const txt = (node.innerText || node.textContent || "").trim().toLowerCase();
 
-        if (tag === "iframe" && node.id !== "pdf-frame") return true;
+        // Jamás tocar iframes ni nodos de Firebase, Google o de la propia aplicación
+        if (src.includes("firebase") || src.includes("gstatic") || src.includes("google") || id.includes("firebase")) return false;
+        if (tag === "iframe") {
+          return src.includes("netlify.com") || src.includes("app.netlify.com") || id.includes("netlify") || cls.includes("netlify");
+        }
         if (tag.includes("netlify") || id.includes("netlify") || cls.includes("netlify")) return true;
-        if (src.includes("netlify") || (href.includes("netlify") && !cls.includes("social-btn"))) return true;
-        if (txt.includes("powered by netlify") && txt.length < 120) return true;
-        if (node.shadowRoot) return true;
-
-        try {
-          const st = window.getComputedStyle(node);
-          if ((st.position === "fixed" || st.position === "sticky") && !node.closest("#biz-main, #main-header, #quick-table-dock, .modal-overlay, .drawer, .lightbox, #toast, #global-loader")) {
-            if (parseInt(st.zIndex, 10) > 99999 || txt.includes("netlify")) return true;
-          }
-        } catch (e) {}
+        if (src.includes("netlify.com") || (href.includes("netlify.com") && !cls.includes("social-btn"))) return true;
+        if ((txt === "powered by netlify" || (txt.includes("powered by netlify") && txt.length < 95)) &&
+            !node.closest("#biz-main, #main-header, #quick-table-dock, .modal-overlay, .drawer, .lightbox, #toast, #global-loader, #live-login-gate, #live-screen-only")) {
+          return true;
+        }
         return false;
       }
 
       function purgeNetlifyBadge() {
         try {
-          document.querySelectorAll("iframe:not(#pdf-frame), [id*=\"netlify\" i], [class*=\"netlify\" i], a[href*=\"netlify.com\" i]").forEach(el => el.remove());
+          document.querySelectorAll('iframe[src*="netlify.com" i], [id*="netlify" i], [class*="netlify" i], a[href*="netlify.com" i]:not(.social-btn), netlify-badge').forEach(el => el.remove());
           if (document.body) {
             Array.from(document.body.children).forEach(child => {
-              if (!APP_KEEP_IDS.has(child.id) && child.tagName !== "SCRIPT" && child.tagName !== "STYLE" && child.tagName !== "LINK") {
-                if (isNetlifyBadgeNode(child) || child.tagName === "IFRAME" || child.shadowRoot) {
+              if (!APP_KEEP_IDS.has(child.id) && child.tagName !== "SCRIPT" && child.tagName !== "STYLE" && child.tagName !== "LINK" && child.tagName !== "IFRAME") {
+                if (isNetlifyBadgeNode(child)) {
                   child.remove();
                 }
               }
@@ -71,14 +70,13 @@
             }
           }
         }
-        purgeNetlifyBadge();
       });
       obs.observe(document.documentElement, { childList: true, subtree: true });
       window.addEventListener("DOMContentLoaded", purgeNetlifyBadge);
       window.addEventListener("load", () => {
         purgeNetlifyBadge();
-        setTimeout(purgeNetlifyBadge, 400);
-        setTimeout(purgeNetlifyBadge, 1500);
+        setTimeout(purgeNetlifyBadge, 500);
+        setTimeout(purgeNetlifyBadge, 1800);
       });
     })();
   </script>
@@ -130,11 +128,11 @@
       --transition-fast: all 0.25s var(--spring);
     }
 
-    /* Ocultar de raíz cualquier cartel o iframe externo de "Powered by Netlify" */
-    iframe:not(#pdf-frame),
+    /* Ocultar únicamente el cartel externo de "Powered by Netlify" sin tocar iframes de Firebase */
+    iframe[src*="netlify.com" i],
     [id*="netlify" i],
     [class*="netlify" i],
-    a[href*="netlify.com" i],
+    a[href*="netlify.com" i]:not(.social-btn),
     netlify-badge {
       display: none !important;
       visibility: hidden !important;
@@ -2153,7 +2151,7 @@
 
     // === FIREBASE Y SINCRONIZACIÓN LOCAL DE RESPALDO ===
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+    import { getAuth, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
     import { getDatabase, ref, set, push, onValue, get, remove } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
     const firebaseConfig = {
@@ -2168,6 +2166,7 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
     const defaultImg = createAvatarDataUrl("P");
+    const FB_DB_URL = "https://the-pic-c437e-default-rtdb.firebaseio.com";
 
     const LOCAL_STORAGE_KEY = 'proof_businesses_backup_v1';
     const LOCAL_USER_KEY = 'proof_current_user_v1';
@@ -2236,7 +2235,86 @@
     let lastCompiledReviewText = "";
     let lastConfiguredGoogleMapsUrl = "";
 
-    window.addEventListener('DOMContentLoaded', () => {
+    // Resolución inteligente de ID de restaurante (exacto o fallback al local disponible)
+    function resolveTargetBizId(requestedId) {
+      if (!requestedId) return null;
+      if (allBusinesses[requestedId]) return requestedId;
+      const keys = Object.keys(allBusinesses);
+      const lowerReq = String(requestedId).toLowerCase();
+      const ciMatch = keys.find(k => k.toLowerCase() === lowerReq);
+      if (ciMatch) return ciMatch;
+      const nameMatch = keys.find(k => {
+        const b = allBusinesses[k];
+        return b && b.name && b.name.toLowerCase().replace(/[^a-z0-9]/g, '') === lowerReq.replace(/[^a-z0-9]/g, '');
+      });
+      if (nameMatch) return nameMatch;
+      // Si solo hay 1 restaurante cargado en la base de datos o si el ID era de prueba, abrir el más reciente
+      if (keys.length > 0) {
+        const sorted = keys.sort((a, b) => ((allBusinesses[b] && allBusinesses[b].timestamp) || 0) - ((allBusinesses[a] && allBusinesses[a].timestamp) || 0));
+        return sorted[0];
+      }
+      return null;
+    }
+
+    function buildUrlFallbackBusinessIfNeeded(bizId) {
+      const fallbackName = urlParamsFast.get('n') || hashParamsFast.get('n');
+      if (!fallbackName) return null;
+      return {
+        name: fallbackName,
+        category: urlParamsFast.get('c') || hashParamsFast.get('c') || 'Cafetería',
+        desc: urlParamsFast.get('d') || hashParamsFast.get('d') || '',
+        hoursDesc: urlParamsFast.get('h') || hashParamsFast.get('h') || 'De 08:00 a 23:00',
+        tableCount: parseInt(urlParamsFast.get('tc') || hashParamsFast.get('tc') || '10', 10) || 10,
+        googleMapsUrl: urlParamsFast.get('gm') || hashParamsFast.get('gm') || '',
+        whatsapp: urlParamsFast.get('wa') || hashParamsFast.get('wa') || '',
+        instagram: urlParamsFast.get('ig') || hashParamsFast.get('ig') || '',
+        timestamp: Date.now()
+      };
+    }
+
+    async function fetchBusinessesFastViaRest(targetId) {
+      try {
+        if (targetId) {
+          const singleRes = await fetch(`${FB_DB_URL}/businesses/${encodeURIComponent(targetId)}.json`, { cache: 'no-store' });
+          if (singleRes.ok) {
+            const singleData = await singleRes.json();
+            if (singleData && typeof singleData === 'object') {
+              firebaseBusinesses[targetId] = singleData;
+              allBusinesses = mergeBusinesses(firebaseBusinesses);
+              saveLocalBusinesses(allBusinesses);
+              window.openRestaurant(targetId);
+              syncDockButtonsStateFromRequests();
+              window.showLoader(false);
+              return true;
+            }
+          }
+        }
+        const allRes = await fetch(`${FB_DB_URL}/businesses.json`, { cache: 'no-store' });
+        if (allRes.ok) {
+          const allData = await allRes.json();
+          if (allData && typeof allData === 'object') {
+            firebaseBusinesses = { ...firebaseBusinesses, ...allData };
+            allBusinesses = mergeBusinesses(firebaseBusinesses);
+            saveLocalBusinesses(allBusinesses);
+            if (targetId) {
+              const resolved = resolveTargetBizId(targetId);
+              if (resolved && allBusinesses[resolved]) {
+                window.openRestaurant(resolved);
+                syncDockButtonsStateFromRequests();
+                window.showLoader(false);
+                return true;
+              }
+            }
+          }
+        }
+      } catch (e) {}
+      return false;
+    }
+
+    function initProofClientApp() {
+      if (window.__proofClientBooted) return;
+      window.__proofClientBooted = true;
+
       if (liveScreenBizId) {
         initStandaloneLiveScreenWithLogin(liveScreenBizId);
         return;
@@ -2245,11 +2323,61 @@
       setupMultiStarPickers();
       updateAuthUI();
 
-      if (initialBizParam && allBusinesses[initialBizParam]) {
-        window.openRestaurant(initialBizParam);
+      // Timeout máximo de seguridad para que "Preparando..." jamás quede colgado
+      const safetyLoaderTimer = setTimeout(() => {
+        if (initialBizParam && !selectedBizId) {
+          const resolved = resolveTargetBizId(initialBizParam);
+          if (resolved && allBusinesses[resolved]) {
+            window.openRestaurant(resolved);
+            syncDockButtonsStateFromRequests();
+          } else {
+            const urlFallback = buildUrlFallbackBusinessIfNeeded(initialBizParam);
+            if (urlFallback) {
+              allBusinesses[initialBizParam] = urlFallback;
+              window.openRestaurant(initialBizParam);
+            }
+          }
+        }
         window.showLoader(false);
-      } else if (!initialBizParam) {
+      }, 2800);
+
+      // Si ya está en caché local o tiene parámetros de respaldo, abrir al instante
+      if (initialBizParam) {
+        if (allBusinesses[initialBizParam]) {
+          window.openRestaurant(initialBizParam);
+          syncDockButtonsStateFromRequests();
+          window.showLoader(false);
+        } else {
+          const urlFallback = buildUrlFallbackBusinessIfNeeded(initialBizParam);
+          if (urlFallback) {
+            allBusinesses[initialBizParam] = urlFallback;
+            window.openRestaurant(initialBizParam);
+            window.showLoader(false);
+          }
+        }
+        // Carga ultrarrápida por HTTPS REST (funciona en cualquier navegador sin esperar WebSockets)
+        fetchBusinessesFastViaRest(initialBizParam).then((loaded) => {
+          if (loaded) clearTimeout(safetyLoaderTimer);
+        });
+      } else {
         window.showLoader(false);
+        fetchBusinessesFastViaRest(null);
+      }
+
+      // Listener directo al restaurante específico + árbol general en tiempo real
+      if (initialBizParam) {
+        onValue(ref(db, `businesses/${initialBizParam}`), (snap) => {
+          if (snap.exists()) {
+            const val = snap.val();
+            firebaseBusinesses[initialBizParam] = val;
+            allBusinesses = mergeBusinesses(firebaseBusinesses);
+            saveLocalBusinesses(allBusinesses);
+            window.openRestaurant(initialBizParam);
+            syncDockButtonsStateFromRequests();
+            clearTimeout(safetyLoaderTimer);
+            window.showLoader(false);
+          }
+        }, () => {});
       }
 
       onValue(ref(db, 'businesses'), (snapshot) => {
@@ -2258,15 +2386,24 @@
         saveLocalBusinesses(allBusinesses);
 
         if (initialBizParam) {
-          if (allBusinesses[initialBizParam]) {
-            window.openRestaurant(initialBizParam);
+          const resolved = resolveTargetBizId(initialBizParam);
+          if (resolved && allBusinesses[resolved]) {
+            window.openRestaurant(resolved);
             syncDockButtonsStateFromRequests();
           } else {
-            window.showToast("Restaurante no encontrado", "fa-triangle-exclamation");
+            const urlFallback = buildUrlFallbackBusinessIfNeeded(initialBizParam);
+            if (urlFallback) {
+              allBusinesses[initialBizParam] = urlFallback;
+              window.openRestaurant(initialBizParam);
+            } else {
+              window.showToast("Restaurante no encontrado", "fa-triangle-exclamation");
+            }
           }
         }
+        clearTimeout(safetyLoaderTimer);
         window.showLoader(false);
       }, () => {
+        clearTimeout(safetyLoaderTimer);
         window.showLoader(false);
       });
 
@@ -2293,7 +2430,13 @@
           }
         }
       });
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', initProofClientApp);
+    } else {
+      initProofClientApp();
+    }
 
     /* =========================================================================
        MODO PANTALLA EN VIVO AISLADA CON LOGIN OBLIGATORIO DE LA DUEÑA DEL LOCAL
@@ -2385,6 +2528,21 @@
         currentLiveBizObj = allBusinesses[bizId];
         document.getElementById('live-login-biz-title').innerText = currentLiveBizObj.name || 'Pantalla en Vivo';
       }
+
+      fetch(`${FB_DB_URL}/businesses/${encodeURIComponent(bizId)}.json`, { cache: 'no-store' })
+        .then(r => r.ok ? r.json() : null)
+        .then(val => {
+          if (val && typeof val === 'object') {
+            currentLiveBizObj = val;
+            allBusinesses[bizId] = val;
+            saveLocalBusinesses(allBusinesses);
+            const titleEl = document.getElementById('live-login-biz-title');
+            if (titleEl) titleEl.innerText = val.name || 'Pantalla en Vivo';
+            if (sessionStorage.getItem(sessionKey) === 'true') {
+              renderLiveScreenData(bizId, val);
+            }
+          }
+        }).catch(() => {});
 
       onValue(ref(db, `businesses/${bizId}`), (snap) => {
         if (snap.exists()) {
@@ -2736,6 +2894,11 @@
       syncDockButtonsStateFromRequests();
 
       try {
+        fetch(`${FB_DB_URL}/businesses/${encodeURIComponent(selectedBizId)}/tableRequests/${encodeURIComponent(requestKey)}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestPayload)
+        }).catch(() => {});
         await set(ref(db, `businesses/${selectedBizId}/tableRequests/${requestKey}`), requestPayload);
       } catch (err) {}
 
