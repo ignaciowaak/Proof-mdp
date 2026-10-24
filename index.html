@@ -82,7 +82,7 @@
     /* === HEADER === */
     .top-header { 
       position: fixed; top: 16px; left: 16px; right: 16px; z-index: 4000; 
-      display: flex; justify-content: space-between; align-items: center; 
+      display: flex; justify-content: flex-end; align-items: center; 
       pointer-events: none;
     }
     .top-header > * { pointer-events: auto; }
@@ -96,63 +96,23 @@
     .btn-icon:hover { transform: translateY(-3px); box-shadow: var(--shadow-hard-lg); }
     .btn-icon:active { background: var(--primary); color: var(--surface-solid); transform: translate(2px, 2px); box-shadow: 0px 0px 0px var(--primary); }
 
-    .header-biz-pill {
-      background: var(--surface-solid);
-      border: 2px solid var(--primary);
-      border-radius: 100px;
-      padding: 8px 14px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 800;
-      font-size: 0.82rem;
-      color: var(--primary);
-      box-shadow: var(--shadow-hard);
-      display: none;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-    }
-
-    /* === HOME HERO === */
+    /* === HOME HERO (PÁGINA PRINCIPAL CUANDO NO SE ESCANEÓ QR DE MESA) === */
     #hero-main { 
       display: flex; flex-direction: column; align-items: center; justify-content: center; 
-      height: 100%; padding: 24px; text-align: center; overflow-y: auto;
+      height: 100%; padding: 24px; text-align: center;
     }
-    .hero-title { font-size: 2.8rem; font-weight: 900; color: var(--primary); margin-bottom: 24px; line-height: 1.1; }
+    .hero-title { font-size: 2.8rem; font-weight: 900; color: var(--primary); margin-bottom: 28px; line-height: 1.1; }
     
     .scan-info-box { 
       background: var(--surface); backdrop-filter: blur(12px); border: 2px solid var(--primary); padding: 22px; 
       border-radius: 24px; display: flex; align-items: flex-start; gap: 16px; text-align: left; 
-      box-shadow: var(--shadow-hard); max-width: 420px; width: 100%; transition: var(--transition-fast);
+      box-shadow: var(--shadow-hard); max-width: 400px; width: 100%; transition: var(--transition-fast);
     }
     .scan-info-box:hover { transform: translateY(-4px); box-shadow: var(--shadow-hard-lg); }
     .scan-info-box img { width: 36px; height: 36px; object-fit: contain; }
     .scan-info-box p { font-size: 1rem; font-weight: 600; margin: 0; color: var(--text-main); line-height: 1.5; }
 
-    .hero-biz-directory {
-      margin-top: 24px;
-      width: 100%;
-      max-width: 420px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      text-align: left;
-    }
-    .hero-biz-item {
-      background: var(--surface-solid);
-      border: 2px solid var(--primary);
-      border-radius: 18px;
-      padding: 14px 18px;
-      box-shadow: var(--shadow-hard);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      font-weight: 800;
-      transition: var(--transition-fast);
-    }
-    .hero-biz-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-hard-lg); }
-
-    /* === VISTA DEL LOCAL === */
+    /* === VISTA DEL LOCAL (SOLO AL ENTRAR DESDE EL QR DE LA MESA) === */
     #biz-main {
       display: none;
       height: 100%;
@@ -165,7 +125,7 @@
     .biz-title-main { font-size: 2.3rem; font-weight: 900; margin-bottom: 6px; line-height: 1.1; }
     .biz-category { font-size: 0.95rem; font-weight: 800; color: var(--success); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
     
-    /* === PANEL PRINCIPAL DE LOS 3 BOTONES EN MESA (IMPOSIBLE DE PERDERSE) === */
+    /* === PANEL PRINCIPAL DE LOS 3 BOTONES EN MESA === */
     .table-service-panel {
       background: var(--surface-solid);
       border: 3px solid var(--primary);
@@ -198,18 +158,15 @@
       color: var(--surface-solid);
       font-family: 'Plus Jakarta Sans', sans-serif;
       font-weight: 900;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       padding: 8px 16px;
       border-radius: 100px;
       border: 2px solid var(--primary);
-      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
-      transition: var(--transition-fast);
     }
-    .table-badge-pill:active { transform: scale(0.95); }
     .table-actions-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -491,7 +448,27 @@
       overflow-y: auto;
     }
 
-    /* === PANTALLA EN VIVO AISLADA (CUANDO SE ENTRA CON ?pantalla=ID o ?monitor=ID) === */
+    /* === LOGIN Y PANTALLA EN VIVO DEL RESTAURANTE (SIN ACCESO A ADMIN JAMÁS) === */
+    #live-login-gate {
+      display: none;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      padding: 24px 18px;
+      background: var(--bg-base);
+      align-items: center;
+      justify-content: center;
+    }
+    .live-login-card {
+      background: var(--surface-solid);
+      border: 3px solid var(--primary);
+      border-radius: 30px;
+      padding: 34px 28px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: var(--shadow-hard-lg);
+      text-align: center;
+    }
     #live-screen-only {
       display: none;
       width: 100%;
@@ -638,33 +615,21 @@
 
   <div class="toast" id="toast"></div>
 
-  <!-- HEADER FIJO (OCULTO EN MODO PANTALLA EN VIVO) -->
+  <!-- HEADER FIJO -->
   <header class="top-header fade-in" id="main-header">
-    <div>
-      <button type="button" class="header-biz-pill" id="header-switch-biz" onclick="window.showHeroSelector()">
-        <i class="fa-solid fa-store"></i> <span id="header-biz-label">Cambiar local</span>
-      </button>
-    </div>
     <button class="btn-icon" onclick="window.openDrawerSafe()"><i class="fa-solid fa-bars"></i></button>
   </header>
 
-  <!-- HOME HERO (SE MUESTRA SOLO SI EL USUARIO QUIERE ELEGIR OTRO LOCAL) -->
+  <!-- HOME HERO (SE MUESTRA CUANDO SE ENTRA A LA PÁGINA SIN ESCANEAR QR DE MESA) -->
   <main class="hero-section fade-in" id="hero-main">
     <h1 class="hero-title">Tu experiencia,<br>tu voz.</h1>
     <div class="scan-info-box floating">
       <img src="https://cdn-icons-png.flaticon.com/512/714/714390.png" onerror="this.style.display='none'">
-      <p>Al escanear el QR de tu mesa accederás a los botones de atención («Llamar al mozo», «Pedir el menú», «Pedir la cuenta») y podrás calificar tu experiencia.</p>
-    </div>
-
-    <div class="hero-biz-directory" id="hero-biz-directory">
-      <div style="font-size: 0.85rem; font-weight: 900; text-transform: uppercase; color: var(--primary); margin-bottom: 4px; text-align: center;">
-        Selecciona tu restaurante para entrar a la mesa:
-      </div>
-      <div id="hero-biz-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+      <p>Escanea el código QR de tu mesa para pedir el menú, llamar al mozo, pedir la cuenta y calificar tu experiencia.</p>
     </div>
   </main>
 
-  <!-- VISTA DEL LOCAL (CON LOS 3 BOTONES SIEMPRE VISIBLES) -->
+  <!-- VISTA DEL LOCAL (SOLO SE ABRE AL ESCANEAR EL QR DE LA MESA DEL RESTAURANTE) -->
   <main id="biz-main" class="fade-in">
     <h1 id="biz-title-main" class="biz-title-main">Restaurante</h1>
     <div id="biz-category-main" class="biz-category">Gastronomía</div>
@@ -675,15 +640,15 @@
     <section class="table-service-panel" id="table-service-panel">
       <div class="table-service-header">
         <div class="table-service-title">
-          <i class="fa-solid fa-bell-concierge"></i> Pedir desde tu Mesa
+          <i class="fa-solid fa-bell-concierge"></i> Atención en tu Mesa
         </div>
-        <button type="button" class="table-badge-pill" id="current-table-badge" onclick="window.openTableSelectorModal()">
-          <i class="fa-solid fa-chair"></i> <span id="current-table-label">Mesa 1 (Cambiar)</span>
-        </button>
+        <span class="table-badge-pill" id="current-table-badge">
+          <i class="fa-solid fa-chair"></i> <span id="current-table-label">Mesa 1</span>
+        </span>
       </div>
 
       <p style="font-size: 0.88rem; font-weight: 700; color: var(--text-muted); margin-bottom: 12px;">
-        Toca un botón y le avisaremos en vivo al mozo en la pantalla del restaurante:
+        Toca lo que necesites y le avisaremos al instante al personal en la pantalla en vivo del local:
       </p>
 
       <div class="table-actions-grid">
@@ -722,7 +687,7 @@
         <i class="fa-solid fa-hand-sparkles" style="color: #b45309;"></i> LLAMAR AL MOZO
       </button>
       <button type="button" class="btn btn-primary" id="btn-main-menu" onclick="window.handleTableAction('menu')" style="background: #dbeafe; border-width: 2.5px;">
-        <i class="fa-solid fa-book-open" style="color: #1d4ed8;"></i> PEDIR EL MENÚ EN MESA
+        <i class="fa-solid fa-book-open" style="color: #1d4ed8;"></i> PEDIR EL MENÚ
       </button>
       <button type="button" class="btn btn-primary" id="btn-main-bill" onclick="window.handleTableAction('bill')" style="background: #dcfce7; border-width: 2.5px;">
         <i class="fa-solid fa-receipt" style="color: #15803d;"></i> PEDIR LA CUENTA
@@ -741,7 +706,7 @@
     <div id="biz-inline-reviews"></div>
   </main>
 
-  <!-- BARRA FLOTANTE INFERIOR SIEMPRE VISIBLE EN EL RESTAURANTE -->
+  <!-- BARRA FLOTANTE INFERIOR SIEMPRE VISIBLE EN LA MESA DEL RESTAURANTE -->
   <div class="floating-table-bar" id="floating-table-bar">
     <button type="button" class="btn-float-table" id="btn-float-waiter" onclick="window.handleTableAction('waiter')">
       <i class="fa-solid fa-hand-sparkles" style="color:#b45309;"></i> Llamar mozo
@@ -753,6 +718,35 @@
       <i class="fa-solid fa-receipt" style="color:#15803d;"></i> Pedir cuenta
     </button>
   </div>
+
+  <!-- =========================================================================
+       LOGIN PREVIO OBLIGATORIO PARA ABRIR LA PANTALLA EN VIVO DEL LOCAL
+       ========================================================================= -->
+  <section id="live-login-gate">
+    <div class="live-login-card slide-up">
+      <div style="width: 66px; height: 66px; border-radius: 20px; background: var(--primary); color: var(--surface-solid); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 16px; box-shadow: var(--shadow-hard);">
+        <i class="fa-solid fa-tv"></i>
+      </div>
+      <span style="font-size: 0.78rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; color: var(--success);">Acceso Exclusivo del Local</span>
+      <h2 id="live-login-biz-title" style="font-size: 1.7rem; font-weight: 900; color: var(--primary); margin: 6px 0 8px;">Pantalla en Vivo</h2>
+      <p style="font-size: 0.92rem; font-weight: 600; color: var(--text-muted); margin-bottom: 22px;">
+        Ingresa el usuario y contraseña asignados a tu restaurante para ver los pedidos de las mesas en vivo.
+      </p>
+
+      <div class="form-group" style="text-align: left;">
+        <input type="text" id="live-owner-user" placeholder="Usuario del local" autocomplete="username">
+      </div>
+      <div class="form-group" style="text-align: left;">
+        <input type="password" id="live-owner-pass" placeholder="Contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter') window.submitLiveScreenLogin()">
+      </div>
+      <div id="live-login-error" style="display: none; color: var(--danger); font-weight: 800; font-size: 0.88rem; margin-bottom: 12px;">
+        Usuario o contraseña incorrectos. Verifica los datos creados en el panel de administración.
+      </div>
+      <button type="button" class="btn btn-secondary" style="margin-top: 8px; margin-bottom: 0;" onclick="window.submitLiveScreenLogin()">
+        <i class="fa-solid fa-right-to-bracket"></i> ENTRAR A LA PANTALLA EN VIVO
+      </button>
+    </div>
+  </section>
 
   <!-- =========================================================================
        PANTALLA EN VIVO EXCLUSIVA PARA EL RESTAURANTE (SIN ACCESO A ADMIN JAMÁS)
@@ -774,6 +768,9 @@
           </button>
           <button type="button" class="btn-neo" id="live-clear-all-btn" onclick="window.attendAllLiveRequests()" style="display: none;">
             <i class="fa-solid fa-check-double"></i> Marcar Todas Atendidas
+          </button>
+          <button type="button" class="btn-neo" onclick="window.logoutLiveScreen()">
+            <i class="fa-solid fa-lock"></i> Salir
           </button>
         </div>
       </header>
@@ -813,7 +810,7 @@
     </div>
   </section>
 
-  <!-- MODAL: SELECCIONAR NÚMERO DE MESA -->
+  <!-- MODAL: SELECCIONAR NÚMERO DE MESA (POR SI ENTRA SIN ?mesa=X) -->
   <div class="modal-overlay" id="modal-select-table" style="z-index: 6200;">
     <div class="modal-card" style="max-width: 460px;">
       <div class="modal-header">
@@ -978,7 +975,7 @@
     </div>
   </div>
 
-  <!-- MODAL: LOGIN / REGISTRO -->
+  <!-- MODAL: LOGIN / REGISTRO DE CLIENTES -->
   <div class="modal-overlay" id="modal-auth" style="z-index: 7500;">
     <div class="modal-card" style="max-width: 440px;">
       <div class="modal-header">
@@ -1120,6 +1117,11 @@
     const initialBizParam = urlParamsFast.get('biz') || urlParamsFast.get('id') || hashParamsFast.get('biz');
     const initialMesaParam = urlParamsFast.get('mesa') || hashParamsFast.get('mesa');
     const liveScreenBizId = urlParamsFast.get('pantalla') || urlParamsFast.get('monitor') || hashParamsFast.get('pantalla') || hashParamsFast.get('monitor');
+
+    // Si hay parámetro de QR en la URL, activamos loader mientras conecta a Firebase
+    if (initialBizParam || liveScreenBizId) {
+      document.getElementById('global-loader').classList.add('active');
+    }
 
     // === SISTEMA HISTORY API SEGURO ===
     window.openModal = function(id) { 
@@ -1359,11 +1361,10 @@
     let allBusinesses = loadLocalBusinesses(); 
     let selectedBizId = null;
 
-    // Por defecto asignamos Mesa 1 si el cliente aún no eligió mesa (o la mesa del QR ?mesa=X)
+    // Mesa recibida desde el QR de la mesa (?biz=ID&mesa=X)
     let selectedTableNumber = (initialMesaParam && !isNaN(parseInt(initialMesaParam, 10)))
       ? parseInt(initialMesaParam, 10)
-      : 1;
-    let userExplicitlyConfirmedTable = Boolean(initialMesaParam);
+      : null;
     let pendingTableActionType = null;
     let pendingOpenWizardAfterAuth = false;
 
@@ -1378,112 +1379,41 @@
     let lastCompiledReviewText = "";
     let lastConfiguredGoogleMapsUrl = "";
 
-    // Restaurante de demostración por si aún no se cargó ninguno desde Firebase
-    const DEMO_BIZ_ID = 'demo_proof_local';
-    function ensureAtLeastOneBusiness() {
-      const keys = Object.keys(allBusinesses).filter(k => allBusinesses[k] && allBusinesses[k].name);
-      if (keys.length === 0) {
-        allBusinesses[DEMO_BIZ_ID] = {
-          name: "Proof Restó & Café",
-          category: "Gastronomía",
-          desc: "Bienvenido a nuestra experiencia en mesa. Usa los botones de abajo para llamar al mozo, pedir el menú o pedir la cuenta sin esperar.",
-          hoursDesc: "Abierto todos los días de 08:00 a 23:30",
-          tableCount: 12,
-          googleMapsUrl: "https://www.google.com/maps",
-          photos: [createAvatarDataUrl("P", "#e8eee8", "#222222")],
-          staff: {
-            st_demo_1: { name: "Valentina", role: "Mozo/a", photo: createAvatarDataUrl("V") },
-            st_demo_2: { name: "Mateo", role: "Bartender", photo: createAvatarDataUrl("M") }
-          },
-          reviews: {},
-          tableRequests: {}
-        };
-      }
-    }
-
-    function renderHeroDirectory() {
-      const dirContainer = document.getElementById('hero-biz-directory');
-      const listEl = document.getElementById('hero-biz-list');
-      if (!dirContainer || !listEl) return;
-
-      const entries = Object.entries(allBusinesses)
-        .filter(([k, b]) => b && b.name && (k !== DEMO_BIZ_ID || Object.keys(allBusinesses).length === 1))
-        .sort((a, b) => ((b[1] && b[1].timestamp) || 0) - ((a[1] && a[1].timestamp) || 0));
-
-      listEl.innerHTML = "";
-      entries.forEach(([bId, b]) => {
-        const item = document.createElement('div');
-        item.className = 'hero-biz-item';
-        item.onclick = () => window.openRestaurant(bId);
-        item.innerHTML = `
-          <div>
-            <div style="font-size: 1.05rem; color: var(--primary);">${window.escapeHtml(b.name)}</div>
-            <div style="font-size: 0.8rem; color: var(--success); font-weight: 700;">${window.escapeHtml(b.category || 'Gastronomía')} • ${parseInt(b.tableCount, 10) || 10} Mesas</div>
-          </div>
-          <i class="fa-solid fa-arrow-right"></i>`;
-        listEl.appendChild(item);
-      });
-    }
-
-    window.showHeroSelector = function() {
-      document.getElementById('biz-main').style.display = 'none';
-      document.getElementById('floating-table-bar').classList.remove('active');
-      document.getElementById('hero-main').style.display = 'flex';
-      renderHeroDirectory();
-    };
-
-    function autoOpenTargetOrFirstRestaurant() {
-      if (liveScreenBizId) return;
-      ensureAtLeastOneBusiness();
-      renderHeroDirectory();
-
-      if (initialBizParam && allBusinesses[initialBizParam]) {
-        window.openRestaurant(initialBizParam);
-        return;
-      }
-
-      // Si ya hay un restaurante abierto y sigue existiendo, actualizarlo
-      if (selectedBizId && allBusinesses[selectedBizId] && selectedBizId !== DEMO_BIZ_ID) {
-        window.openRestaurant(selectedBizId);
-        return;
-      }
-
-      // Abrir automáticamente el restaurante más reciente para que los 3 botones aparezcan siempre al cargar
-      const realEntries = Object.entries(allBusinesses)
-        .filter(([k, b]) => k !== DEMO_BIZ_ID && b && b.name)
-        .sort((a, b) => ((b[1] && b[1].timestamp) || 0) - ((a[1] && a[1].timestamp) || 0));
-
-      if (realEntries.length > 0) {
-        window.openRestaurant(realEntries[0][0]);
-      } else {
-        window.openRestaurant(DEMO_BIZ_ID);
-      }
-    }
-
     window.addEventListener('DOMContentLoaded', () => {
-      // Si se entra con ?pantalla=ID o ?monitor=ID, activar MODO PANTALLA EN VIVO AISLADA (sin nada de cliente ni admin)
+      // 1. Si se entra desde el Link de Pantalla en Vivo (?pantalla=ID o ?monitor=ID):
+      //    Eliminar la app de cliente y pedir el Login creado en el panel de administración
       if (liveScreenBizId) {
-        initStandaloneLiveScreen(liveScreenBizId);
+        initStandaloneLiveScreenWithLogin(liveScreenBizId);
         return;
       }
 
       setupMultiStarPickers();
       updateAuthUI();
-      autoOpenTargetOrFirstRestaurant();
-      window.showLoader(false);
+
+      // 2. Si el cliente escaneó el QR de una mesa (?biz=ID&mesa=X), abrir ese local directamente
+      if (initialBizParam && allBusinesses[initialBizParam]) {
+        window.openRestaurant(initialBizParam);
+        window.showLoader(false);
+      } else if (!initialBizParam) {
+        // Si entra a la raíz sin escanear el QR de una mesa, se queda únicamente en la pantalla principal (#hero-main)
+        window.showLoader(false);
+      }
       
       onValue(ref(db, 'businesses'), (snapshot) => {
         firebaseBusinesses = snapshot.val() || {};
-        if (Object.keys(firebaseBusinesses).length > 0 && allBusinesses[DEMO_BIZ_ID]) {
-          delete allBusinesses[DEMO_BIZ_ID];
-        }
         allBusinesses = mergeBusinesses(firebaseBusinesses);
         saveLocalBusinesses(allBusinesses);
-        autoOpenTargetOrFirstRestaurant();
+
+        if (initialBizParam) {
+          if (allBusinesses[initialBizParam]) {
+            window.openRestaurant(initialBizParam);
+          } else {
+            window.showToast("Restaurante no encontrado", "fa-triangle-exclamation");
+          }
+        }
         window.showLoader(false);
       }, () => {
         window.showLoader(false);
-        autoOpenTargetOrFirstRestaurant();
       });
 
       if (syncChannel) {
@@ -1510,11 +1440,12 @@
     });
 
     /* =========================================================================
-       MODO PANTALLA EN VIVO AISLADA (PARA EL DUEÑO/MOZOS DEL RESTAURANTE)
+       MODO PANTALLA EN VIVO AISLADA CON LOGIN OBLIGATORIO DE LA DUEÑA DEL LOCAL
        ========================================================================= */
     let liveSoundEnabled = true;
     let knownLiveTimestamps = {};
     let liveInitialDone = false;
+    let currentLiveBizObj = null;
 
     function playLiveChime() {
       if (!liveSoundEnabled) return;
@@ -1574,8 +1505,8 @@
       return `Hace ${Math.floor(min / 60)} h`;
     }
 
-    function initStandaloneLiveScreen(bizId) {
-      // Eliminar del DOM las vistas de cliente para dejar únicamente la pantalla en vivo
+    function initStandaloneLiveScreenWithLogin(bizId) {
+      // Eliminar del DOM las vistas de cliente
       const headerEl = document.getElementById('main-header');
       const heroEl = document.getElementById('hero-main');
       const bizEl = document.getElementById('biz-main');
@@ -1585,101 +1516,27 @@
       if (bizEl) bizEl.remove();
       if (floatEl) floatEl.remove();
 
-      const liveSec = document.getElementById('live-screen-only');
-      liveSec.style.display = 'block';
       window.showLoader(false);
 
-      const renderFromBiz = (bizObj) => {
-        if (!bizObj) return;
-        const totalTables = parseInt(bizObj.tableCount, 10) || 10;
-        document.getElementById('live-biz-name').innerText = bizObj.name || 'Restaurante';
-        document.getElementById('live-biz-meta').innerText = `Pantalla en vivo exclusiva del local • ${totalTables} mesas`;
+      const sessionKey = `proof_live_auth_${bizId}`;
+      const isAlreadyLogged = sessionStorage.getItem(sessionKey) === 'true';
 
-        const rawReqs = bizObj.tableRequests || {};
-        const validReqs = [];
-        Object.entries(rawReqs).forEach(([k, v]) => {
-          if (!v) return;
-          if (v.bizId && v.bizId !== bizId) return;
-          if (v.status && v.status !== 'pending') return;
-          validReqs.push({ key: k, ...v });
-        });
-
-        let hasNew = false;
-        validReqs.forEach(r => {
-          const prev = knownLiveTimestamps[r.key];
-          if (!prev || r.timestamp > prev) {
-            knownLiveTimestamps[r.key] = r.timestamp;
-            if (liveInitialDone) hasNew = true;
-          }
-        });
-        liveInitialDone = true;
-
-        if (hasNew) {
-          playLiveChime();
-          const newest = [...validReqs].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))[0];
-          if (newest) window.showToast(newest.message || formatExactRequestText(newest.tableNumber, newest.type));
-        }
-
-        validReqs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-        document.getElementById('live-count-total').innerText = validReqs.length;
-        document.getElementById('live-count-waiter').innerText = validReqs.filter(r => r.type === 'waiter').length;
-        document.getElementById('live-count-menu').innerText = validReqs.filter(r => r.type === 'menu').length;
-        document.getElementById('live-count-bill').innerText = validReqs.filter(r => r.type === 'bill').length;
-        document.getElementById('live-clear-all-btn').style.display = validReqs.length > 0 ? 'inline-flex' : 'none';
-
-        const container = document.getElementById('live-requests-container');
-        if (validReqs.length === 0) {
-          container.innerHTML = `
-            <div style="background:var(--surface-solid); border:3px dashed var(--primary); border-radius:26px; padding:48px 24px; text-align:center;">
-              <i class="fa-solid fa-circle-check" style="font-size:3.2rem; color:var(--success); margin-bottom:12px;"></i>
-              <h3 style="font-size:1.6rem; font-weight:900; margin-bottom:6px;">Todas las mesas están atendidas</h3>
-              <p style="color:var(--text-muted); font-weight:600;">Cuando un cliente toque «Llamar al mozo», «Pedir el menú» o «Pedir la cuenta», aparecerá aquí al instante.</p>
-            </div>`;
-        } else {
-          let html = `<div class="monitor-requests-grid">`;
-          validReqs.forEach(r => {
-            const tNum = r.tableNumber || 1;
-            const sentence = formatExactRequestText(tNum, r.type);
-            let icon = 'fa-hand-sparkles';
-            let label = 'Llamado al Mozo';
-            let color = 'var(--color-waiter)';
-            if (r.type === 'menu') { icon = 'fa-book-open'; label = 'Pedido de Menú'; color = 'var(--color-menu)'; }
-            else if (r.type === 'bill') { icon = 'fa-receipt'; label = 'Pedido de Cuenta'; color = 'var(--color-bill)'; }
-
-            html += `
-              <div class="monitor-request-card type-${window.escapeHtml(r.type || 'waiter')}">
-                <div>
-                  <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
-                    <span style="background:var(--primary); color:var(--surface-solid); font-family:'Plus Jakarta Sans',sans-serif; font-weight:900; font-size:1.25rem; padding:8px 16px; border-radius:14px;">
-                      <i class="fa-solid fa-chair"></i> MESA ${window.escapeHtml(tNum)}
-                    </span>
-                    <span style="font-size:0.85rem; font-weight:800; color:var(--text-muted);">
-                      <i class="fa-regular fa-clock"></i> ${formatLiveTimeAgo(r.timestamp)}
-                    </span>
-                  </div>
-                  <div style="margin:12px 0 8px; font-weight:900; font-size:0.88rem; text-transform:uppercase; color:${color};">
-                    <i class="fa-solid ${icon}"></i> ${label}
-                  </div>
-                  <div class="alert-headline">${window.escapeHtml(sentence)}</div>
-                </div>
-                <button type="button" class="btn-attend" onclick="window.attendSingleLiveRequest('${window.escapeHtml(r.key)}', '${window.escapeHtml(tNum)}')">
-                  <i class="fa-solid fa-check"></i> Marcar Mesa ${window.escapeHtml(tNum)} como Atendida
-                </button>
-              </div>`;
-          });
-          html += `</div>`;
-          container.innerHTML = html;
-        }
-      };
-
-      if (allBusinesses[bizId]) renderFromBiz(allBusinesses[bizId]);
+      if (allBusinesses[bizId]) {
+        currentLiveBizObj = allBusinesses[bizId];
+        document.getElementById('live-login-biz-title').innerText = currentLiveBizObj.name || 'Pantalla en Vivo';
+      }
 
       onValue(ref(db, `businesses/${bizId}`), (snap) => {
         if (snap.exists()) {
           const val = snap.val();
+          currentLiveBizObj = val;
           allBusinesses[bizId] = val;
           saveLocalBusinesses(allBusinesses);
-          renderFromBiz(val);
+          const titleEl = document.getElementById('live-login-biz-title');
+          if (titleEl) titleEl.innerText = val.name || 'Pantalla en Vivo';
+          if (sessionStorage.getItem(sessionKey) === 'true') {
+            renderLiveScreenData(bizId, val);
+          }
         }
       });
 
@@ -1687,14 +1544,75 @@
         const reqs = snap.val() || {};
         if (!allBusinesses[bizId]) allBusinesses[bizId] = { name: 'Restaurante', tableCount: 10 };
         allBusinesses[bizId].tableRequests = reqs;
-        renderFromBiz(allBusinesses[bizId]);
+        currentLiveBizObj = allBusinesses[bizId];
+        if (sessionStorage.getItem(sessionKey) === 'true') {
+          renderLiveScreenData(bizId, allBusinesses[bizId]);
+        }
       });
+
+      if (isAlreadyLogged) {
+        unlockLiveScreenView(bizId);
+      } else {
+        document.getElementById('live-login-gate').style.display = 'flex';
+        document.getElementById('live-screen-only').style.display = 'none';
+      }
+
+      window.submitLiveScreenLogin = async function() {
+        const uInput = document.getElementById('live-owner-user').value.trim();
+        const pInput = document.getElementById('live-owner-pass').value.trim();
+        const errEl = document.getElementById('live-login-error');
+        errEl.style.display = 'none';
+
+        if (!uInput || !pInput) {
+          errEl.innerText = "Completa el usuario y la contraseña del local.";
+          errEl.style.display = 'block';
+          return;
+        }
+
+        const bizObj = currentLiveBizObj || allBusinesses[bizId] || {};
+        const creds = bizObj.credentials || null;
+
+        let valid = false;
+        if (creds && creds.username && creds.password) {
+          if (creds.username.toLowerCase() === uInput.toLowerCase() && creds.password === pInput) {
+            valid = true;
+          }
+        }
+
+        if (!valid) {
+          try {
+            const ownerSnap = await get(ref(db, `owners/${uInput}`));
+            if (ownerSnap.exists()) {
+              const ownerData = ownerSnap.val();
+              if (ownerData && ownerData.password === pInput && (!ownerData.bizId || ownerData.bizId === bizId)) {
+                valid = true;
+              }
+            }
+          } catch (e) {}
+        }
+
+        if (valid) {
+          sessionStorage.setItem(sessionKey, 'true');
+          unlockLiveScreenView(bizId);
+          window.showToast("¡Acceso concedido a la pantalla en vivo!", "fa-circle-check");
+        } else {
+          errEl.innerText = "Usuario o contraseña incorrectos. Verifica las credenciales creadas en el panel de administración.";
+          errEl.style.display = 'block';
+        }
+      };
+
+      window.logoutLiveScreen = function() {
+        sessionStorage.removeItem(sessionKey);
+        document.getElementById('live-owner-pass').value = "";
+        document.getElementById('live-screen-only').style.display = 'none';
+        document.getElementById('live-login-gate').style.display = 'flex';
+      };
 
       window.attendSingleLiveRequest = async function(reqKey, tableNum) {
         if (allBusinesses[bizId] && allBusinesses[bizId].tableRequests) {
           delete allBusinesses[bizId].tableRequests[reqKey];
           saveLocalBusinesses(allBusinesses);
-          renderFromBiz(allBusinesses[bizId]);
+          renderLiveScreenData(bizId, allBusinesses[bizId]);
         }
         try { await remove(ref(db, `businesses/${bizId}/tableRequests/${reqKey}`)); } catch (e) {}
         window.showToast(`Mesa ${tableNum} atendida`, 'fa-check');
@@ -1704,11 +1622,102 @@
         if (allBusinesses[bizId]) {
           allBusinesses[bizId].tableRequests = {};
           saveLocalBusinesses(allBusinesses);
-          renderFromBiz(allBusinesses[bizId]);
+          renderLiveScreenData(bizId, allBusinesses[bizId]);
         }
         try { await remove(ref(db, `businesses/${bizId}/tableRequests`)); } catch (e) {}
         window.showToast("Todas las solicitudes fueron atendidas", 'fa-check-double');
       };
+    }
+
+    function unlockLiveScreenView(bizId) {
+      document.getElementById('live-login-gate').style.display = 'none';
+      document.getElementById('live-screen-only').style.display = 'block';
+      if (allBusinesses[bizId]) {
+        renderLiveScreenData(bizId, allBusinesses[bizId]);
+      }
+    }
+
+    function renderLiveScreenData(bizId, bizObj) {
+      if (!bizObj) return;
+      const totalTables = parseInt(bizObj.tableCount, 10) || 10;
+      document.getElementById('live-biz-name').innerText = bizObj.name || 'Restaurante';
+      document.getElementById('live-biz-meta').innerText = `Pantalla en vivo exclusiva del local • ${totalTables} mesas`;
+
+      const rawReqs = bizObj.tableRequests || {};
+      const validReqs = [];
+      Object.entries(rawReqs).forEach(([k, v]) => {
+        if (!v) return;
+        if (v.bizId && v.bizId !== bizId) return;
+        if (v.status && v.status !== 'pending') return;
+        validReqs.push({ key: k, ...v });
+      });
+
+      let hasNew = false;
+      validReqs.forEach(r => {
+        const prev = knownLiveTimestamps[r.key];
+        if (!prev || r.timestamp > prev) {
+          knownLiveTimestamps[r.key] = r.timestamp;
+          if (liveInitialDone) hasNew = true;
+        }
+      });
+      liveInitialDone = true;
+
+      if (hasNew) {
+        playLiveChime();
+        const newest = [...validReqs].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))[0];
+        if (newest) window.showToast(newest.message || formatExactRequestText(newest.tableNumber, newest.type));
+      }
+
+      validReqs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+      document.getElementById('live-count-total').innerText = validReqs.length;
+      document.getElementById('live-count-waiter').innerText = validReqs.filter(r => r.type === 'waiter').length;
+      document.getElementById('live-count-menu').innerText = validReqs.filter(r => r.type === 'menu').length;
+      document.getElementById('live-count-bill').innerText = validReqs.filter(r => r.type === 'bill').length;
+      document.getElementById('live-clear-all-btn').style.display = validReqs.length > 0 ? 'inline-flex' : 'none';
+
+      const container = document.getElementById('live-requests-container');
+      if (validReqs.length === 0) {
+        container.innerHTML = `
+          <div style="background:var(--surface-solid); border:3px dashed var(--primary); border-radius:26px; padding:48px 24px; text-align:center;">
+            <i class="fa-solid fa-circle-check" style="font-size:3.2rem; color:var(--success); margin-bottom:12px;"></i>
+            <h3 style="font-size:1.6rem; font-weight:900; margin-bottom:6px;">Todas las mesas están atendidas</h3>
+            <p style="color:var(--text-muted); font-weight:600;">Cuando un cliente toque «Llamar al mozo», «Pedir el menú» o «Pedir la cuenta», aparecerá aquí al instante.</p>
+          </div>`;
+      } else {
+        let html = `<div class="monitor-requests-grid">`;
+        validReqs.forEach(r => {
+          const tNum = r.tableNumber || 1;
+          const sentence = formatExactRequestText(tNum, r.type);
+          let icon = 'fa-hand-sparkles';
+          let label = 'Llamado al Mozo';
+          let color = 'var(--color-waiter)';
+          if (r.type === 'menu') { icon = 'fa-book-open'; label = 'Pedido de Menú'; color = 'var(--color-menu)'; }
+          else if (r.type === 'bill') { icon = 'fa-receipt'; label = 'Pedido de Cuenta'; color = 'var(--color-bill)'; }
+
+          html += `
+            <div class="monitor-request-card type-${window.escapeHtml(r.type || 'waiter')}">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                  <span style="background:var(--primary); color:var(--surface-solid); font-family:'Plus Jakarta Sans',sans-serif; font-weight:900; font-size:1.25rem; padding:8px 16px; border-radius:14px;">
+                    <i class="fa-solid fa-chair"></i> MESA ${window.escapeHtml(tNum)}
+                  </span>
+                  <span style="font-size:0.85rem; font-weight:800; color:var(--text-muted);">
+                    <i class="fa-regular fa-clock"></i> ${formatLiveTimeAgo(r.timestamp)}
+                  </span>
+                </div>
+                <div style="margin:12px 0 8px; font-weight:900; font-size:0.88rem; text-transform:uppercase; color:${color};">
+                  <i class="fa-solid ${icon}"></i> ${label}
+                </div>
+                <div class="alert-headline">${window.escapeHtml(sentence)}</div>
+              </div>
+              <button type="button" class="btn-attend" onclick="window.attendSingleLiveRequest('${window.escapeHtml(r.key)}', '${window.escapeHtml(tNum)}')">
+                <i class="fa-solid fa-check"></i> Marcar Mesa ${window.escapeHtml(tNum)} como Atendida
+              </button>
+            </div>`;
+        });
+        html += `</div>`;
+        container.innerHTML = html;
+      }
     }
 
     /* =======================================================
@@ -1718,7 +1727,7 @@
       const labelEl = document.getElementById('current-table-label');
       if (!labelEl) return;
       if (selectedTableNumber && !isNaN(selectedTableNumber)) {
-        labelEl.innerText = `Mesa ${selectedTableNumber} (Cambiar)`;
+        labelEl.innerText = `Mesa ${selectedTableNumber}`;
       } else {
         labelEl.innerText = `Elegir Mesa`;
       }
@@ -1727,7 +1736,7 @@
     window.openTableSelectorModal = function() {
       if (!selectedBizId || !allBusinesses[selectedBizId]) return;
       const biz = allBusinesses[selectedBizId];
-      const totalTables = parseInt(biz.tableCount, 10) || (biz.tables ? Object.keys(biz.tables).length : 12) || 12;
+      const totalTables = parseInt(biz.tableCount, 10) || (biz.tables ? Object.keys(biz.tables).length : 10) || 10;
       const grid = document.getElementById('table-picker-grid');
       grid.innerHTML = "";
 
@@ -1744,10 +1753,9 @@
 
     window.selectTableNumber = function(tableNum) {
       selectedTableNumber = parseInt(tableNum, 10);
-      userExplicitlyConfirmedTable = true;
       updateTableBadgeUI();
       window.closeModal('modal-select-table');
-      window.showToast(`Mesa ${selectedTableNumber} seleccionada`, 'fa-chair');
+      window.showToast(`Mesa ${selectedTableNumber} confirmada`, 'fa-chair');
 
       if (pendingTableActionType) {
         const actionToRun = pendingTableActionType;
@@ -1757,20 +1765,16 @@
     };
 
     window.handleTableAction = async function(actionType) {
-      if (!selectedBizId || !allBusinesses[selectedBizId]) {
-        autoOpenTargetOrFirstRestaurant();
-      }
       if (!selectedBizId || !allBusinesses[selectedBizId]) return;
 
-      // Si el cliente no vino desde un QR con ?mesa=X y aún no confirmó su mesa, preguntarle o usar la seleccionada
-      if (!userExplicitlyConfirmedTable) {
+      if (!selectedTableNumber || isNaN(selectedTableNumber)) {
         pendingTableActionType = actionType;
         window.openTableSelectorModal();
         return;
       }
 
       const biz = allBusinesses[selectedBizId];
-      const tableNum = selectedTableNumber || 1;
+      const tableNum = selectedTableNumber;
 
       // Mensajes exactos requeridos para la pantalla en vivo del restaurante
       let message = "";
@@ -1810,14 +1814,14 @@
         timestamp: Date.now()
       };
 
-      // 1. Guardar inmediatamente en memoria local y BroadcastChannel
+      // 1. Guardar en memoria local y BroadcastChannel
       if (!allBusinesses[selectedBizId].tableRequests) {
         allBusinesses[selectedBizId].tableRequests = {};
       }
       allBusinesses[selectedBizId].tableRequests[requestKey] = requestPayload;
       saveLocalBusinesses(allBusinesses);
 
-      // 2. Enviar en tiempo real a Firebase para que aparezca al instante en la pantalla en vivo
+      // 2. Enviar en tiempo real a Firebase para que aparezca al instante en la pantalla en vivo del local
       try {
         await set(ref(db, `businesses/${selectedBizId}/tableRequests/${requestKey}`), requestPayload);
       } catch (err) {}
@@ -1825,7 +1829,7 @@
       const feedbackEl = document.getElementById('table-status-feedback');
       if (feedbackEl) {
         feedbackEl.style.display = 'block';
-        feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> ¡Enviado a la pantalla en vivo! <strong>${window.escapeHtml(message)}</strong>`;
+        feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> ¡Solicitud enviada! <strong>${window.escapeHtml(message)}</strong>`;
       }
 
       window.showToast(message, toastIcon);
@@ -2029,12 +2033,6 @@
       document.getElementById('hero-main').style.display = 'none';
       document.getElementById('biz-main').style.display = 'block';
       document.getElementById('floating-table-bar').classList.add('active');
-
-      const switchBtn = document.getElementById('header-switch-biz');
-      const realBizCount = Object.keys(allBusinesses).filter(k => k !== DEMO_BIZ_ID && allBusinesses[k] && allBusinesses[k].name).length;
-      if (switchBtn) {
-        switchBtn.style.display = realBizCount > 1 ? 'inline-flex' : 'none';
-      }
 
       document.getElementById('biz-title-main').innerText = biz.name;
       document.getElementById('biz-category-main').innerText = biz.category || "Gastronomía";
