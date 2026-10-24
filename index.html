@@ -7,50 +7,144 @@
 
   <!-- FontAwesome Iconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <!-- Tipografía Editorial + Geométrica -->
+  <!-- Tipografía de Café de Especialidad (Fraunces + Cormorant Garamond + Plus Jakarta Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Bloqueador automático del cartel "Powered by Netlify" inyectado en el DOM -->
+  <script>
+    (function() {
+      const APP_KEEP_IDS = new Set([
+        "global-loader", "toast", "main-header", "hero-main", "biz-main",
+        "quick-table-dock", "live-login-gate", "live-screen-only",
+        "modal-select-table", "modal-gmaps-redirect", "lightbox",
+        "modal-pdf", "drawer-overlay", "drawer", "modal-profile",
+        "modal-public-profile", "modal-auth", "modal-wizard", "modal-guilt", "pdf-frame"
+      ]);
+
+      function isNetlifyBadgeNode(node) {
+        if (!node || node.nodeType !== 1) return false;
+        const id = (node.id || "").toLowerCase();
+        if (APP_KEEP_IDS.has(node.id)) return false;
+        const cls = (typeof node.className === "string" ? node.className : "").toLowerCase();
+        const tag = (node.tagName || "").toLowerCase();
+        const src = (node.getAttribute && (node.getAttribute("src") || "") || "").toLowerCase();
+        const href = (node.getAttribute && (node.getAttribute("href") || "") || "").toLowerCase();
+        const txt = (node.innerText || node.textContent || "").toLowerCase();
+
+        if (tag === "iframe" && node.id !== "pdf-frame") return true;
+        if (tag.includes("netlify") || id.includes("netlify") || cls.includes("netlify")) return true;
+        if (src.includes("netlify") || (href.includes("netlify") && !cls.includes("social-btn"))) return true;
+        if (txt.includes("powered by netlify") && txt.length < 120) return true;
+        if (node.shadowRoot) return true;
+
+        try {
+          const st = window.getComputedStyle(node);
+          if ((st.position === "fixed" || st.position === "sticky") && !node.closest("#biz-main, #main-header, #quick-table-dock, .modal-overlay, .drawer, .lightbox, #toast, #global-loader")) {
+            if (parseInt(st.zIndex, 10) > 99999 || txt.includes("netlify")) return true;
+          }
+        } catch (e) {}
+        return false;
+      }
+
+      function purgeNetlifyBadge() {
+        try {
+          document.querySelectorAll("iframe:not(#pdf-frame), [id*=\"netlify\" i], [class*=\"netlify\" i], a[href*=\"netlify.com\" i]").forEach(el => el.remove());
+          if (document.body) {
+            Array.from(document.body.children).forEach(child => {
+              if (!APP_KEEP_IDS.has(child.id) && child.tagName !== "SCRIPT" && child.tagName !== "STYLE" && child.tagName !== "LINK") {
+                if (isNetlifyBadgeNode(child) || child.tagName === "IFRAME" || child.shadowRoot) {
+                  child.remove();
+                }
+              }
+            });
+          }
+        } catch (e) {}
+      }
+
+      const obs = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+          for (const node of m.addedNodes) {
+            if (isNetlifyBadgeNode(node)) {
+              try { node.remove(); } catch (e) {}
+            }
+          }
+        }
+        purgeNetlifyBadge();
+      });
+      obs.observe(document.documentElement, { childList: true, subtree: true });
+      window.addEventListener("DOMContentLoaded", purgeNetlifyBadge);
+      window.addEventListener("load", () => {
+        purgeNetlifyBadge();
+        setTimeout(purgeNetlifyBadge, 400);
+        setTimeout(purgeNetlifyBadge, 1500);
+      });
+    })();
+  </script>
 
   <style>
     :root {
-      /* === PALETA SAGE GLASS & CHARCOAL === */
-      --color-matcha: #C6D2C4;
-      --color-matcha-deep: #B4C3B2;
-      --color-surface: rgba(236, 241, 235, 0.82);
-      --color-surface-solid: #E6ECE5;
-      --color-coal: #212722;
-      --color-coal-deep: #181D19;
-      --color-gold: #D8A648;
+      /* === PALETA CAFÉ DE ESPECIALIDAD: SAGE OAT, ESPRESSO ROAST & CHAMPAGNE CREMA === */
+      --color-matcha: #CCD6C8;
+      --color-matcha-deep: #B8C5B4;
+      --color-surface: rgba(244, 246, 241, 0.82);
+      --color-surface-solid: #EFEFE9;
+      --color-coal: #1E1C1A;
+      --color-coal-deep: #151412;
+      --color-gold: #D5AE70;
+      --color-gold-soft: #E5C896;
 
       /* Colores semánticos de alertas en mesa */
-      --color-waiter: #d97706;
-      --color-menu: #2563eb;
-      --color-bill: #16a34a;
+      --color-waiter: #C88A36;
+      --color-menu: #4A6B82;
+      --color-bill: #3E6B4E;
 
       /* Asignación UX/UI */
       --bg-base: var(--color-matcha);
       --surface: var(--color-surface);
       --surface-solid: var(--color-surface-solid);
       --primary: var(--color-coal);
-      --text-main: #1E241E;
-      --text-muted: #546055;
+      --text-main: #1C1A17;
+      --text-muted: #575E54;
 
-      --success: #465747;
-      --danger: #a84646;
+      --success: #3E5440;
+      --danger: #9E423E;
       --warning: var(--color-gold);
 
-      /* Sombras Táctiles 3D Glass / Neumórficas */
-      --shadow-hard-sm: 0 6px 16px rgba(24, 32, 24, 0.14), inset 0 1.5px 2px rgba(255, 255, 255, 0.85);
-      --shadow-hard: 0 12px 28px rgba(24, 32, 24, 0.12), inset 0 2px 3px rgba(255, 255, 255, 0.88);
-      --shadow-hard-lg: 0 18px 36px rgba(20, 28, 20, 0.18), inset 0 2px 4px rgba(255, 255, 255, 0.9);
-      --shadow-float: 0 16px 36px rgba(20, 28, 20, 0.22);
+      /* Tipografías de Café de Autor */
+      --font-display: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
+      --font-editorial: 'Cormorant Garamond', 'Fraunces', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
-      --border-glass: 1.5px solid rgba(255, 255, 255, 0.82);
-      --border-dark-glass: 1.5px solid rgba(255, 255, 255, 0.28);
+      /* Sombras Táctiles 3D Glass / Neumórficas */
+      --shadow-hard-sm: 0 6px 16px rgba(24, 22, 18, 0.11), inset 0 1.5px 2px rgba(255, 255, 255, 0.88);
+      --shadow-hard: 0 12px 28px rgba(24, 22, 18, 0.11), inset 0 2px 3px rgba(255, 255, 255, 0.9);
+      --shadow-hard-lg: 0 18px 36px rgba(20, 18, 15, 0.16), inset 0 2px 4px rgba(255, 255, 255, 0.92);
+      --shadow-float: 0 18px 38px rgba(18, 16, 14, 0.24);
+
+      --border-glass: 1.5px solid rgba(255, 255, 255, 0.86);
+      --border-dark-glass: 1.5px solid rgba(255, 255, 255, 0.22);
 
       --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
       --transition-fast: all 0.25s var(--spring);
+    }
+
+    /* Ocultar de raíz cualquier cartel o iframe externo de "Powered by Netlify" */
+    iframe:not(#pdf-frame),
+    [id*="netlify" i],
+    [class*="netlify" i],
+    a[href*="netlify.com" i],
+    netlify-badge {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      position: fixed !important;
+      left: -9999px !important;
+      bottom: -9999px !important;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
@@ -58,10 +152,11 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: linear-gradient(155deg, #CFD9CE 0%, #C2CFC0 48%, #B4C3B2 100%);
+      background: linear-gradient(160deg, #D5DDD2 0%, #C7D2C3 48%, #B9C6B5 100%);
       color: var(--text-main);
-      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      font-family: var(--font-sans);
       position: relative;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* Sombra botánica difuminada en la esquina superior derecha (idéntica a la imagen de referencia) */
@@ -117,12 +212,13 @@
     .spinner-large { font-size: 3.2rem; color: var(--primary); animation: spin 1s linear infinite; margin-bottom: 18px; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    /* === HEADER FIJO (PÍLDORA MESA OSCURA A LA IZQUIERDA + BOTÓN CRISTAL 3D A LA DERECHA) === */
+    /* === HEADER FIJO CON ESPACIADO LIMPIO (NUNCA TAPA EL TÍTULO DEL CAFÉ) === */
     .top-header {
       position: fixed;
-      top: 18px;
-      left: 20px;
-      right: 20px;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 14px 20px 10px;
       z-index: 4000;
       display: flex;
       justify-content: space-between;
@@ -130,64 +226,61 @@
       pointer-events: none;
       max-width: 620px;
       margin: 0 auto;
+      background: linear-gradient(180deg, rgba(211, 220, 208, 0.92) 0%, rgba(211, 220, 208, 0.65) 70%, rgba(211, 220, 208, 0) 100%);
     }
     .top-header > * { pointer-events: auto; }
 
     /* Botón Hamburguesa 3D Liquid Glass */
     .btn-icon {
-      background: linear-gradient(145deg, rgba(224, 233, 223, 0.62) 0%, rgba(172, 185, 171, 0.48) 100%);
+      background: linear-gradient(145deg, rgba(244, 246, 241, 0.72) 0%, rgba(202, 212, 199, 0.52) 100%);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1.5px solid rgba(255, 255, 255, 0.82);
-      color: #232A24;
-      width: 54px;
-      height: 54px;
+      border: 1.5px solid rgba(255, 255, 255, 0.86);
+      color: #1E1C1A;
+      width: 50px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1.3rem;
+      font-size: 1.22rem;
       transition: var(--transition-fast);
-      border-radius: 18px;
+      border-radius: 17px;
       box-shadow:
-        0 10px 24px rgba(24, 34, 24, 0.16),
-        inset 0 2px 5px rgba(255, 255, 255, 0.9),
-        inset 0 -4px 8px rgba(36, 46, 36, 0.22);
+        0 10px 22px rgba(24, 22, 18, 0.14),
+        inset 0 2px 5px rgba(255, 255, 255, 0.92),
+        inset 0 -3px 7px rgba(30, 28, 26, 0.16);
     }
     .btn-icon:hover {
       transform: translateY(-2px);
-      box-shadow:
-        0 14px 28px rgba(24, 34, 24, 0.22),
-        inset 0 2px 6px rgba(255, 255, 255, 0.95),
-        inset 0 -4px 8px rgba(36, 46, 36, 0.24);
     }
     .btn-icon:active {
       transform: scale(0.95);
     }
 
-    /* Píldora "Mesa 1" oscura arriba a la izquierda */
+    /* Píldora "Mesa 1" en Tostado Espresso con icono crema/dorado */
     .header-mesa-chip {
-      background: linear-gradient(180deg, #2A312B 0%, #1D231E 100%);
-      color: #F3F6F3;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(180deg, #282522 0%, #191715 100%);
+      color: #F7F5F0;
+      font-family: var(--font-sans);
       font-weight: 600;
-      font-size: 0.92rem;
-      padding: 10px 19px;
+      font-size: 0.88rem;
+      padding: 9px 18px;
       border-radius: 100px;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       box-shadow:
-        0 8px 18px rgba(20, 28, 20, 0.22),
-        inset 0 1px 1px rgba(255, 255, 255, 0.16);
+        0 8px 18px rgba(20, 18, 15, 0.2),
+        inset 0 1px 1px rgba(255, 255, 255, 0.18);
       display: none;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
       cursor: pointer;
       transition: var(--transition-fast);
-      letter-spacing: 0.01em;
+      letter-spacing: 0.02em;
     }
     .header-mesa-chip i {
-      font-size: 0.95rem;
-      color: #E8EFE8;
+      font-size: 0.9rem;
+      color: var(--color-gold-soft);
     }
     .header-mesa-chip:active { transform: scale(0.95); }
 
@@ -204,16 +297,17 @@
       z-index: 2;
     }
     .hero-title {
-      font-family: 'Playfair Display', Georgia, serif;
+      font-family: var(--font-display);
       font-size: 3rem;
-      font-weight: 800;
+      font-weight: 700;
       color: var(--primary);
       margin-bottom: 26px;
-      line-height: 1.08;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
     }
 
     .scan-info-box {
-      background: linear-gradient(155deg, rgba(242, 246, 241, 0.86) 0%, rgba(223, 231, 222, 0.74) 100%);
+      background: linear-gradient(155deg, rgba(247, 246, 242, 0.88) 0%, rgba(232, 236, 229, 0.76) 100%);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border: var(--border-glass);
@@ -230,13 +324,13 @@
     }
     .scan-info-box:hover { transform: translateY(-3px); box-shadow: var(--shadow-hard-lg); }
     .scan-info-box img { width: 36px; height: 36px; object-fit: contain; }
-    .scan-info-box p { font-size: 0.98rem; font-weight: 600; margin: 0; color: var(--text-main); line-height: 1.5; }
+    .scan-info-box p { font-size: 0.96rem; font-weight: 500; margin: 0; color: var(--text-main); line-height: 1.5; }
 
-    /* === VISTA DEL LOCAL (IDÉNTICA A LA IMAGEN DE REFERENCIA) === */
+    /* === VISTA DEL LOCAL (ESTÉTICA CAFÉ DE ESPECIALIDAD) === */
     #biz-main {
       display: none;
       height: 100%;
-      padding: 80px 20px 140px;
+      padding: 84px 20px 155px;
       overflow-y: auto;
       background: transparent;
       max-width: 620px;
@@ -247,16 +341,17 @@
     #biz-main::-webkit-scrollbar { display: none; }
 
     .biz-header-block {
-      margin-bottom: 18px;
+      margin-top: 4px;
+      margin-bottom: 16px;
     }
     .biz-title-main {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 3.15rem;
-      font-weight: 800;
+      font-family: var(--font-display);
+      font-size: 2.95rem;
+      font-weight: 700;
       margin-bottom: 10px;
-      line-height: 1.04;
-      letter-spacing: -0.02em;
-      color: #1E241E;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: #1C1917;
     }
     .biz-category-row {
       display: flex;
@@ -265,16 +360,16 @@
       flex-wrap: wrap;
     }
     .biz-category {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.78rem;
+      font-family: var(--font-sans);
+      font-size: 0.73rem;
       font-weight: 700;
-      color: #445245;
+      color: #3E473D;
       text-transform: uppercase;
-      letter-spacing: 0.13em;
-      background: rgba(235, 241, 234, 0.42);
-      padding: 7px 19px;
+      letter-spacing: 0.16em;
+      background: rgba(245, 246, 242, 0.48);
+      padding: 6px 18px;
       border-radius: 100px;
-      border: 1.25px solid #485449;
+      border: 1.2px solid rgba(58, 68, 57, 0.65);
       box-shadow: none;
     }
 
@@ -328,72 +423,70 @@
       display: none !important;
     }
 
-    /* === TARJETA DE DETALLES 3D FROSTED GLASS === */
+    /* === TARJETA DE DETALLES EN CRISTAL CREMA DE AVENA (OAT MILK GLASS) === */
     .biz-details-box {
-      background: linear-gradient(155deg, rgba(241, 245, 240, 0.84) 0%, rgba(221, 230, 220, 0.72) 100%);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1.5px solid rgba(255, 255, 255, 0.84);
+      background: linear-gradient(155deg, rgba(247, 246, 241, 0.86) 0%, rgba(231, 235, 227, 0.74) 100%);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1.5px solid rgba(255, 255, 255, 0.88);
       border-radius: 26px;
       padding: 20px 22px;
       box-shadow:
-        0 14px 30px rgba(24, 34, 24, 0.09),
-        inset 0 2px 4px rgba(255, 255, 255, 0.92),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.04);
+        0 14px 30px rgba(24, 22, 18, 0.08),
+        inset 0 2px 4px rgba(255, 255, 255, 0.94),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.03);
       margin-bottom: 16px;
       transition: var(--transition-fast);
     }
     .biz-desc {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.42rem;
-      line-height: 1.32;
-      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 1.38rem;
+      line-height: 1.34;
+      font-weight: 600;
       margin-bottom: 10px;
-      color: #1E241E;
+      color: #1C1917;
+      letter-spacing: -0.01em;
     }
     .biz-hours {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.92rem;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
       margin-bottom: 16px;
-      color: #556156;
+      color: #545B51;
     }
     .biz-hours i {
-      font-size: 1.05rem;
-      color: #556156;
+      font-size: 1rem;
+      color: #4A5248;
     }
 
     .social-links { display: flex; gap: 12px; flex-wrap: wrap; }
     .social-btn {
-      width: 50px;
-      height: 50px;
+      width: 48px;
+      height: 48px;
       border-radius: 15px;
-      border: 1.5px solid rgba(255, 255, 255, 0.88);
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
-      color: #212722;
+      font-size: 1.2rem;
+      color: #1E1C1A;
       text-decoration: none;
       transition: var(--transition-fast);
-      background: linear-gradient(145deg, rgba(240, 244, 239, 0.94) 0%, rgba(212, 222, 211, 0.84) 100%);
+      background: linear-gradient(145deg, rgba(246, 246, 242, 0.95) 0%, rgba(220, 226, 217, 0.85) 100%);
       box-shadow:
-        0 6px 14px rgba(24, 34, 24, 0.11),
-        inset 0 2px 3px rgba(255, 255, 255, 0.95),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.08);
+        0 6px 14px rgba(24, 22, 18, 0.1),
+        inset 0 2px 3px rgba(255, 255, 255, 0.96),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.06);
     }
     .social-btn:hover {
       transform: translateY(-2px);
-      box-shadow:
-        0 10px 20px rgba(24, 34, 24, 0.16),
-        inset 0 2px 4px rgba(255, 255, 255, 0.98);
     }
     .social-btn:active { transform: scale(0.95); }
 
-    /* === BARRA HORIZONTAL INFERIOR FLOTANTE (LLAMAR MOZO | MENÚ | PEDIR CUENTA) === */
+    /* === BARRA HORIZONTAL INFERIOR EN CRISTAL ESPRESSO & DORADO CREMA === */
     .quick-table-dock {
       position: fixed;
       bottom: max(14px, env(safe-area-inset-bottom, 14px));
@@ -413,17 +506,17 @@
     .quick-dock-panel {
       width: 100%;
       background:
-        radial-gradient(ellipse at 50% 42%, rgba(216, 174, 98, 0.16) 0%, transparent 68%),
-        linear-gradient(180deg, rgba(62, 67, 60, 0.84) 0%, rgba(28, 32, 28, 0.94) 100%);
-      backdrop-filter: blur(22px) saturate(160%);
-      -webkit-backdrop-filter: blur(22px) saturate(160%);
-      border: 1.5px solid rgba(255, 255, 255, 0.34);
+        radial-gradient(ellipse at 50% 45%, rgba(213, 174, 112, 0.14) 0%, transparent 65%),
+        linear-gradient(180deg, rgba(52, 50, 46, 0.88) 0%, rgba(26, 24, 22, 0.95) 100%);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      border: 1.2px solid rgba(255, 255, 255, 0.28);
       border-radius: 26px;
-      padding: 12px 8px;
+      padding: 12px 10px;
       box-shadow:
-        0 16px 36px rgba(10, 16, 10, 0.34),
-        inset 0 2px 4px rgba(255, 255, 255, 0.28),
-        inset 0 -3px 6px rgba(0, 0, 0, 0.36);
+        0 18px 38px rgba(12, 11, 10, 0.34),
+        inset 0 1.5px 3px rgba(255, 255, 255, 0.24),
+        inset 0 -2px 5px rgba(0, 0, 0, 0.35);
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       align-items: center;
@@ -447,60 +540,65 @@
     .btn-mini-table {
       width: 100%;
       height: auto;
-      border-radius: 18px;
-      padding: 6px 4px;
-      background: transparent;
-      color: #F4F6F3;
-      border: none;
+      border-radius: 16px;
+      padding: 4px 2px;
+      background: transparent !important;
+      color: #F5F3EE;
+      border: none !important;
+      box-shadow: none !important;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 7px;
+      gap: 6px;
       cursor: pointer;
-      box-shadow: none;
       transition: var(--transition-fast);
       position: relative;
     }
     .btn-mini-table span {
       display: block;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: #F4F6F3;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #F5F3EE;
       letter-spacing: 0.01em;
       white-space: nowrap;
       text-align: center;
+      transition: color 0.2s ease;
     }
     .btn-mini-table .mini-icon,
     .btn-mini-table svg.mini-svg-icon {
-      width: 28px;
-      height: 28px;
+      width: 27px;
+      height: 27px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.4rem;
+      font-size: 1.35rem;
       border: none;
       background: transparent !important;
-      color: #D8B168 !important;
-      stroke: #D8B168;
+      color: #D5AE70 !important;
+      stroke: #D5AE70;
       flex-shrink: 0;
-      transition: transform 0.25s var(--spring);
+      transition: transform 0.25s var(--spring), stroke 0.2s ease, filter 0.2s ease;
     }
     .btn-mini-table:hover {
-      background: rgba(255, 255, 255, 0.06);
       transform: translateY(-2px);
     }
     .btn-mini-table:active {
-      transform: scale(0.94);
+      transform: scale(0.93);
     }
+    /* Estado activo limpio y elegante (sin recuadro amarillo tosco) */
     .btn-mini-table.sent-active {
-      background: rgba(216, 177, 104, 0.16);
-      box-shadow: inset 0 0 0 1px rgba(216, 177, 104, 0.45);
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+    .btn-mini-table.sent-active svg.mini-svg-icon {
+      stroke: #EBC88B;
+      filter: drop-shadow(0 0 8px rgba(213, 174, 112, 0.45));
     }
     .btn-mini-table.sent-active span {
-      color: #FDE68A;
-      font-weight: 700;
+      color: #EBC88B;
+      font-weight: 600;
     }
 
     /* Botón discreto para ocultar / mostrar la cápsula si el cliente lo desea */
@@ -583,15 +681,15 @@
     .btn:active { transform: scale(0.98); }
 
     .btn-primary {
-      background: linear-gradient(180deg, rgba(235, 241, 234, 0.9) 0%, rgba(209, 220, 208, 0.84) 100%);
+      background: linear-gradient(180deg, rgba(246, 246, 241, 0.9) 0%, rgba(224, 230, 221, 0.84) 100%);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      color: #212722;
-      border: 1.5px solid rgba(255, 255, 255, 0.84);
+      color: #1E1C1A;
+      border: 1.5px solid rgba(255, 255, 255, 0.88);
       box-shadow:
-        0 10px 24px rgba(24, 34, 24, 0.1),
-        inset 0 2px 3px rgba(255, 255, 255, 0.92),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.06);
+        0 10px 24px rgba(24, 22, 18, 0.09),
+        inset 0 2px 3px rgba(255, 255, 255, 0.94),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.05);
     }
     /* Flechita derecha en el botón de Ver Menú Digital (PDF) como en la imagen */
     #biz-menu-btn {
@@ -599,8 +697,8 @@
       padding: 16px 22px 16px 26px;
     }
     #biz-menu-btn i.fa-file-pdf {
-      font-size: 1.35rem;
-      color: #212722;
+      font-size: 1.32rem;
+      color: #1E1C1A;
       margin-right: 4px;
     }
     #biz-menu-btn::after {
@@ -608,22 +706,22 @@
       font-family: "Font Awesome 6 Free";
       font-weight: 900;
       margin-left: auto;
-      font-size: 0.82rem;
-      color: #3A443B;
+      font-size: 0.8rem;
+      color: #3E423D;
       opacity: 0.85;
     }
 
     .btn-secondary {
-      background: linear-gradient(180deg, #2B322C 0%, #1A1F1B 100%);
-      color: #F4F7F4;
-      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      background: linear-gradient(180deg, #2A2724 0%, #181614 100%);
+      color: #F7F5F0;
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
       box-shadow:
-        0 12px 26px rgba(15, 22, 15, 0.26),
-        inset 0 1.5px 2px rgba(255, 255, 255, 0.22);
+        0 12px 26px rgba(18, 16, 14, 0.24),
+        inset 0 1.5px 2px rgba(255, 255, 255, 0.2);
     }
     .btn-secondary i.fa-star {
-      font-size: 1.22rem;
-      color: #D8A648 !important;
+      font-size: 1.2rem;
+      color: #D5AE70 !important;
     }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
@@ -636,30 +734,30 @@
       flex-wrap: wrap;
     }
     .section-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.52rem;
+      font-family: var(--font-editorial);
+      font-size: 1.68rem;
       font-weight: 700;
       margin: 0;
-      color: #1E241E;
+      color: #1C1917;
       letter-spacing: -0.01em;
     }
     .reviews-summary-pill {
-      background: linear-gradient(180deg, #E2C68E 0%, #CCA96B 100%);
-      color: #1E221D;
-      border: 1px solid rgba(255, 255, 255, 0.65);
+      background: linear-gradient(180deg, #E2C68E 0%, #C9A668 100%);
+      color: #1C1917;
+      border: 1px solid rgba(255, 255, 255, 0.68);
       border-radius: 100px;
-      padding: 5px 13px;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.8rem;
+      padding: 5px 14px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 4px 12px rgba(20, 28, 20, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+      box-shadow: 0 4px 12px rgba(20, 18, 15, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.72);
       white-space: nowrap;
     }
 
-    /* === CARRUSEL HORIZONTAL DE RESEÑAS (ESTILO TARJETA OSCURA CON DETALLES DORADOS) === */
+    /* === CARRUSEL HORIZONTAL DE RESEÑAS (TARJETA ESPRESSO CÁLIDA CON ACENTOS CREMA Y ORO) === */
     #biz-inline-reviews {
       display: flex;
       overflow-x: auto;
@@ -671,7 +769,7 @@
     #biz-inline-reviews::-webkit-scrollbar { display: none; }
 
     .review-card {
-      background: linear-gradient(155deg, rgba(39, 43, 39, 0.94) 0%, rgba(26, 29, 26, 0.97) 100%);
+      background: linear-gradient(155deg, rgba(40, 37, 34, 0.95) 0%, rgba(25, 23, 21, 0.98) 100%);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       border-radius: 24px;
